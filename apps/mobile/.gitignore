@@ -1,6 +1,14 @@
 node_modules/
 .expo/
 dist/
+.turbo/
+
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
 npm-debug.*
 *.jks
 *.p8
@@ -12,3 +20,9 @@ web-build/
 
 # macOS
 .DS_Store
+
+*.log
+*.tsbuildinfo
+
+.eslintcache
+.cache
