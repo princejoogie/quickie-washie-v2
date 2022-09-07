@@ -22,7 +22,7 @@ const main = async () => {
   app.use(express.static("public"));
   app.use(morgan("combined"));
 
-  app.get("/test", (_, res) => {
+  app.get("api/test", (_, res) => {
     res.json({ message: "Hello World from /test" });
   });
 
