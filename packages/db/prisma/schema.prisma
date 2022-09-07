@@ -14,34 +14,34 @@ model User {
   id           String        @id @default(cuid())
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  privilege    Privilege     @default(CUSTOMER)
   name         String?
   firebaseId   String?
   photoUrl     String?
   licenseUrl   String?
-  cars         Car[]
-  privilege    Privilege     @default(CUSTOMER)
+  vehicles     Vehicle[]
   appointments Appointment[]
 }
 
-model Car {
+model Vehicle {
   id           String        @id @default(cuid())
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   plateNumber  String
-  type         CarType
-  userId       String
+  type         VehicleType
+  userId       String?
   appointments Appointment[]
 
-  User User @relation(fields: [userId], references: [id])
+  User User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 model AdditionalPrice {
-  id        String  @id @default(cuid())
-  price     String
-  carType   CarType
-  serviceId String?
+  id          String      @id @default(cuid())
+  price       String
+  vehicleType VehicleType
+  serviceId   String?
 
-  Service Service? @relation(fields: [serviceId], references: [id])
+  Service Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
 }
 
 model Service {
@@ -61,13 +61,13 @@ model Appointment {
   updatedAt DateTime          @updatedAt
   date      DateTime          @default(now())
   status    AppointmentStatus @default(PENDING)
-  userId    String
-  carId     String
-  serviceId String
+  userId    String?
+  vehicleId String?
+  serviceId String?
 
-  Vehicle Car     @relation(fields: [carId], references: [id])
-  User    User    @relation(fields: [userId], references: [id])
-  Service Service @relation(fields: [serviceId], references: [id])
+  Vehicle Vehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  User    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  Service Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
 }
 
 enum AppointmentStatus {
@@ -82,7 +82,7 @@ enum Privilege {
   CUSTOMER
 }
 
-enum CarType {
+enum VehicleType {
   CONVERTIBLE
   HATCHBACK
   MINIVAN
