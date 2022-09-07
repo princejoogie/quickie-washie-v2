@@ -19,6 +19,7 @@ model User {
   photoUrl     String?
   licenseUrl   String?
   cars         Car[]
+  privilege    Privilege     @default(CUSTOMER)
   appointments Appointment[]
 }
 
@@ -74,6 +75,11 @@ enum AppointmentStatus {
   ONGOING
   FINISHED
   CANCELLED
+}
+
+enum Privilege {
+  ADMIN
+  CUSTOMER
 }
 
 enum CarType {
