@@ -14,7 +14,7 @@ const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
   try {
     const { email, password } = req.body;
 
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: { email },
     });
 

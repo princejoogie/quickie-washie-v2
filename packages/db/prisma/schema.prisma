@@ -15,12 +15,11 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   privilege    Privilege     @default(CUSTOMER)
-  email        String
+  email        String        @unique
   password     String
-  name         String?
-  firebaseId   String?
+  licenseUrl   String
+  name         String
   photoUrl     String?
-  licenseUrl   String?
   vehicles     Vehicle[]
   appointments Appointment[]
 }
@@ -29,7 +28,7 @@ model Vehicle {
   id           String        @id @default(cuid())
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  plateNumber  String
+  plateNumber  String        @db.VarChar()
   type         VehicleType
   userId       String?
   appointments Appointment[]
