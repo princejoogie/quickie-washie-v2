@@ -13,7 +13,7 @@
     "generate": "turbo run generate --parallel",
     "clean": "turbo run clean --parallel && rimraf node_modules",
     "cache:clean": "turbo run cache:clean --parallel && rimraf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
     "postinstall": "yarn workspace @qw/db generate",
     "prepare": "husky install"
   },
