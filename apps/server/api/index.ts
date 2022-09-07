@@ -19,6 +19,7 @@ const main = async () => {
   app.use(cors());
   app.use(cookieParser());
   app.use(express.json());
+  app.use(express.static("public"));
   app.use(morgan("combined"));
 
   app.get("/api/test", (_, res) => {
@@ -31,3 +32,5 @@ const main = async () => {
 };
 
 main().catch(console.error);
+
+module.exports = app;
