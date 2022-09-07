@@ -28,8 +28,9 @@ const main = async () => {
     try {
       await prisma.$connect();
       res.json({ message: "database connected" });
-    } catch {
-      res.json({ message: "failed to connect to database" });
+    } catch (e) {
+      console.log(e);
+      res.json({ message: "failed to connect to database", error: e });
     }
   });
 

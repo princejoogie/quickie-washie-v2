@@ -1,19 +1,20 @@
 version: "3.9"
 
 services:
-  mysql:
-    image: mysql
-    container_name: quickie-washie-mysql
+  postgres:
+    image: postgres
+    container_name: quickie-washie-postgres
+    hostname: postgres
     ports:
-      - "6033:3306"
+      - "2345:5432"
     environment:
-      - MYSQL_DATABASE=quickie-washie
-      - MYSQL_ROOT_PASSWORD=mysql
-    restart: always
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "quickie-washie"
+    restart: unless-stopped
     volumes:
-      - db:/var/lib/mysql
+      - postgres:/var/lib/postgresql/data
 
 volumes:
-  db:
-    driver: local
+  postgres:
 
