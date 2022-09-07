@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 import prisma from "../../lib/prisma";
 import { AppError } from "../../utils/error";
-import { createAndRefreshToken } from "../../utils/jwt-helper";
+import { createTokens } from "../../utils/jwt-helper";
 
 const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
   req,
@@ -33,12 +33,12 @@ const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
       return next(error);
     }
 
-    const accessToken = createAndRefreshToken(
-      { id: user.id, privilege: user.privilege },
-      res
-    );
+    const { accessToken, refreshToken } = createTokens({
+      id: user.id,
+      privilege: user.privilege,
+    });
 
-    return res.status(200).json({ accessToken });
+    return res.status(200).json({ accessToken, refreshToken });
   } catch (e) {
     const error = new AppError(
       "InternalServerErrorException",

@@ -7,10 +7,11 @@ console.log({ API_BASE_URL });
 
 export const api = axios.create({
   baseURL: API_BASE_URL ?? "http://localhost:4000/api",
-  headers: {
-    "Content-Type": "appplication/json",
-    Accept: "application/json",
-  },
+});
+
+api.interceptors.request.use((config) => {
+  console.log({ url: config.url, params: config.params });
+  return config;
 });
 
 api.interceptors.response.use(

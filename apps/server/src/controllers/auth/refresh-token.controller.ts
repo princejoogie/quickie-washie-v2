@@ -1,8 +1,7 @@
 import type { RequestHandler } from "express";
-import type { RefreshTokenResponse } from "@qw/dto";
+import type { RefreshTokenResponse, RefreshTokenBody } from "@qw/dto";
 import {
-  createAndRefreshToken,
-  REFRESH_TOKEN_KEY,
+  createTokens,
   verifyRefreshToken,
 } from "../../utils/jwt-helper";
 
@@ -10,10 +9,11 @@ import { AppError, SuccessType } from "../../utils/error";
 
 const refreshTokenController: RequestHandler<
   any,
-  RefreshTokenResponse
+  RefreshTokenResponse,
+  RefreshTokenBody
 > = async (req, res, next) => {
   try {
-    const refreshToken = req.cookies[REFRESH_TOKEN_KEY];
+    const { refreshToken } = req.body;
 
     if (!refreshToken) {
       const error = new AppError(
@@ -24,9 +24,9 @@ const refreshTokenController: RequestHandler<
     }
 
     const { id, privilege } = verifyRefreshToken(refreshToken);
-    const accessToken = createAndRefreshToken({ id, privilege }, res);
+    const tokens = createTokens({ id, privilege });
 
-    return res.status(SuccessType.OK).json({ accessToken });
+    return res.status(SuccessType.OK).json(tokens);
   } catch (e: any) {
     const error = new AppError("UnauthorizedException", e.message);
     return next(error);

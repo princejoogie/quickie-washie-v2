@@ -1,4 +1,3 @@
-import type { Response } from "express";
 import jwt from "jsonwebtoken";
 
 export interface TokenPayload {
@@ -35,14 +34,9 @@ export const createRefreshToken = (payload: TokenPayload) => {
   });
 };
 
-export const createAndRefreshToken = (payload: TokenPayload, res: Response) => {
+export const createTokens = (payload: TokenPayload) => {
   const accessToken = createAccessToken(payload);
   const refreshToken = createRefreshToken(payload);
 
-  res.cookie(REFRESH_TOKEN_KEY, refreshToken, {
-    httpOnly: true,
-    sameSite: "lax",
-  });
-
-  return accessToken;
+  return { accessToken, refreshToken };
 };
