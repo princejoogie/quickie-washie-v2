@@ -38,3 +38,11 @@ export type RegisterResponse = {
 export const registerSchema: ValidatorSchema = {
   body: registerBodySchema,
 };
+
+export interface LogoutResponse {
+  success: boolean;
+}
+
+export interface RefreshTokenResponse {
+  accessToken: string;
+}

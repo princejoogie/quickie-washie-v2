@@ -8,6 +8,7 @@
     "index.ts"
   ],
   "scripts": {
+    "generate": "tsc",
     "build": "tsc",
     "clean": "rimraf dist/ .turbo/ node_modules/",
     "cache:clean": "rimraf dist/ .turbo/"

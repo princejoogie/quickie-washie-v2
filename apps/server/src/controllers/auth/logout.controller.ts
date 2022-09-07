@@ -1,10 +1,7 @@
 import type { RequestHandler } from "express";
+import type { LogoutResponse } from "@qw/dto";
 import { REFRESH_TOKEN_KEY } from "../../utils/jwt-helper";
 import { AppError, SuccessType } from "../../utils/error";
-
-export interface LogoutResponse {
-  success: boolean;
-}
 
 const logoutController: RequestHandler<any, LogoutResponse> = async (
   _,

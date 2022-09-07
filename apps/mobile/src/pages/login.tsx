@@ -1,11 +1,10 @@
 import { useState } from "react";
+import { useMutation } from "react-query";
 import { Alert, Text, TextInput, TouchableOpacity } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./types";
+import authService from "../services/auth";
 import { Layout } from "../components";
-import { logOut, signIn } from "../firebase";
-import { useAuthContext } from "../contexts/auth-context";
-import { api } from "../services/api";
 
 export const Login = ({}: NativeStackScreenProps<
   RootStackParamList,
@@ -14,13 +13,14 @@ export const Login = ({}: NativeStackScreenProps<
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("qweqweqwe");
 
-  const { user } = useAuthContext();
+  const login = useMutation(authService.login);
 
   return (
     <Layout className="justify-center px-6">
       <Text className="w-full text-2xl font-bold text-white">
-        Welcome to the app! {user?.email}
+        Welcome to the app!
       </Text>
+
       <TextInput
         placeholder="Email"
         value={email}
@@ -39,46 +39,16 @@ export const Login = ({}: NativeStackScreenProps<
         className="bg-gray-700 mt-2 self-start rounded px-4 py-2"
         onPress={async () => {
           try {
-            const res = await api.get("/test");
-            Alert.alert("Success", JSON.stringify(res.data));
+            const res = await login.mutateAsync({ email, password });
+            Alert.alert("Success", JSON.stringify(res));
           } catch (error) {
-            const err = error as any;
-            Alert.alert("Error", JSON.stringify(err.message));
-            console.log(JSON.stringify(error));
+            Alert.alert("Error", "Invalid email or password");
+            console.log(error);
           }
         }}
       >
-        <Text className="text-white">Test api</Text>
+        <Text className="text-white">Login</Text>
       </TouchableOpacity>
-
-      {!user ? (
-        <TouchableOpacity
-          className="bg-gray-700 mt-2 self-start rounded px-4 py-2"
-          onPress={async () => {
-            try {
-              await signIn(email, password);
-            } catch (error) {
-              Alert.alert("Error", "Invalid email or password");
-              console.log(error);
-            }
-          }}
-        >
-          <Text className="text-white">Sign in</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          className="bg-gray-700 mt-2 self-start rounded px-4 py-2"
-          onPress={async () => {
-            try {
-              await logOut();
-            } catch (error) {
-              console.log(error);
-            }
-          }}
-        >
-          <Text className="text-white">Log out</Text>
-        </TouchableOpacity>
-      )}
     </Layout>
   );
 };

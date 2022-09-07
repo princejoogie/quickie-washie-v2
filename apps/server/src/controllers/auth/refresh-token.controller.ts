@@ -1,4 +1,5 @@
 import type { RequestHandler } from "express";
+import type { RefreshTokenResponse } from "@qw/dto";
 import {
   createAndRefreshToken,
   REFRESH_TOKEN_KEY,
@@ -7,11 +8,10 @@ import {
 
 import { AppError, SuccessType } from "../../utils/error";
 
-export interface RefreshTokenResponse {
-  accessToken: string;
-}
-
-const refreshTokenController: RequestHandler = async (req, res, next) => {
+const refreshTokenController: RequestHandler<
+  any,
+  RefreshTokenResponse
+> = async (req, res, next) => {
   try {
     const refreshToken = req.cookies[REFRESH_TOKEN_KEY];
 

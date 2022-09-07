@@ -12,3 +12,19 @@ export const api = axios.create({
     Accept: "application/json",
   },
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const { data } = await api.get("/auth/refresh-token");
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${data.accessToken}`;
+      return api(originalRequest);
+    }
+    return Promise.reject(error);
+  }
+);
