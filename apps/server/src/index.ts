@@ -3,7 +3,9 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+
 import routes from "./routes/index";
+import errorHandler from "./middlewares/error-handler";
 
 const PORT = process.env["PORT"] ?? 4000;
 
@@ -15,7 +17,9 @@ const main = async () => {
   app.use(express.json());
   app.use(express.static("public"));
   app.use(morgan("combined"));
+
   app.use("/api", routes);
+  app.use(errorHandler);
 
   app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`);
