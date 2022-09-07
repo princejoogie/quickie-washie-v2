@@ -7,4 +7,8 @@ console.log({ API_BASE_URL });
 
 export const api = axios.create({
   baseURL: API_BASE_URL ?? "http://localhost:4000/api",
+  headers: {
+    "Content-Type": "appplication/json",
+    Accept: "application/json",
+  },
 });

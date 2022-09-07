@@ -11,8 +11,79 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String        @id @default(cuid())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  name         String?
+  firebaseId   String?
+  photoUrl     String?
+  licenseUrl   String?
+  cars         Car[]
+  appointments Appointment[]
+}
+
+model Car {
+  id           String        @id @default(cuid())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  plateNumber  String
+  type         CarType
+  userId       String
+  appointments Appointment[]
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+model AdditionalPrice {
+  id        String  @id @default(cuid())
+  price     String
+  carType   CarType
+  serviceId String?
+
+  Service Service? @relation(fields: [serviceId], references: [id])
+}
+
+model Service {
+  id               String            @id @default(cuid())
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  name             String
+  basePrice        String
+  description      String
+  additionalPrices AdditionalPrice[]
+  appointments     Appointment[]
+}
+
+model Appointment {
+  id        String            @id @default(cuid())
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  date      DateTime          @default(now())
+  status    AppointmentStatus @default(PENDING)
+  userId    String
+  carId     String
+  serviceId String
+
+  Vehicle Car     @relation(fields: [carId], references: [id])
+  User    User    @relation(fields: [userId], references: [id])
+  Service Service @relation(fields: [serviceId], references: [id])
+}
+
+enum AppointmentStatus {
+  PENDING
+  ONGOING
+  FINISHED
+  CANCELLED
+}
+
+enum CarType {
+  CONVERTIBLE
+  HATCHBACK
+  MINIVAN
+  PICKUP_TRUCK
+  SEDAN_2_DOOR
+  SEDAN_4_DOOR
+  SPORTS_CAR
+  STATION_WAGON
+  SUV
 }

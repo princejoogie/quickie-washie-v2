@@ -5,7 +5,6 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { RootStack } from "./pages/types";
 import { Login, Home } from "./pages";
 import { AuthProvider } from "./contexts/auth-context";
-import "./services/api";
 
 export const queryClient = new QueryClient();
 

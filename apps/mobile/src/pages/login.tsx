@@ -39,9 +39,7 @@ export const Login = ({}: NativeStackScreenProps<
         className="bg-gray-700 mt-2 self-start rounded px-4 py-2"
         onPress={async () => {
           try {
-            const res = await api.get(
-              "https://jsonplaceholder.typicode.com/todos/1"
-            );
+            const res = await api.get("/test");
             Alert.alert("Success", JSON.stringify(res.data));
           } catch (error) {
             const err = error as any;
