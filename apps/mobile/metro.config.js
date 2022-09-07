@@ -7,6 +7,7 @@ const config = getDefaultConfig(projectRoot);
 
 config.watchFolders = [workspaceRoot];
 
+config.resolver.assetExts.push("cjs");
 config.resolver.disableHierarchicalLookup = true;
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
