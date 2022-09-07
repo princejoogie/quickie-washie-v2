@@ -13,24 +13,27 @@ const PORT = process.env["PORT"] ?? 4000;
 
 const app = express();
 
-const main = async () => {
-  await prisma.$connect();
+app.use(cors());
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.static("public"));
+app.use(morgan("combined"));
 
-  app.use(cors());
-  app.use(cookieParser());
-  app.use(express.json());
-  app.use(express.static("public"));
-  app.use(morgan("combined"));
+app.get("/api/test", (_, res) => {
+  res.json({ message: "Hello World from /api/test" });
+});
 
-  app.get("/api/test", (_, res) => {
-    res.json({ message: "Hello World from /api/test" });
-  });
+app.get("/api/prisma", async (_, res) => {
+  try {
+    await prisma.$connect();
+    res.json({ message: "database connected" });
+  } catch {
+    res.json({ message: "failed to connect to database" });
+  }
+});
 
-  app.listen(PORT, () => {
-    console.log(`Server listening on http://localhost:${PORT}`);
-  });
-};
-
-main().catch(console.error);
+app.listen(PORT, () => {
+  console.log(`Server listening on http://localhost:${PORT}`);
+});
 
 module.exports = app;
