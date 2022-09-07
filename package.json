@@ -7,17 +7,20 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "cache:clean": "turbo run cache:clean --parallel",
-    "clean": "turbo run clean --parallel",
     "dev": "turbo run dev --parallel",
-    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
-    "generate": "turbo run generate --parallel",
     "lint": "turbo run lint",
-    "postinstall": "yarn workspace @qw/db generate"
+    "build": "turbo run build",
+    "generate": "turbo run generate --parallel",
+    "clean": "turbo run clean --parallel && rimraf node_modules",
+    "cache:clean": "turbo run cache:clean --parallel && rimraf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "postinstall": "yarn workspace @qw/db generate",
+    "prepare": "husky install"
   },
   "devDependencies": {
+    "husky": "^8.0.1",
     "prettier": "latest",
+    "rimraf": "^3.0.2",
     "turbo": "latest"
   },
   "engines": {
