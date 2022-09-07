@@ -1,10 +1,10 @@
 import type { RequestHandler } from "express";
+import type { LoginResponse, LoginBody } from "@qw/dto";
 import bcrypt from "bcryptjs";
 
 import prisma from "../../lib/prisma";
 import { AppError } from "../../utils/error";
 import { createAndRefreshToken } from "../../utils/jwt-helper";
-import type { LoginResponse, LoginBody } from "../../dtos/auth.dto";
 
 const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
   req,

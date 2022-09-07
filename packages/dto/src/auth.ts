@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { User } from "@qw/db";
-import type { ValidatorSchema } from "../middlewares/validator";
+import type { ValidatorSchema } from "./common";
 
 // LOGIN
 export const loginBodySchema = z.object({

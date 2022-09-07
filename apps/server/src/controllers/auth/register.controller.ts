@@ -1,10 +1,10 @@
 import type { RequestHandler } from "express";
+import type { RegisterBody, RegisterResponse } from "@qw/dto";
 import bcrypt from "bcryptjs";
 
 import prisma from "../../lib/prisma";
 import { AppError } from "../../utils/error";
 import { createAndRefreshToken, HASH_SALT } from "../../utils/jwt-helper";
-import type { RegisterResponse, RegisterBody } from "../../dtos/auth.dto";
 
 const registerController: RequestHandler<
   any,
@@ -33,13 +33,13 @@ const registerController: RequestHandler<
         password: hashedPassword,
       },
     });
-    console.log("created newUser")
+    console.log("created newUser");
 
     const accessToken = createAndRefreshToken(
       { id: newUser.id, privilege: newUser.privilege },
       res
     );
-    console.log("created accessToken")
+    console.log("created accessToken");
 
     return res.status(200).json({ accessToken, user: newUser });
   } catch (e) {
