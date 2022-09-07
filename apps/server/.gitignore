@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+.turbo/
+
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+*.log
+*.tsbuildinfo
+
+.eslintcache
+.cache

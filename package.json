@@ -8,12 +8,15 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "cache:clean": "turbo run cache:clean --parallel",
+    "clean": "turbo run clean --parallel",
     "dev": "turbo run dev --parallel",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "generate": "turbo run generate --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "postinstall": "yarn workspace @qw/db generate"
   },
   "devDependencies": {
-    "eslint-config-custom": "*",
     "prettier": "latest",
     "turbo": "latest"
   },
