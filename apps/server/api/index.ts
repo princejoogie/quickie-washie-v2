@@ -11,10 +11,10 @@ const prisma = new PrismaClient({
 
 const PORT = process.env["PORT"] ?? 4000;
 
+const app = express();
+
 const main = async () => {
   await prisma.$connect();
-
-  const app = express();
 
   app.use(cors());
   app.use(cookieParser());
@@ -22,7 +22,7 @@ const main = async () => {
   app.use(morgan("combined"));
 
   app.get("/api/test", (_, res) => {
-    res.json({ message: "Hello World from /test" });
+    res.json({ message: "Hello World from /api/test" });
   });
 
   app.listen(PORT, () => {
