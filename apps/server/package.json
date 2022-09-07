@@ -4,8 +4,8 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsx watch api/index.ts",
-    "lint": "eslint --fix api/**/*.ts",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint --fix src/**/*.ts",
     "start": "node dist/index.js",
     "build": "yarn lint && rimraf dist/ && tsc",
     "clean": "rimraf dist/ .turbo/ node_modules/",

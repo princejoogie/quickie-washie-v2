@@ -23,7 +23,7 @@
     "importsNotUsedAsValues": "error",
     "checkJs": true,
     "outDir": "./dist",
-    "baseUrl": "./api"
+    "baseUrl": "./src"
   },
-  "include": ["api/"]
+  "include": ["src/"]
 }
