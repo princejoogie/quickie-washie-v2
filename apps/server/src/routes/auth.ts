@@ -1,6 +1,6 @@
 import { Router } from "express";
 import validator from "../middlewares/validator";
-import { loginSchema, registerSchema } from "../dtos/auth.dto";
+import { loginSchema, registerSchema } from "@qw/dto";
 import loginController from "../controllers/auth/login.controller";
 import registerController from "../controllers/auth/register.controller";
 import logoutController from "../controllers/auth/logout.controller";
