@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { User } from "@qw/db";
+import { Prisma, User } from "@qw/db";
 import type { ValidatorSchema } from "./common";
 
 // LOGIN
@@ -59,3 +59,17 @@ export interface RefreshTokenResponse {
 export const refreshTokenSchema: ValidatorSchema = {
   body: refreshTokenBodySchema,
 };
+
+// PROFILE
+
+const profileResponse = Prisma.validator<Prisma.UserArgs>()({
+  select: {
+    id: true,
+    email: true,
+    photoUrl: true,
+    name: true,
+    privilege: true,
+  },
+});
+
+export type ProfileResponse = Prisma.UserGetPayload<typeof profileResponse>;

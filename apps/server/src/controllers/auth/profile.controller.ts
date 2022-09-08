@@ -1,16 +1,31 @@
 import type { RequestHandler } from "express";
-import bcrypt from "bcryptjs";
+import type { ProfileResponse } from "@qw/dto";
 
 import prisma from "../../lib/prisma";
 import { AppError } from "../../utils/error";
-import { createTokens } from "../../utils/jwt-helper";
 
-const profileController: RequestHandler = async (req, res, next) => {
+const profileController: RequestHandler<any, ProfileResponse> = async (
+  req,
+  res,
+  next
+) => {
   try {
-    const { email, password } = req.body;
+    const payload = req.tokenPayload;
+
+    if (!payload) {
+      const error = new AppError("UnauthorizedException", "No token provided");
+      return next(error);
+    }
 
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { id: payload.id },
+      select: {
+        id: true,
+        email: true,
+        photoUrl: true,
+        name: true,
+        privilege: true,
+      },
     });
 
     if (!user) {
@@ -18,22 +33,7 @@ const profileController: RequestHandler = async (req, res, next) => {
       return next(error);
     }
 
-    const isValid = await bcrypt.compare(password, user.password);
-
-    if (!isValid) {
-      const error = new AppError(
-        "UnauthorizedException",
-        "Invalid credentials"
-      );
-      return next(error);
-    }
-
-    const { accessToken, refreshToken } = createTokens({
-      id: user.id,
-      privilege: user.privilege,
-    });
-
-    return res.status(200).json({ accessToken, refreshToken });
+    return res.status(200).json(user);
   } catch (e) {
     const error = new AppError(
       "InternalServerErrorException",
