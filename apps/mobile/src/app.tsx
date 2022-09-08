@@ -1,12 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import { QueryClientProvider, QueryClient } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { RootStack } from "./pages/types";
 import { Login, Home } from "./pages";
 import { AuthProvider } from "./contexts/auth-context";
-
-export const queryClient = new QueryClient();
+import { queryClient } from "./services/api";
 
 const App = () => {
   return (

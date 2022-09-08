@@ -1,21 +1,16 @@
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-} from "react";
-import { useMutation } from "react-query";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ReactNode, createContext, useContext, useState } from "react";
+import { useQuery } from "react-query";
+import { ProfileResponse } from "@qw/dto";
 import authService from "../services/auth";
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "../constants";
 
 interface TAuthContext {
   isLoading: boolean;
+  data: ProfileResponse | null;
 }
 
 export const AuthContext = createContext<TAuthContext>({
   isLoading: true,
+  data: null,
 });
 
 interface AuthContextProps {
@@ -23,33 +18,21 @@ interface AuthContextProps {
 }
 
 export const AuthProvider = ({ children }: AuthContextProps) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<TAuthContext["data"]>(null);
 
-  const login = useMutation(authService.login, {
-    onSettled: async () => {
-      const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-      const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN_KEY);
-    },
-  });
-  const refresh = useMutation(authService.refreshToken, {
-    onSettled: async () => {
-      const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-      const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN_KEY);
-    },
-  });
-  const logout = useMutation(authService.logout, {
-    onSettled: async () => {
-      const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-      const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN_KEY);
+  const profile = useQuery(["profile"], authService.profile, {
+    retry: false,
+    onSettled(data) {
+      if (data) setData(data);
+      else setData(null);
     },
   });
 
-  const isLoading = login.isLoading || refresh.isLoading || logout.isLoading;
-
-  useEffect(() => {}, [login.data, refresh.data]);
+  const isLoading =
+    profile.isLoading || profile.isFetching || profile.isRefetching;
 
   return (
-    <AuthContext.Provider value={{ isLoading }}>
+    <AuthContext.Provider value={{ isLoading, data }}>
       {children}
     </AuthContext.Provider>
   );
