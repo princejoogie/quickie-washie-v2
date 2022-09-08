@@ -1,7 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import Constants from "expo-constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import authService from "./auth";
+import { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY } from "../constants";
 
 export const API_BASE_URL = Constants.manifest?.extra?.API_BASE_URL;
 
@@ -12,7 +13,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-  const accessToken = await AsyncStorage.getItem("accessToken");
+  const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
   if (!!accessToken) {
     config.headers = {
       Authorization: `Bearer ${accessToken}`,
@@ -29,7 +30,7 @@ api.interceptors.response.use(
 
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const refreshToken = await AsyncStorage.getItem("refreshToken");
+      const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN_KEY);
 
       if (!!refreshToken) {
         const data = await authService.refreshToken({ refreshToken });

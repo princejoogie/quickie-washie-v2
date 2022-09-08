@@ -6,17 +6,18 @@ import type {
   RefreshTokenResponse,
   RefreshTokenBody,
 } from "@qw/dto";
-import { api } from "./api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from "./api";
+import {REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY} from "../constants";
 
 const setTokens = async (accessToken: string, refreshToken: string) => {
-  await AsyncStorage.setItem("accessToken", accessToken);
-  await AsyncStorage.setItem("refreshToken", refreshToken);
+  await AsyncStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+  await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 };
 
 const unsetTokens = async () => {
-  await AsyncStorage.removeItem("accessToken");
-  await AsyncStorage.removeItem("refreshToken");
+  await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
+  await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
 };
 
 const login = async (params: LoginBody) => {
