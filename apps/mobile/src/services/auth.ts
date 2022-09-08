@@ -9,12 +9,8 @@ import { api } from "./api";
 import { setTokens, unsetTokens, refreshToken } from "./common";
 
 const profile = async () => {
-  try {
     const response = await api.get<ProfileResponse>("/auth/profile");
     return response.data;
-  } catch {
-    return null;
-  }
 };
 
 const login = async (params: LoginBody) => {
