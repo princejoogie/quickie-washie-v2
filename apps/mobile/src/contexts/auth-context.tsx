@@ -5,6 +5,9 @@ import {
   useState,
   useEffect,
 } from "react";
+import { useMutation } from "react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import authService from "../services/auth";
 
 interface TAuthContext {
   isLoading: boolean;
@@ -19,11 +22,30 @@ interface AuthContextProps {
 }
 
 export const AuthProvider = ({ children }: AuthContextProps) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState(null);
 
-  useEffect(() => {
-    setIsLoading(true);
-  }, []);
+  const login = useMutation(authService.login, {
+    onSettled: async () => {
+      const accessToken = await AsyncStorage.getItem("accessToken");
+      const refreshToken = await AsyncStorage.getItem("refreshToken");
+    },
+  });
+  const refresh = useMutation(authService.refreshToken, {
+    onSettled: async () => {
+      const accessToken = await AsyncStorage.getItem("accessToken");
+      const refreshToken = await AsyncStorage.getItem("refreshToken");
+    },
+  });
+  const logout = useMutation(authService.logout, {
+    onSettled: async () => {
+      const accessToken = await AsyncStorage.getItem("accessToken");
+      const refreshToken = await AsyncStorage.getItem("refreshToken");
+    },
+  });
+
+  const isLoading = login.isLoading || refresh.isLoading || logout.isLoading;
+
+  useEffect(() => {}, [login.data, refresh.data]);
 
   return (
     <AuthContext.Provider value={{ isLoading }}>

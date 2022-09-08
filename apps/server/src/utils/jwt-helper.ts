@@ -1,9 +1,5 @@
 import jwt from "jsonwebtoken";
-
-export interface TokenPayload {
-  id: string;
-  privilege: string;
-}
+import type { TokenPayload } from "@qw/dto";
 
 export const HASH_SALT = 10;
 

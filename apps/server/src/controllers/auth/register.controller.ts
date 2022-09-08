@@ -33,13 +33,11 @@ const registerController: RequestHandler<
         password: hashedPassword,
       },
     });
-    console.log("created newUser");
 
     const { accessToken, refreshToken } = createTokens({
       id: newUser.id,
       privilege: newUser.privilege,
     });
-    console.log("created accessToken");
 
     return res.status(200).json({ accessToken, refreshToken, user: newUser });
   } catch (e) {

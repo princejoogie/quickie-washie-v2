@@ -8,24 +8,32 @@ import { AuthProvider } from "./contexts/auth-context";
 
 export const queryClient = new QueryClient();
 
-export default function App() {
+const App = () => {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <StatusBar style="light" />
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <StatusBar style="light" />
 
-            <RootStack.Navigator
-              screenOptions={{ headerShown: false }}
-              initialRouteName="Login"
-            >
-              <RootStack.Screen name="Login" component={Login} />
-              <RootStack.Screen name="Home" component={Home} />
-            </RootStack.Navigator>
-          </NavigationContainer>
-        </SafeAreaProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+        <RootStack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName="Login"
+        >
+          <RootStack.Screen name="Login" component={Login} />
+          <RootStack.Screen name="Home" component={Home} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
-}
+};
+
+const AuthWrapper = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
+
+export default AuthWrapper;
