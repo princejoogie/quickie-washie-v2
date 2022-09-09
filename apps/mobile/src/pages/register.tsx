@@ -1,12 +1,17 @@
+import { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Layout } from "../components";
+import { Layout, TextField } from "../components";
 import { RootStackParamList } from "./types";
 import { ChevronIcon } from "../components/icon/chevron-icon";
 
 export const Register = ({
   navigation,
-}: NativeStackScreenProps<RootStackParamList, "Login">) => {
+}: NativeStackScreenProps<RootStackParamList, "Register">) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   return (
     <Layout className="px-6">
       {navigation.canGoBack() && (
@@ -27,6 +32,20 @@ export const Register = ({
           We&apos;re excited to have you!
         </Text>
       </View>
+
+      <TextField placeholder="Email" value={email} onChangeText={setEmail} />
+      <TextField
+        placeholder="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+      <TextField
+        placeholder="Password"
+        secureTextEntry
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+      />
     </Layout>
   );
 };
