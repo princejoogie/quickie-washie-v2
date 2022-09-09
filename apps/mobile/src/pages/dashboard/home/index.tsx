@@ -1,5 +1,5 @@
 import { Text, ScrollView } from "react-native";
-import { Layout } from "../../components";
+import { Layout } from "../../../components";
 
 export const Home = () => {
   return (

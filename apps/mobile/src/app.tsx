@@ -14,7 +14,12 @@ const App = () => {
         <StatusBar style="light" />
 
         <RootStack.Navigator
-          screenOptions={{ headerShown: false }}
+          screenOptions={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: "#111827",
+            },
+          }}
           initialRouteName="Login"
         >
           <RootStack.Screen name="Login" component={Login} />
