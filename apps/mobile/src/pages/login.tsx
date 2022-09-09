@@ -9,10 +9,9 @@ import { queryClient } from "../services/api";
 
 import { RootStackParamList } from "./types";
 
-export const Login = ({}: NativeStackScreenProps<
-  RootStackParamList,
-  "Login"
->) => {
+export const Login = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "Login">) => {
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("qweqwe");
 
@@ -53,6 +52,13 @@ export const Login = ({}: NativeStackScreenProps<
       >
         <Text className="text-white">Login</Text>
       </TouchableOpacity>
+
+      <View>
+        <Text className="text-white">Not registered yet?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <Text className="text-blue-600">Create an account</Text>
+        </TouchableOpacity>
+      </View>
     </Layout>
   );
 };
