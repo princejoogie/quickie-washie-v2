@@ -19,17 +19,25 @@ interface AuthContextProps {
 
 export const AuthProvider = ({ children }: AuthContextProps) => {
   const [data, setData] = useState<TAuthContext["data"]>(null);
+  const [isDelaying, setIsDelaying] = useState(true);
 
   const profile = useQuery(["profile"], authService.profile, {
     retry: false,
     onSettled(data) {
-      if (data) setData(data);
-      else setData(null);
+      setIsDelaying(true);
+      setTimeout(() => {
+        if (data) setData(data);
+        else setData(null);
+        setIsDelaying(false);
+      }, 500);
     },
   });
 
   const isLoading =
-    profile.isLoading || profile.isFetching || profile.isRefetching;
+    profile.isLoading ||
+    profile.isFetching ||
+    profile.isRefetching ||
+    isDelaying;
 
   return (
     <AuthContext.Provider value={{ isLoading, data }}>
