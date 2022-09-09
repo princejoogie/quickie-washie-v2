@@ -1,7 +1,12 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Text, ScrollView } from "react-native";
 import { Layout } from "../../../components";
+import { DashboardParamList } from "../types";
 
-export const Profile = () => {
+export const Profile = ({}: BottomTabScreenProps<
+  DashboardParamList,
+  "Profile"
+>) => {
   return (
     <Layout>
       <ScrollView

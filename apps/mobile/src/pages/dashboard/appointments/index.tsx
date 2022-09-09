@@ -1,7 +1,12 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Text, ScrollView } from "react-native";
 import { Layout } from "../../../components";
+import { DashboardParamList } from "../types";
 
-export const Appointments = () => {
+export const Appointments = ({}: BottomTabScreenProps<
+  DashboardParamList,
+  "Appointments"
+>) => {
   return (
     <Layout>
       <ScrollView

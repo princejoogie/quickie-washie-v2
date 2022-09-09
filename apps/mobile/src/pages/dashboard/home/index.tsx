@@ -1,7 +1,9 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Text, ScrollView } from "react-native";
 import { Layout } from "../../../components";
+import { DashboardParamList } from "../types";
 
-export const Home = () => {
+export const Home = ({}: BottomTabScreenProps<DashboardParamList, "Home">) => {
   return (
     <Layout>
       <ScrollView
