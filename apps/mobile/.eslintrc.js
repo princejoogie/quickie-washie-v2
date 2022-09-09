@@ -13,6 +13,7 @@ module.exports = {
   overrides: [],
   parserOptions: {
     project: "./tsconfig.json",
+    tsconfigRootDir: __dirname,
     ecmaVersion: "latest",
     sourceType: "module",
   },
@@ -22,6 +23,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "no-empty-pattern": "off",
   },
 };
