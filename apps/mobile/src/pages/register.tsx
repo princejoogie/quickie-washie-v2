@@ -6,6 +6,7 @@ import { Layout, TextField, ImageInput } from "../components";
 import { RootStackParamList } from "./types";
 import { ChevronIcon } from "../components/icon/chevron-icon";
 import { getImage } from "../utils/helpers";
+import { PencilSquareIcon } from "../components/icon/pencil-square-icon";
 
 export const Register = ({
   navigation,
@@ -38,48 +39,54 @@ export const Register = ({
       </View>
 
       <View className="flex items-center mt-8">
-        <View>
+        <View className="bg-gray-800 h-32 w-32 border-2 border-gray-700 rounded-full flex items-center justify-center">
           <TouchableOpacity
+            className="w-full h-full flex items-center justify-center"
             onPress={async () => {
-              const res = await getImage();
+              const res = await getImage({ aspect: [1, 1] });
               if (res) setImageUrl(res);
             }}
           >
-            <Image
-              className="bg-gray-800 h-32 w-32 border-2 border-gray-700 rounded-full"
-              source={{ uri: !imageUrl ? undefined : imageUrl }}
-            />
+            {!imageUrl ? (
+              <PencilSquareIcon styleName="text-blue-600" />
+            ) : (
+              <Image
+                className="h-full w-full rounded-full"
+                source={{ uri: imageUrl }}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </View>
 
       <TextField
         keyboardType="email-address"
-        label="Email"
+        label="Email *"
         value={email}
         onChangeText={setEmail}
       />
       <TextField
-        label="Password"
+        label="Password *"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
       <TextField
-        label="Confirm password"
+        label="Confirm password *"
         secureTextEntry
         value={confirmPassword}
         onChangeText={setConfirmPassword}
       />
 
       <ImageInput
-        label="Drivers license"
-        uri={!licenseUrl ? undefined : licenseUrl}
-        callback={(uri) => {
-          console.log({ uri });
-          setLicenseUrl(uri);
-        }}
+        label="Drivers license *"
+        uri={licenseUrl}
+        callback={setLicenseUrl}
       />
+
+      <TouchableOpacity className="bg-green-600 self-end mt-6 px-8 py-2 rounded-xl border-2 border-green-500">
+        <Text className="text-white">Submit</Text>
+      </TouchableOpacity>
     </Layout>
   );
 };

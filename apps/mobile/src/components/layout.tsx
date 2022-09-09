@@ -50,10 +50,10 @@ export const Layout = ({ children, nav, className = "" }: Props) => {
           </View>
         )}
 
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View className={`flex bg-gray-900 px-6 flex-1 ${className}`}>
             {children}
-            <View style={{ height: bottom }} />
+            <View style={{ height: bottom * 3 }} />
           </View>
         </ScrollView>
       </>

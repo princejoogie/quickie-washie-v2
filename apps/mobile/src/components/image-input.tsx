@@ -5,8 +5,8 @@ interface ImageInputProps {
   label?: string;
   className?: string;
   containerClassname?: string;
-  uri?: string;
-  callback?: (value: string | null) => void;
+  uri: string | null;
+  callback: (value: string | null) => void;
 }
 
 export const ImageInput = ({
@@ -19,10 +19,14 @@ export const ImageInput = ({
     <View className={containerClassname}>
       {label && <Text className="text-gray-400 text-xs ml-2">{label}</Text>}
       <View className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 p-3 text-white">
-        <Image
-          className="h-32 w-full bg-gray-700 rounded-md"
-          source={{ uri }}
-        />
+        {!uri ? (
+          <View className="h-32 w-full bg-gray-700 rounded-md" />
+        ) : (
+          <Image
+            className="h-32 w-full bg-gray-700 rounded-md"
+            source={{ uri }}
+          />
+        )}
 
         <View className="mt-3 items-center justify-end flex flex-row">
           <TouchableOpacity
@@ -35,7 +39,7 @@ export const ImageInput = ({
 
           <TouchableOpacity
             onPress={async () => {
-              const res = await getImage({ aspect: [16, 9] });
+              const res = await getImage();
               callback?.(res);
             }}
           >

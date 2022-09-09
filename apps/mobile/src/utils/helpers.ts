@@ -3,7 +3,6 @@ import * as ImagePicker from "expo-image-picker";
 export const getImage = async ({
   mediaTypes = ImagePicker.MediaTypeOptions.Images,
   allowsEditing = true,
-  aspect = [1, 1],
   quality = 0.5,
   ...rest
 }: ImagePicker.ImagePickerOptions = {}) => {
@@ -11,7 +10,6 @@ export const getImage = async ({
     ...rest,
     mediaTypes,
     allowsEditing,
-    aspect,
     quality,
   });
 
