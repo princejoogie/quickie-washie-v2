@@ -1,13 +1,11 @@
 import { View, Text, TextInput, TextInputProps } from "react-native";
 
 interface TextFieldProps extends TextInputProps {
-  test?: string;
   label?: string;
   containerClassname?: string;
 }
 
 export const TextField = ({
-  className,
   label,
   containerClassname = "mt-4",
   ...rest

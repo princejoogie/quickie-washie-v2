@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Layout, TextField } from "../components";
+
+import { Layout, TextField, ImageInput } from "../components";
 import { RootStackParamList } from "./types";
 import { ChevronIcon } from "../components/icon/chevron-icon";
+import { getImage } from "../utils/helpers";
 
 export const Register = ({
   navigation,
@@ -11,7 +13,8 @@ export const Register = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [licenseUrl, setLicenseUrl] = useState<string | null>(null);
 
   return (
     <Layout>
@@ -36,10 +39,17 @@ export const Register = ({
 
       <View className="flex items-center mt-8">
         <View>
-          <Image
-            className="bg-green-600 h-20 w-20 rounded-full"
-            source={{ uri: !!imageUrl ? imageUrl : undefined }}
-          />
+          <TouchableOpacity
+            onPress={async () => {
+              const res = await getImage();
+              if (res) setImageUrl(res);
+            }}
+          >
+            <Image
+              className="bg-gray-800 h-32 w-32 border-2 border-gray-700 rounded-full"
+              source={{ uri: !imageUrl ? undefined : imageUrl }}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -56,10 +66,19 @@ export const Register = ({
         onChangeText={setPassword}
       />
       <TextField
-        label="Confirm Password"
+        label="Confirm password"
         secureTextEntry
         value={confirmPassword}
         onChangeText={setConfirmPassword}
+      />
+
+      <ImageInput
+        label="Drivers license"
+        uri={!licenseUrl ? undefined : licenseUrl}
+        callback={(uri) => {
+          console.log({ uri });
+          setLicenseUrl(uri);
+        }}
       />
     </Layout>
   );
