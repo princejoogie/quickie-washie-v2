@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { TabBar } from "../../components/tab-bar";
+import { TabBar } from "../../components";
 import { RootStackParamList } from "../types";
 
 import { Home } from "./home";
