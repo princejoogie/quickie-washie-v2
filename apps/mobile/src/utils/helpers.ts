@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import * as ImagePicker from "expo-image-picker";
 
 export const getImage = async ({
@@ -18,4 +19,12 @@ export const getImage = async ({
   }
 
   return null;
+};
+
+export const handleServerError = (error: unknown) => {
+  if (error instanceof AxiosError) {
+    return error.response?.data;
+  }
+
+  return new Error("Something went wrong");
 };

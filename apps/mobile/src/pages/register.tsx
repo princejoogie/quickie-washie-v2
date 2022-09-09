@@ -1,21 +1,32 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { useMutation } from "react-query";
+import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { Layout, TextField, ImageInput } from "../components";
-import { RootStackParamList } from "./types";
+import authService from "../services/auth";
 import { ChevronIcon } from "../components/icon/chevron-icon";
-import { getImage } from "../utils/helpers";
+import { Layout, TextField, ImageInput } from "../components";
 import { PencilSquareIcon } from "../components/icon/pencil-square-icon";
+import { getImage } from "../utils/helpers";
+import { queryClient } from "../services/api";
+
+import { RootStackParamList } from "./types";
 
 export const Register = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Register">) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("John Doe");
+  const [email, setEmail] = useState("john@gmail.com");
+  const [password, setPassword] = useState("qweqwe");
+  const [confirmPassword, setConfirmPassword] = useState("qweqwe");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [licenseUrl, setLicenseUrl] = useState<string | null>(null);
+
+  const register = useMutation(authService.register, {
+    onSuccess() {
+      queryClient.invalidateQueries(["profile"]);
+    },
+  });
 
   return (
     <Layout>
@@ -59,6 +70,7 @@ export const Register = ({
         </View>
       </View>
 
+      <TextField label="Full name *" value={name} onChangeText={setName} />
       <TextField
         keyboardType="email-address"
         label="Email *"
@@ -84,8 +96,26 @@ export const Register = ({
         callback={setLicenseUrl}
       />
 
-      <TouchableOpacity className="bg-green-600 self-end mt-6 px-8 py-2 rounded-xl border-2 border-green-500">
-        <Text className="text-white">Submit</Text>
+      <TouchableOpacity
+        onPress={async () => {
+          try {
+            const res = await register.mutateAsync({
+              email,
+              name,
+              password,
+              licenseUrl: licenseUrl ?? "no license",
+            });
+            console.log("register res", res);
+          } catch (error) {
+            Alert.alert("Error", JSON.stringify(error));
+            console.log(error);
+          }
+        }}
+        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-xl border-2 border-green-500"
+      >
+        <Text className="text-white">
+          {register.isLoading ? "Loading..." : "Register"}
+        </Text>
       </TouchableOpacity>
     </Layout>
   );

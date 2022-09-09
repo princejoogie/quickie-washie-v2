@@ -5,12 +5,13 @@ import type {
   RegisterResponse,
   ProfileResponse,
 } from "@qw/dto";
+import { AxiosError } from "axios";
 import { api } from "./api";
 import { setTokens, unsetTokens, refreshToken } from "./common";
 
 const profile = async () => {
-    const response = await api.get<ProfileResponse>("/auth/profile");
-    return response.data;
+  const response = await api.get<ProfileResponse>("/auth/profile");
+  return response.data;
 };
 
 const login = async (params: LoginBody) => {
@@ -20,9 +21,16 @@ const login = async (params: LoginBody) => {
 };
 
 const register = async (params: RegisterBody) => {
-  const response = await api.post<RegisterResponse>("/auth/register", params);
-  await setTokens(response.data.accessToken, response.data.refreshToken);
-  return response.data;
+  try {
+    const response = await api.post<RegisterResponse>("/auth/register", params);
+    await setTokens(response.data.accessToken, response.data.refreshToken);
+    return response.data;
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      console.log("REGISTER:", e.response?.data);
+      throw e;
+    }
+  }
 };
 
 const logout = async () => {
