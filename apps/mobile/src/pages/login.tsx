@@ -30,9 +30,14 @@ export const Login = ({
         <Text className="mt-1 text-gray-400">Hello, welcome back!</Text>
       </View>
 
-      <TextField placeholder="Email" value={email} onChangeText={setEmail} />
       <TextField
-        placeholder="Password"
+        keyboardType="email-address"
+        label="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextField
+        label="Password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}

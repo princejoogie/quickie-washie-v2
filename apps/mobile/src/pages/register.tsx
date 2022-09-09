@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Layout, TextField } from "../components";
 import { RootStackParamList } from "./types";
@@ -11,9 +11,10 @@ export const Register = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   return (
-    <Layout className="px-6">
+    <Layout>
       {navigation.canGoBack() && (
         <TouchableOpacity
           className="mt-4 self-start flex-row items-center w-auto"
@@ -33,15 +34,29 @@ export const Register = ({
         </Text>
       </View>
 
-      <TextField placeholder="Email" value={email} onChangeText={setEmail} />
+      <View className="flex items-center mt-8">
+        <View>
+          <Image
+            className="bg-green-600 h-20 w-20 rounded-full"
+            source={{ uri: !!imageUrl ? imageUrl : undefined }}
+          />
+        </View>
+      </View>
+
       <TextField
-        placeholder="Password"
+        keyboardType="email-address"
+        label="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextField
+        label="Password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
       <TextField
-        placeholder="Password"
+        label="Confirm Password"
         secureTextEntry
         value={confirmPassword}
         onChangeText={setConfirmPassword}

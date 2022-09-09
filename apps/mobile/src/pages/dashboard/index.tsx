@@ -15,7 +15,7 @@ export const Dashboard = ({}: NativeStackScreenProps<
 >) => {
   return (
     <BottomTab.Navigator
-      sceneContainerStyle={{ backgroundColor: "green" }}
+      sceneContainerStyle={{ backgroundColor: "#111827" }}
       screenOptions={{ headerShown: false }}
       tabBar={TabBar}
     >

@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
         if (data) setData(data);
         else setData(null);
         setIsDelaying(false);
-      }, 500);
+      }, 300);
     },
   });
 

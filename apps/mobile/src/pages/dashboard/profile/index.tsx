@@ -17,23 +17,28 @@ export const Profile = ({}: BottomTabScreenProps<
   });
 
   return (
-    <Layout className="p-6">
-      <Text className="text-white w-full text-xl text-center">Profile</Text>
-
-      <TouchableOpacity
-        className="bg-gray-700 mt-2 self-start rounded px-4 py-2"
-        disabled={logout.isLoading}
-        onPress={async () => {
-          try {
-            await logout.mutateAsync();
-          } catch (error) {
-            Alert.alert("Error", "Invalid email or password");
-            console.log(error);
-          }
-        }}
-      >
-        <Text className="text-white">Logout</Text>
-      </TouchableOpacity>
+    <Layout
+      className="p-6"
+      nav={{
+        title: "Profile",
+        actions: (
+          <TouchableOpacity
+            disabled={logout.isLoading}
+            onPress={async () => {
+              try {
+                await logout.mutateAsync();
+              } catch (error) {
+                Alert.alert("Error", "Invalid email or password");
+                console.log(error);
+              }
+            }}
+          >
+            <Text className="text-red-600">Logout</Text>
+          </TouchableOpacity>
+        ),
+      }}
+    >
+      {null}
     </Layout>
   );
 };
