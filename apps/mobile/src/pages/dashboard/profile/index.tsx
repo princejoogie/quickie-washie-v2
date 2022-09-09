@@ -1,7 +1,8 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Text, TouchableOpacity, Alert } from "react-native";
 import { useMutation } from "react-query";
-import { Layout } from "../../../components";
+import { ImageInput, Layout, TextField } from "../../../components";
+import { useAuthContext } from "../../../contexts/auth-context";
 import { queryClient } from "../../../services/api";
 import authService from "../../../services/auth";
 import { DashboardParamList } from "../types";
@@ -10,6 +11,7 @@ export const Profile = ({}: BottomTabScreenProps<
   DashboardParamList,
   "Profile"
 >) => {
+  const { data } = useAuthContext();
   const logout = useMutation(authService.logout, {
     onSettled() {
       queryClient.invalidateQueries(["profile"]);
@@ -38,7 +40,20 @@ export const Profile = ({}: BottomTabScreenProps<
         ),
       }}
     >
-      {null}
+      <TextField
+        editable={false}
+        containerClassname=""
+        label="Full name *"
+        value={data?.name}
+      />
+      <TextField
+        editable={false}
+        keyboardType="email-address"
+        label="Email *"
+        value={data?.email}
+      />
+
+      <ImageInput label="Drivers license *" uri={null} callback={() => {}} />
     </Layout>
   );
 };

@@ -21,10 +21,18 @@ export const getImage = async ({
   return null;
 };
 
-export const handleServerError = (error: unknown) => {
+interface ErrorReponse {
+  statusCode: number;
+  message: string;
+}
+
+export const handleError = (error: unknown): ErrorReponse => {
   if (error instanceof AxiosError) {
     return error.response?.data;
   }
 
-  return new Error("Something went wrong");
+  return {
+    statusCode: 500,
+    message: "Something went wrong",
+  };
 };

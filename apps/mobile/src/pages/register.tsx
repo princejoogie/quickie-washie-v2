@@ -7,7 +7,7 @@ import authService from "../services/auth";
 import { ChevronIcon } from "../components/icon/chevron-icon";
 import { Layout, TextField, ImageInput } from "../components";
 import { PencilSquareIcon } from "../components/icon/pencil-square-icon";
-import { getImage } from "../utils/helpers";
+import { getImage, handleError } from "../utils/helpers";
 import { queryClient } from "../services/api";
 
 import { RootStackParamList } from "./types";
@@ -97,6 +97,8 @@ export const Register = ({
       />
 
       <TouchableOpacity
+        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-xl border-2 border-green-500 disabled:opacity-50"
+        disabled={register.isLoading}
         onPress={async () => {
           try {
             const res = await register.mutateAsync({
@@ -106,12 +108,11 @@ export const Register = ({
               licenseUrl: licenseUrl ?? "no license",
             });
             console.log("register res", res);
-          } catch (error) {
-            Alert.alert("Error", JSON.stringify(error));
-            console.log(error);
+          } catch (e) {
+            const err = handleError(e);
+            Alert.alert("Error", err.message);
           }
         }}
-        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-xl border-2 border-green-500"
       >
         <Text className="text-white">
           {register.isLoading ? "Loading..." : "Register"}

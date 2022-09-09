@@ -8,6 +8,7 @@ import authService from "../services/auth";
 import { queryClient } from "../services/api";
 
 import { RootStackParamList } from "./types";
+import { handleError } from "../utils/helpers";
 
 export const Login = ({
   navigation,
@@ -16,7 +17,7 @@ export const Login = ({
   const [password, setPassword] = useState("qweqwe");
 
   const login = useMutation(authService.login, {
-    onSettled() {
+    onSuccess() {
       queryClient.invalidateQueries(["profile"]);
     },
   });
@@ -44,21 +45,21 @@ export const Login = ({
       />
 
       <TouchableOpacity
-        className="bg-gray-700 mt-2 self-start rounded px-4 py-2"
+        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-xl border-2 border-green-500 disabled:opacity-50"
         disabled={login.isLoading}
         onPress={async () => {
           try {
             await login.mutateAsync({ email, password });
-          } catch (error) {
-            Alert.alert("Error", "Invalid email or password");
-            console.log(error);
+          } catch (e) {
+            const err = handleError(e);
+            Alert.alert("Error", err.message);
           }
         }}
       >
         <Text className="text-white">Login</Text>
       </TouchableOpacity>
 
-      <View>
+      <View className="self-end mt-2">
         <Text className="text-white">Not registered yet?</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
           <Text className="text-blue-600">Create an account</Text>
