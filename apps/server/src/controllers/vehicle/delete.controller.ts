@@ -1,13 +1,12 @@
 import type { RequestHandler } from "express";
-import type { DeleteVehicleBody, DeleteVehicleResponse } from "@qw/dto";
+import type { DeleteVehicleParams, DeleteVehicleResponse } from "@qw/dto";
 
 import prisma from "../../lib/prisma";
 import { AppError } from "../../utils/error";
 
 const deleteVehicleController: RequestHandler<
-  any,
-  DeleteVehicleResponse,
-  DeleteVehicleBody
+  DeleteVehicleParams,
+  DeleteVehicleResponse
 > = async (req, res, next) => {
   try {
     const payload = req.tokenPayload;
@@ -17,7 +16,7 @@ const deleteVehicleController: RequestHandler<
       return next(error);
     }
 
-    const { vehicleId } = req.body;
+    const { vehicleId } = req.params;
 
     const vehicle = await prisma.vehicle.findUnique({
       where: { id: vehicleId },

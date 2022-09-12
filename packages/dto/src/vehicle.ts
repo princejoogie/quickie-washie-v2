@@ -47,16 +47,16 @@ export const createVehicleSchema: ValidatorSchema = {
 
 // DELETE
 
-export const deleteVehicleBodySchema = z.object({
+export const deleteVehicleParamsSchema = z.object({
   vehicleId: z.string().cuid(),
 });
 
-export type DeleteVehicleBody = z.infer<typeof deleteVehicleBodySchema>;
+export type DeleteVehicleParams = z.infer<typeof deleteVehicleParamsSchema>;
 
 export type DeleteVehicleResponse = boolean;
 
 export const deleteVehicleSchema: ValidatorSchema = {
-  body: deleteVehicleBodySchema,
+  params: deleteVehicleParamsSchema,
 };
 
 // GET ALL

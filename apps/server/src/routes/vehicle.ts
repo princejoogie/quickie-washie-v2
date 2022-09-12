@@ -17,7 +17,7 @@ router.post(
 );
 
 router.delete(
-  "/",
+  "/:vehicleId",
   [checkJwt, validator(deleteVehicleSchema)],
   deleteVehicleController
 );
