@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { Prisma, User } from "@qw/db";
+import { Prisma } from "@qw/db";
 import type { ValidatorSchema } from "./common";
+
+// Create
 
 export const createVehicleBodySchema = z.object({
   plateNumber: z.string(),
@@ -42,3 +44,19 @@ export type CreateVehicleResponse = Prisma.VehicleGetPayload<
 export const createVehicleSchema: ValidatorSchema = {
   body: createVehicleBodySchema,
 };
+
+// DELETE
+
+export const deleteVehicleBodySchema = z.object({
+  vehicleId: z.string().cuid(),
+});
+
+export type DeleteVehicleBody = z.infer<typeof deleteVehicleBodySchema>;
+
+export type DeleteVehicleResponse = boolean;
+
+export const deleteVehicleSchema: ValidatorSchema = {
+  body: deleteVehicleBodySchema,
+};
+
+

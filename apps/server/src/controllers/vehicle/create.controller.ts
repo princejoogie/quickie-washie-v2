@@ -1,9 +1,9 @@
 import type { RequestHandler } from "express";
 import type { CreateVehicleBody, CreateVehicleResponse } from "@qw/dto";
+import type { VehicleType } from "@qw/db";
 
 import prisma from "../../lib/prisma";
 import { AppError } from "../../utils/error";
-import type { VehicleType } from "@qw/db";
 
 const createVehicleController: RequestHandler<
   any,
