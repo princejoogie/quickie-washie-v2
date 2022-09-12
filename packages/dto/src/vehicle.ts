@@ -59,4 +59,18 @@ export const deleteVehicleSchema: ValidatorSchema = {
   body: deleteVehicleBodySchema,
 };
 
+// GET ALL
 
+const getAllVehiclesResponse = Prisma.validator<Prisma.VehicleArgs>()({
+  select: {
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    plateNumber: true,
+    type: true,
+  },
+});
+
+export type GetAllVehiclesResponse = Array<
+  Prisma.VehicleGetPayload<typeof getAllVehiclesResponse>
+>;
