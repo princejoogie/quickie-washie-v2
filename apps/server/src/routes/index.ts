@@ -2,6 +2,7 @@ import { Router } from "express";
 import prisma from "../lib/prisma";
 import appointment from "./appointment";
 import auth from "./auth";
+import vehicle from "./vehicle";
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.get("/", async (_, res) => {
 
 router.use("/appointment", appointment);
 router.use("/auth", auth);
+router.use("/vehicle", vehicle);
 
 export default router;
