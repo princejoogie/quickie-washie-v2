@@ -10,17 +10,16 @@ export const Vehicles = ({}: BottomTabScreenProps<
   "Vehicles"
 >) => {
   const vehicles = useQuery("vehicles", vehiclesService.getAll);
-  console.log({ cars: vehicles.data, error: vehicles.error });
 
   return (
-    <Layout nav={{ title: "Vehicles" }}>
+    <Layout nav={{ title: "Vehicles" }} onRefresh={vehicles.refetch}>
       {vehicles.isLoading ? (
         <Text>Loading...</Text>
       ) : (
         <View>
           {vehicles.data?.map((vehicle) => (
             <Text key={vehicle.id} className="text-white">
-              {vehicle.plateNumber} - {vehicle.type}
+              {vehicle.plateNumber} - {vehicle.type} - {vehicle.model}
             </Text>
           ))}
         </View>

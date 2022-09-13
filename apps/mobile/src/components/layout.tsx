@@ -1,10 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import {
   Keyboard,
   ScrollView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  RefreshControl,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -14,6 +15,7 @@ interface Props {
   children: React.ReactNode;
   customNav?: React.ReactNode;
   className?: string;
+  onRefresh?: () => Promise<any>;
   nav?: {
     title: string;
     canGoBack?: boolean;
@@ -22,8 +24,10 @@ interface Props {
   };
 }
 
-export const Layout = ({ children, nav, className = "" }: Props) => {
+export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
   const { top, bottom } = useSafeAreaInsets();
+  const [refreshing, setRefreshing] = useState(false);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <>
@@ -50,7 +54,23 @@ export const Layout = ({ children, nav, className = "" }: Props) => {
           </View>
         )}
 
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              size={20}
+              colors={["#ffffff"]}
+              tintColor="#ffffff"
+              titleColor="#ffffff"
+              refreshing={refreshing}
+              onRefresh={async () => {
+                setRefreshing(true);
+                await onRefresh?.();
+                setRefreshing(false);
+              }}
+            />
+          }
+        >
           <View className={`flex bg-gray-900 px-6 flex-1 ${className}`}>
             {children}
             <View style={{ height: bottom * 3 }} />
