@@ -112,7 +112,7 @@ export const getVehicleByIdResponse = Prisma.validator<Prisma.VehicleArgs>()({
 });
 
 export type GetVehicleByIdResponse = Prisma.VehicleGetPayload<
-  typeof updateVehicleResponse
+  typeof getVehicleByIdResponse
 >;
 
 export const getVehicleByIdSchema: ValidatorSchema = {

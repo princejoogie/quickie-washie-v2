@@ -95,6 +95,48 @@ export const deleteServiceSchema: ValidatorSchema = {
   params: deleteServiceParamsSchema,
 };
 
+// GET BY ID
+
+export const getServiceByIdParamsSchema = z.object({
+  serviceId: z.string().cuid(),
+});
+
+export type GetServiceByIdParams = z.infer<typeof getServiceByIdParamsSchema>;
+
+export const getServiceByIdResponse = Prisma.validator<Prisma.ServiceArgs>()({
+  select: {
+    id: true,
+    name: true,
+    basePrice: true,
+    description: true,
+    createdAt: true,
+    updatedAt: true,
+    appointments: {
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        date: true,
+        status: true,
+        Vehicle: {
+          select: {
+            plateNumber: true,
+            type: true,
+          },
+        },
+      },
+    },
+  },
+});
+
+export type GetServiceByIdResponse = Prisma.ServiceGetPayload<
+  typeof getServiceByIdResponse
+>;
+
+export const getServiceByIdSchema: ValidatorSchema = {
+  params: getServiceByIdParamsSchema,
+};
+
 // GET ALL
 
 const getAllServicesResponse = Prisma.validator<Prisma.ServiceArgs>()({
