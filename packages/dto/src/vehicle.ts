@@ -6,6 +6,7 @@ import type { ValidatorSchema } from "./common";
 
 export const createVehicleBodySchema = z.object({
   plateNumber: z.string(),
+  model: z.string(),
   type: z.string(),
 });
 
@@ -17,6 +18,7 @@ const createVehicleResponse = Prisma.validator<Prisma.VehicleArgs>()({
     createdAt: true,
     updatedAt: true,
     plateNumber: true,
+    model: true,
     type: true,
   },
 });
@@ -33,6 +35,7 @@ export const createVehicleSchema: ValidatorSchema = {
 
 export const updateVehicleBodySchema = z.object({
   plateNumber: z.string().optional(),
+  model: z.string().optional(),
   type: z.string().optional(),
 });
 
@@ -50,6 +53,7 @@ export const updateVehicleResponse = Prisma.validator<Prisma.VehicleArgs>()({
     createdAt: true,
     updatedAt: true,
     plateNumber: true,
+    model: true,
     type: true,
   },
 });
@@ -91,6 +95,7 @@ export const getVehicleByIdResponse = Prisma.validator<Prisma.VehicleArgs>()({
     createdAt: true,
     updatedAt: true,
     plateNumber: true,
+    model: true,
     type: true,
     appointments: {
       select: {
@@ -127,6 +132,7 @@ const getAllVehiclesResponse = Prisma.validator<Prisma.VehicleArgs>()({
     createdAt: true,
     updatedAt: true,
     plateNumber: true,
+    model: true,
     type: true,
   },
 });

@@ -29,6 +29,7 @@ model Vehicle {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   plateNumber  String        @db.VarChar()
+  model        String        @db.VarChar()
   type         VehicleType
   userId       String?
   appointments Appointment[]

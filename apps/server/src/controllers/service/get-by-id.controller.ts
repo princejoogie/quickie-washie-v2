@@ -37,6 +37,7 @@ const getServiceByIdController: RequestHandler<
             Vehicle: {
               select: {
                 plateNumber: true,
+                model: true,
                 type: true,
               },
             },

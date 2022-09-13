@@ -5,7 +5,6 @@ import type {
   RegisterResponse,
   ProfileResponse,
 } from "@qw/dto";
-import { AxiosError } from "axios";
 import { api, setTokens, unsetTokens } from "./api";
 
 const profile = async () => {
@@ -20,16 +19,9 @@ const login = async (params: LoginBody) => {
 };
 
 const register = async (params: RegisterBody) => {
-  try {
-    const response = await api.post<RegisterResponse>("/auth/register", params);
-    await setTokens(response.data.accessToken, response.data.refreshToken);
-    return response.data;
-  } catch (e) {
-    if (e instanceof AxiosError) {
-      console.log("REGISTER:", e.response?.data);
-      throw e;
-    }
-  }
+  const response = await api.post<RegisterResponse>("/auth/register", params);
+  await setTokens(response.data.accessToken, response.data.refreshToken);
+  return response.data;
 };
 
 const logout = async () => {

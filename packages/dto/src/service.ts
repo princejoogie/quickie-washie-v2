@@ -121,6 +121,7 @@ export const getServiceByIdResponse = Prisma.validator<Prisma.ServiceArgs>()({
         Vehicle: {
           select: {
             plateNumber: true,
+            model: true,
             type: true,
           },
         },

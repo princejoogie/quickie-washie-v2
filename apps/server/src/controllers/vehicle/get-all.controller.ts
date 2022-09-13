@@ -24,6 +24,7 @@ const getAllVehiclesController: RequestHandler<
         createdAt: true,
         updatedAt: true,
         plateNumber: true,
+        model: true,
         type: true,
       },
     });

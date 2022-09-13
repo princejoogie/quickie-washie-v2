@@ -25,6 +25,7 @@ const getVehicleByIdController: RequestHandler<
         createdAt: true,
         updatedAt: true,
         plateNumber: true,
+        model: true,
         type: true,
         userId: true,
         appointments: {

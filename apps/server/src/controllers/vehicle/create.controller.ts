@@ -18,19 +18,21 @@ const createVehicleController: RequestHandler<
       return next(error);
     }
 
-    const { plateNumber, type } = req.body;
+    const { plateNumber, type, model } = req.body;
 
     const vehicle = await prisma.vehicle.create({
       data: {
         userId: payload.id,
         type: type as VehicleType,
         plateNumber,
+        model,
       },
       select: {
         id: true,
         createdAt: true,
         updatedAt: true,
         plateNumber: true,
+        model: true,
         type: true,
       },
     });
