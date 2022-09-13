@@ -8,4 +8,11 @@ export type DashboardParamList = {
   Profile: undefined;
 };
 
+export enum DashboardParamKeys {
+  Home = "Home",
+  Vehicles = "Vehicles",
+  Appointments = "Appointments",
+  Profile = "Profile",
+}
+
 export const BottomTab = createBottomTabNavigator<DashboardParamList>();

@@ -1,5 +1,57 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { DashboardParamKeys } from "../pages/dashboard/types";
+import { HomeIcon } from "./icon/home-icon";
+import { VehicleIcon } from "./icon/vehicle-icon";
+import { CalendarIcon } from "./icon/calendar-icon";
+import { UserIcon } from "./icon/user-icon";
+
+const GetIcon = ({
+  name,
+  active = false,
+}: {
+  name: DashboardParamKeys;
+  active: boolean;
+}) => {
+  switch (name) {
+    case DashboardParamKeys.Home:
+      return (
+        <HomeIcon
+          filled={active}
+          styleName={`${
+            active ? "text-green-500" : "text-gray-400"
+          } h-auto mt-6 pb-2`}
+        />
+      );
+    case DashboardParamKeys.Vehicles:
+      return (
+        <VehicleIcon
+          filled={active}
+          styleName={`${
+            active ? "text-green-500" : "text-gray-400"
+          } h-auto mt-6 pb-2`}
+        />
+      );
+    case DashboardParamKeys.Appointments:
+      return (
+        <CalendarIcon
+          filled={active}
+          styleName={`${
+            active ? "text-green-500" : "text-gray-400"
+          } h-auto mt-6 pb-2`}
+        />
+      );
+    case DashboardParamKeys.Profile:
+      return (
+        <UserIcon
+          filled={active}
+          styleName={`${
+            active ? "text-green-500" : "text-gray-400"
+          } h-auto mt-6 pb-2`}
+        />
+      );
+  }
+};
 
 export const TabBar = ({
   insets,
@@ -38,19 +90,25 @@ export const TabBar = ({
         return (
           <TouchableOpacity
             key={route.key}
+            disabled={isFocused}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             onPress={onPress}
             onLongPress={onLongPress}
+            className="bg-red-500"
           >
-            <Text
-              className={`${
-                isFocused ? "text-green-500" : "text-gray-400"
-              } h-auto pt-6 pb-2`}
-            >
-              {route.name}
-            </Text>
+            <GetIcon
+              name={route.name as DashboardParamKeys}
+              active={isFocused}
+            />
+            {/* <Text */}
+            {/*   className={`${ */}
+            {/*     isFocused ? "text-green-500" : "text-gray-400" */}
+            {/*   } h-auto pt-6 pb-2`} */}
+            {/* > */}
+            {/*   {route.name} */}
+            {/* </Text> */}
           </TouchableOpacity>
         );
       })}
