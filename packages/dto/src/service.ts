@@ -36,3 +36,20 @@ export type CreateServiceResponse = Prisma.ServiceGetPayload<
 export const createServiceSchema: ValidatorSchema = {
   body: createServiceBodySchema,
 };
+//
+// GET ALL
+
+const getAllServicesResponse = Prisma.validator<Prisma.ServiceArgs>()({
+  select: {
+    id: true,
+    name: true,
+    basePrice: true,
+    description: true,
+    createdAt: true,
+    updatedAt: true,
+  },
+});
+
+export type GetAllServicesResponse = Array<
+  Prisma.ServiceGetPayload<typeof getAllServicesResponse>
+>;
