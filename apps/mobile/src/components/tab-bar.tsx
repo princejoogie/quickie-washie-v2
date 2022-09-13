@@ -4,6 +4,7 @@ import { DashboardParamKeys } from "../pages/dashboard/types";
 import { HomeIcon } from "./icon/home-icon";
 import { VehicleIcon } from "./icon/vehicle-icon";
 import { CalendarIcon } from "./icon/calendar-icon";
+import { NotificationIcon } from "./icon/notification-icon";
 import { UserIcon } from "./icon/user-icon";
 
 const GetIcon = ({
@@ -18,36 +19,35 @@ const GetIcon = ({
       return (
         <HomeIcon
           filled={active}
-          styleName={`${
-            active ? "text-green-500" : "text-gray-400"
-          } h-auto mt-6 pb-2`}
+          styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
     case DashboardParamKeys.Vehicles:
       return (
         <VehicleIcon
           filled={active}
-          styleName={`${
-            active ? "text-green-500" : "text-gray-400"
-          } h-auto mt-6 pb-2`}
+          styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
     case DashboardParamKeys.Appointments:
       return (
         <CalendarIcon
           filled={active}
-          styleName={`${
-            active ? "text-green-500" : "text-gray-400"
-          } h-auto mt-6 pb-2`}
+          styleName={`${active ? "text-green-500" : "text-gray-400"}`}
+        />
+      );
+    case DashboardParamKeys.Notifications:
+      return (
+        <NotificationIcon
+          filled={active}
+          styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
     case DashboardParamKeys.Profile:
       return (
         <UserIcon
           filled={active}
-          styleName={`${
-            active ? "text-green-500" : "text-gray-400"
-          } h-auto mt-6 pb-2`}
+          styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
   }
@@ -96,19 +96,12 @@ export const TabBar = ({
             accessibilityLabel={options.tabBarAccessibilityLabel}
             onPress={onPress}
             onLongPress={onLongPress}
-            className="bg-red-500"
+            className="pt-6"
           >
             <GetIcon
               name={route.name as DashboardParamKeys}
               active={isFocused}
             />
-            {/* <Text */}
-            {/*   className={`${ */}
-            {/*     isFocused ? "text-green-500" : "text-gray-400" */}
-            {/*   } h-auto pt-6 pb-2`} */}
-            {/* > */}
-            {/*   {route.name} */}
-            {/* </Text> */}
           </TouchableOpacity>
         );
       })}

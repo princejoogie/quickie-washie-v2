@@ -6,8 +6,7 @@ import type {
   ProfileResponse,
 } from "@qw/dto";
 import { AxiosError } from "axios";
-import { api } from "./api";
-import { setTokens, unsetTokens, refreshToken } from "./common";
+import { api, setTokens, unsetTokens } from "./api";
 
 const profile = async () => {
   const response = await api.get<ProfileResponse>("/auth/profile");
@@ -46,7 +45,6 @@ const authService = {
   login,
   logout,
   profile,
-  refreshToken,
   register,
 };
 

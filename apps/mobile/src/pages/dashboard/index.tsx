@@ -3,11 +3,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { TabBar } from "../../components";
 import { RootStackParamList } from "../types";
 
-import { Home } from "./home";
-import { Profile } from "./profile";
 import { Appointments } from "./appointments";
-import { Vehicles } from "./vehicles";
 import { BottomTab } from "./types";
+import { Home } from "./home";
+import { Notifications } from "./notifications";
+import { Profile } from "./profile";
+import { Vehicles } from "./vehicles";
 
 export const Dashboard = ({}: NativeStackScreenProps<
   RootStackParamList,
@@ -22,6 +23,7 @@ export const Dashboard = ({}: NativeStackScreenProps<
       <BottomTab.Screen name="Home" component={Home} />
       <BottomTab.Screen name="Vehicles" component={Vehicles} />
       <BottomTab.Screen name="Appointments" component={Appointments} />
+      <BottomTab.Screen name="Notifications" component={Notifications} />
       <BottomTab.Screen name="Profile" component={Profile} />
     </BottomTab.Navigator>
   );
