@@ -32,8 +32,8 @@ export const createVehicleSchema: ValidatorSchema = {
 // UPDATE
 
 export const updateVehicleBodySchema = z.object({
-  plateNumber: z.string(),
-  type: z.string(),
+  plateNumber: z.string().optional(),
+  type: z.string().optional(),
 });
 
 export type UpdateVehicleBody = z.infer<typeof updateVehicleBodySchema>;

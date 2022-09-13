@@ -42,7 +42,7 @@ model AdditionalPrice {
   vehicleType VehicleType
   serviceId   String?
 
-  Service Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  Service Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 }
 
 model Service {

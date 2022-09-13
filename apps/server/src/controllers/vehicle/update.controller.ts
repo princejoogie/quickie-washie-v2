@@ -27,7 +27,6 @@ const updateVehicleController: RequestHandler<
 
     const vehicle = await prisma.vehicle.findUnique({
       where: { id: vehicleId },
-      select: { userId: true },
     });
 
     if (!vehicle) {
@@ -46,9 +45,8 @@ const updateVehicleController: RequestHandler<
     const updatedVehicle = await prisma.vehicle.update({
       where: { id: vehicleId },
       data: {
-        userId: payload.id,
-        type: type as VehicleType,
-        plateNumber,
+        type: (type as VehicleType) ?? vehicle.type,
+        plateNumber: plateNumber ?? vehicle.plateNumber,
       },
       select: {
         id: true,
