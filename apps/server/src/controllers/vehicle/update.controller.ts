@@ -1,14 +1,18 @@
 import type { RequestHandler } from "express";
-import type { CreateVehicleBody, CreateVehicleResponse } from "@qw/dto";
+import type {
+  UpdateVehicleParams,
+  UpdateVehicleBody,
+  UpdateVehicleResponse,
+} from "@qw/dto";
 import type { VehicleType } from "@qw/db";
 
 import prisma from "../../lib/prisma";
 import { AppError } from "../../utils/error";
 
-const createVehicleController: RequestHandler<
-  any,
-  CreateVehicleResponse,
-  CreateVehicleBody
+const updateVehicleController: RequestHandler<
+  UpdateVehicleParams,
+  UpdateVehicleResponse,
+  UpdateVehicleBody
 > = async (req, res, next) => {
   try {
     const payload = req.tokenPayload;
@@ -18,9 +22,11 @@ const createVehicleController: RequestHandler<
       return next(error);
     }
 
-    const { plateNumber, type } = req.body;
+    const { vehicleId } = req.params;
+    const { type, plateNumber } = req.body;
 
-    const vehicle = await prisma.vehicle.create({
+    const vehicle = await prisma.vehicle.update({
+      where: { id: vehicleId },
       data: {
         userId: payload.id,
         type: type as VehicleType,
@@ -45,4 +51,4 @@ const createVehicleController: RequestHandler<
   }
 };
 
-export default createVehicleController;
+export default updateVehicleController;

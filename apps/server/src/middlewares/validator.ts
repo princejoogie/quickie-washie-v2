@@ -15,10 +15,10 @@ const validator = (schema: ValidatorSchema) => {
         req.body = await schema.body.parseAsync(req.body);
       }
       if (schema.params != null) {
-        req.body = await schema.params.parseAsync(req.body);
+        req.params = await schema.params.parseAsync(req.params);
       }
       if (schema.query != null) {
-        req.body = await schema.query.parseAsync(req.body);
+        req.query = await schema.query.parseAsync(req.query);
       }
 
       return next();

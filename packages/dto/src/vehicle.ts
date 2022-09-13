@@ -18,22 +18,6 @@ const createVehicleResponse = Prisma.validator<Prisma.VehicleArgs>()({
     updatedAt: true,
     plateNumber: true,
     type: true,
-    appointments: {
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        date: true,
-        status: true,
-        Service: {
-          select: {
-            name: true,
-            description: true,
-            additionalPrices: true,
-          },
-        },
-      },
-    },
   },
 });
 
@@ -43,6 +27,40 @@ export type CreateVehicleResponse = Prisma.VehicleGetPayload<
 
 export const createVehicleSchema: ValidatorSchema = {
   body: createVehicleBodySchema,
+};
+
+// UPDATE
+
+export const updateVehicleBodySchema = z.object({
+  plateNumber: z.string(),
+  type: z.string(),
+});
+
+export type UpdateVehicleBody = z.infer<typeof updateVehicleBodySchema>;
+
+export const updateVehicleParamsSchema = z.object({
+  vehicleId: z.string().cuid(),
+});
+
+export type UpdateVehicleParams = z.infer<typeof updateVehicleParamsSchema>;
+
+export const updateVehicleResponse = Prisma.validator<Prisma.VehicleArgs>()({
+  select: {
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    plateNumber: true,
+    type: true,
+  },
+});
+
+export type UpdateVehicleResponse = Prisma.VehicleGetPayload<
+  typeof updateVehicleResponse
+>;
+
+export const updateVehicleSchema: ValidatorSchema = {
+  body: updateVehicleBodySchema,
+  params: updateVehicleParamsSchema,
 };
 
 // DELETE
