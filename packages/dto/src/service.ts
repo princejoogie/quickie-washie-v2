@@ -81,6 +81,20 @@ export const updateServiceSchema: ValidatorSchema = {
   params: updateServiceParamsSchema,
 };
 
+// DELETE
+
+export const deleteServiceParamsSchema = z.object({
+  serviceId: z.string().cuid(),
+});
+
+export type DeleteServiceParams = z.infer<typeof deleteServiceParamsSchema>;
+
+export type DeleteServiceResponse = boolean;
+
+export const deleteServiceSchema: ValidatorSchema = {
+  params: deleteServiceParamsSchema,
+};
+
 // GET ALL
 
 const getAllServicesResponse = Prisma.validator<Prisma.ServiceArgs>()({

@@ -18,6 +18,7 @@ const getAllVehiclesController: RequestHandler<
 
     const vehicles = await prisma.vehicle.findMany({
       where: { userId: payload.id },
+      orderBy: { updatedAt: "desc" },
       select: {
         id: true,
         createdAt: true,

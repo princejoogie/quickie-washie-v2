@@ -17,6 +17,7 @@ const getAllServicesController: RequestHandler<
     }
 
     const services = await prisma.service.findMany({
+      orderBy: { name: "asc" },
       select: {
         id: true,
         name: true,
