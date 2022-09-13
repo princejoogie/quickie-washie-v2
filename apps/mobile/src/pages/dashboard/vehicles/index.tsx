@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import { useQuery } from "react-query";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { Layout } from "../../../components";
+import { Layout, VehicleCard } from "../../../components";
 import vehiclesService from "../../../services/vehicles";
 import { DashboardParamList } from "../types";
 
@@ -18,9 +18,7 @@ export const Vehicles = ({}: BottomTabScreenProps<
       ) : (
         <View>
           {vehicles.data?.map((vehicle) => (
-            <Text key={vehicle.id} className="text-white">
-              {vehicle.plateNumber} - {vehicle.type} - {vehicle.model}
-            </Text>
+            <VehicleCard {...vehicle} key={vehicle.id} />
           ))}
         </View>
       )}
