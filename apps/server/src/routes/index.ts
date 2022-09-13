@@ -3,6 +3,7 @@ import prisma from "../lib/prisma";
 import appointment from "./appointment";
 import auth from "./auth";
 import vehicle from "./vehicle";
+import service from "./service";
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.get("/", async (_, res) => {
 router.use("/appointment", appointment);
 router.use("/auth", auth);
 router.use("/vehicle", vehicle);
+router.use("/service", service);
 
 export default router;

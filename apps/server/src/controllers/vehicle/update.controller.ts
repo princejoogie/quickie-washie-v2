@@ -25,7 +25,25 @@ const updateVehicleController: RequestHandler<
     const { vehicleId } = req.params;
     const { type, plateNumber } = req.body;
 
-    const vehicle = await prisma.vehicle.update({
+    const vehicle = await prisma.vehicle.findUnique({
+      where: { id: vehicleId },
+      select: { userId: true },
+    });
+
+    if (!vehicle) {
+      const error = new AppError("NotFoundException", "Vehicle not found");
+      return next(error);
+    }
+
+    if (payload.privilege !== "ADMIN" || vehicle.userId !== payload.id) {
+      const error = new AppError(
+        "UnauthorizedException",
+        "You are not authorized to access this vehicle"
+      );
+      return next(error);
+    }
+
+    const updatedVehicle = await prisma.vehicle.update({
       where: { id: vehicleId },
       data: {
         userId: payload.id,
@@ -41,7 +59,7 @@ const updateVehicleController: RequestHandler<
       },
     });
 
-    return res.status(200).json(vehicle);
+    return res.status(200).json(updatedVehicle);
   } catch (e) {
     const error = new AppError(
       "InternalServerErrorException",

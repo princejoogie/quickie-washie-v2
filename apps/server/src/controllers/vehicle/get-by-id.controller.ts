@@ -1,12 +1,12 @@
 import type { RequestHandler } from "express";
-import type { DeleteVehicleParams, DeleteVehicleResponse } from "@qw/dto";
+import type { GetVehicleByIdParams, GetVehicleByIdResponse } from "@qw/dto";
 
 import prisma from "../../lib/prisma";
 import { AppError } from "../../utils/error";
 
-const deleteVehicleController: RequestHandler<
-  DeleteVehicleParams,
-  DeleteVehicleResponse
+const getVehicleByIdController: RequestHandler<
+  GetVehicleByIdParams,
+  GetVehicleByIdResponse
 > = async (req, res, next) => {
   try {
     const payload = req.tokenPayload;
@@ -20,6 +20,30 @@ const deleteVehicleController: RequestHandler<
 
     const vehicle = await prisma.vehicle.findUnique({
       where: { id: vehicleId },
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        plateNumber: true,
+        type: true,
+        userId: true,
+        appointments: {
+          select: {
+            id: true,
+            createdAt: true,
+            updatedAt: true,
+            date: true,
+            status: true,
+            Service: {
+              select: {
+                name: true,
+                description: true,
+                additionalPrices: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!vehicle) {
@@ -30,16 +54,12 @@ const deleteVehicleController: RequestHandler<
     if (payload.privilege !== "ADMIN" || vehicle.userId !== payload.id) {
       const error = new AppError(
         "UnauthorizedException",
-        "You are not authorized to delete this vehicle"
+        "You are not authorized to access this vehicle"
       );
       return next(error);
     }
 
-    await prisma.vehicle.delete({
-      where: { id: vehicleId },
-    });
-
-    return res.status(200).json(true);
+    return res.status(200).json(vehicle);
   } catch (e) {
     const error = new AppError(
       "InternalServerErrorException",
@@ -49,4 +69,4 @@ const deleteVehicleController: RequestHandler<
   }
 };
 
-export default deleteVehicleController;
+export default getVehicleByIdController;

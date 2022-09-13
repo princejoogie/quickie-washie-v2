@@ -77,6 +77,48 @@ export const deleteVehicleSchema: ValidatorSchema = {
   params: deleteVehicleParamsSchema,
 };
 
+// GET BY ID
+
+export const getVehicleByIdParamsSchema = z.object({
+  vehicleId: z.string().cuid(),
+});
+
+export type GetVehicleByIdParams = z.infer<typeof getVehicleByIdParamsSchema>;
+
+export const getVehicleByIdResponse = Prisma.validator<Prisma.VehicleArgs>()({
+  select: {
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    plateNumber: true,
+    type: true,
+    appointments: {
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        date: true,
+        status: true,
+        Service: {
+          select: {
+            name: true,
+            description: true,
+            additionalPrices: true,
+          },
+        },
+      },
+    },
+  },
+});
+
+export type GetVehicleByIdResponse = Prisma.VehicleGetPayload<
+  typeof updateVehicleResponse
+>;
+
+export const getVehicleByIdSchema: ValidatorSchema = {
+  params: getVehicleByIdParamsSchema,
+};
+
 // GET ALL
 
 const getAllVehiclesResponse = Prisma.validator<Prisma.VehicleArgs>()({

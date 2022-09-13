@@ -4,11 +4,13 @@ import checkJwt from "../middlewares/check-jwt";
 import {
   createVehicleSchema,
   deleteVehicleSchema,
+  getVehicleByIdSchema,
   updateVehicleSchema,
 } from "@qw/dto";
 import createVehicleController from "../controllers/vehicle/create.controller";
 import deleteVehicleController from "../controllers/vehicle/delete.controller";
 import getAllVehiclesController from "../controllers/vehicle/get-all.controller";
+import getVehicleByIdController from "../controllers/vehicle/get-by-id.controller";
 import updateVehicleController from "../controllers/vehicle/update.controller";
 
 const router = Router();
@@ -19,6 +21,12 @@ router.post(
   "/",
   [checkJwt, validator(createVehicleSchema)],
   createVehicleController
+);
+
+router.get(
+  "/:vehicleId",
+  [checkJwt, validator(getVehicleByIdSchema)],
+  getVehicleByIdController
 );
 
 router.put(
