@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import { QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import { RootStack } from "./pages/types";
 import { Login, Dashboard, Register } from "./pages";

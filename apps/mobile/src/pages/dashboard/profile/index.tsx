@@ -1,6 +1,6 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Text, TouchableOpacity, Alert } from "react-native";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { ImageInput, Layout, TextField } from "../../../components";
 import { useAuthContext } from "../../../contexts/auth-context";
 import { queryClient } from "../../../services/api";
@@ -12,6 +12,7 @@ export const Profile = ({}: BottomTabScreenProps<
   "Profile"
 >) => {
   const { data } = useAuthContext();
+
   const logout = useMutation(authService.logout, {
     onSettled() {
       queryClient.invalidateQueries(["profile"]);

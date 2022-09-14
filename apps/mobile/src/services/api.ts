@@ -1,12 +1,23 @@
 import axios from "axios";
-import { QueryClient } from "react-query";
+import { QueryCache, QueryClient } from "@tanstack/react-query";
 import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { RefreshTokenResponse, RefreshTokenBody } from "@qw/dto";
 import { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY } from "../constants";
 
 export const API_BASE_URL = Constants.manifest?.extra?.API_BASE_URL;
-export const queryClient = new QueryClient();
+export const queryCache = new QueryCache({
+  onError: (error) => {
+    console.error(error);
+  },
+  onSuccess: (data) => {
+    console.log("CACHE SUCCESS:", data);
+  },
+});
+export const queryClient = new QueryClient({
+  queryCache,
+  logger: console,
+});
 
 export const api = axios.create({
   baseURL: API_BASE_URL ?? "http://localhost:4000/api",
@@ -53,12 +64,13 @@ export const refreshToken = async (params: RefreshTokenBody) => {
 };
 
 export const setTokens = async (accessToken: string, refreshToken: string) => {
+  queryClient.invalidateQueries(["profile"]);
   await AsyncStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
   await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 };
 
 export const unsetTokens = async () => {
-  await queryClient.invalidateQueries(["profile"]);
   await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
   await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
+  await queryClient.resetQueries();
 };
