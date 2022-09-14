@@ -6,6 +6,7 @@ import { VehicleIcon } from "./icon/vehicle-icon";
 import { CalendarIcon } from "./icon/calendar-icon";
 import { NotificationIcon } from "./icon/notification-icon";
 import { UserIcon } from "./icon/user-icon";
+import { Platform } from "expo-modules-core";
 
 const GetIcon = ({
   name,
@@ -62,7 +63,9 @@ export const TabBar = ({
   return (
     <View
       className="bg-gray-800 flex flex-row rounded-t-3xl items-center justify-evenly"
-      style={{ paddingBottom: insets.bottom }}
+      style={{
+        paddingBottom: Platform.OS === "android" ? 25 : insets.bottom,
+      }}
     >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
