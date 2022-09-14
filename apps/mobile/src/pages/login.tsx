@@ -1,26 +1,19 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { Layout, TextField } from "../components";
-import authService from "../services/auth";
-import { queryClient } from "../services/api";
 
 import { RootStackParamList } from "./types";
 import { handleError } from "../utils/helpers";
+import { useAuthContext } from "../contexts/auth-context";
 
 export const Login = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Login">) => {
+  const { login } = useAuthContext();
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("qweqwe");
-
-  const login = useMutation(authService.login, {
-    onSuccess() {
-      queryClient.invalidateQueries(["profile"]);
-    },
-  });
 
   return (
     <Layout className="px-6">
@@ -46,19 +39,16 @@ export const Login = ({
 
       <TouchableOpacity
         className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
-        disabled={login.isLoading}
         onPress={async () => {
           try {
-            await login.mutateAsync({ email, password });
+            await login(email, password);
           } catch (e) {
             const err = handleError(e);
             Alert.alert("Error", err.message);
           }
         }}
       >
-        <Text className="text-white">
-          {login.isLoading ? "Loading..." : "Login"}
-        </Text>
+        <Text className="text-white">Login</Text>
       </TouchableOpacity>
 
       <View className="self-end mt-2">

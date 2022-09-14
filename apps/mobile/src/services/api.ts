@@ -57,11 +57,13 @@ export const refreshToken = async (params: RefreshTokenBody) => {
 };
 
 export const setTokens = async (accessToken: string, refreshToken: string) => {
-  await AsyncStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-  await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+  await AsyncStorage.multiSet([
+    [ACCESS_TOKEN_KEY, accessToken],
+    [REFRESH_TOKEN_KEY, refreshToken],
+  ]);
 };
 
 export const unsetTokens = async () => {
-  await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
-  await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
+  await AsyncStorage.clear();
+  queryClient.resetQueries(["profile"]);
 };

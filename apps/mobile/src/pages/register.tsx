@@ -24,7 +24,7 @@ export const Register = ({
 
   const register = useMutation(authService.register, {
     onSuccess() {
-      queryClient.invalidateQueries(["profile"]);
+      queryClient.resetQueries(["profile"]);
     },
   });
 
