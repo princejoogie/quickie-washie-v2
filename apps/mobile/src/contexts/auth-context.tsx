@@ -22,9 +22,12 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
 
   const profile = useQuery(["profile"], authService.profile, {
     retry: false,
-    onSettled(data) {
-      if (data) setData(data);
-      else setData(null);
+    cacheTime: 0,
+    onSuccess: (data) => {
+      setData(data);
+    },
+    onError: () => {
+      setData(null);
     },
   });
 

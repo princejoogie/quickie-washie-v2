@@ -25,12 +25,7 @@ const register = async (params: RegisterBody) => {
 };
 
 const logout = async () => {
-  try {
-    await unsetTokens();
-    return true;
-  } catch {
-    return false;
-  }
+  await unsetTokens();
 };
 
 const authService = {

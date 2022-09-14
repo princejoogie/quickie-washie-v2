@@ -14,7 +14,7 @@ export const Profile = ({}: BottomTabScreenProps<
   const { data } = useAuthContext();
 
   const logout = useMutation(authService.logout, {
-    onSettled() {
+    onSuccess() {
       queryClient.invalidateQueries(["profile"]);
     },
   });
@@ -36,7 +36,9 @@ export const Profile = ({}: BottomTabScreenProps<
               }
             }}
           >
-            <Text className="text-red-600">Logout</Text>
+            <Text className="text-red-600">
+              {logout.isLoading ? "Loading..." : "Logout"}
+            </Text>
           </TouchableOpacity>
         ),
       }}

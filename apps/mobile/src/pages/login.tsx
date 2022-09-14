@@ -56,7 +56,9 @@ export const Login = ({
           }
         }}
       >
-        <Text className="text-white">Login</Text>
+        <Text className="text-white">
+          {login.isLoading ? "Loading..." : "Login"}
+        </Text>
       </TouchableOpacity>
 
       <View className="self-end mt-2">

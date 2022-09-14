@@ -6,14 +6,7 @@ import type { RefreshTokenResponse, RefreshTokenBody } from "@qw/dto";
 import { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY } from "../constants";
 
 export const API_BASE_URL = Constants.manifest?.extra?.API_BASE_URL;
-export const queryCache = new QueryCache({
-  onError: (error) => {
-    console.error(error);
-  },
-  onSuccess: (data) => {
-    console.log("CACHE SUCCESS:", data);
-  },
-});
+export const queryCache = new QueryCache();
 export const queryClient = new QueryClient({
   queryCache,
   logger: console,
@@ -30,7 +23,7 @@ api.interceptors.request.use(async (config) => {
       Authorization: `Bearer ${accessToken}`,
     };
   }
-  console.log("--> ", config.url, ": ", config.data, config.headers);
+  console.log("--> ", config.url, "DATA:", config.data, config.headers);
   return config;
 });
 
@@ -64,7 +57,6 @@ export const refreshToken = async (params: RefreshTokenBody) => {
 };
 
 export const setTokens = async (accessToken: string, refreshToken: string) => {
-  queryClient.invalidateQueries(["profile"]);
   await AsyncStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
   await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 };
@@ -72,5 +64,4 @@ export const setTokens = async (accessToken: string, refreshToken: string) => {
 export const unsetTokens = async () => {
   await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
   await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
-  await queryClient.resetQueries();
 };
