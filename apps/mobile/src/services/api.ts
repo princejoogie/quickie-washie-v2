@@ -58,6 +58,7 @@ export const setTokens = async (accessToken: string, refreshToken: string) => {
 };
 
 export const unsetTokens = async () => {
+  await queryClient.invalidateQueries(["profile"]);
   await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
   await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
 };
