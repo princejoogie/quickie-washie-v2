@@ -5,8 +5,8 @@ import type { ValidatorSchema } from "./common";
 // Create
 
 export const createVehicleBodySchema = z.object({
-  plateNumber: z.string(),
-  model: z.string(),
+  plateNumber: z.string().min(1).max(20),
+  model: z.string().min(1).max(255),
   type: z.string(),
 });
 

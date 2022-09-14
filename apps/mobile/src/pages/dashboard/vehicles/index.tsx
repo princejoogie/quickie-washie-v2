@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { useQuery } from "react-query";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -37,7 +37,7 @@ export const Vehicles = ({}: BottomTabScreenProps<
 const AllVehicles = ({
   navigation,
 }: NativeStackScreenProps<VehiclesStackParamList, "AllVehicles">) => {
-  const vehicles = useQuery("vehicles", vehiclesService.getAll);
+  const vehicles = useQuery(["vehicles"], vehiclesService.getAll);
 
   return (
     <Layout
@@ -59,15 +59,9 @@ const AllVehicles = ({
       {vehicles.isLoading ? (
         <Text>Loading...</Text>
       ) : (
-        <View>
-          {vehicles.data?.map((vehicle) => (
-            <VehicleCard
-              {...vehicle}
-              key={vehicle.id}
-              navigation={navigation}
-            />
-          ))}
-        </View>
+        vehicles.data?.map((vehicle) => (
+          <VehicleCard {...vehicle} key={vehicle.id} navigation={navigation} />
+        ))
       )}
     </Layout>
   );

@@ -34,12 +34,14 @@ const updateVehicleController: RequestHandler<
       return next(error);
     }
 
-    if (payload.privilege !== "ADMIN" || vehicle.userId !== payload.id) {
-      const error = new AppError(
-        "UnauthorizedException",
-        "You are not authorized to access this vehicle"
-      );
-      return next(error);
+    if (vehicle.userId !== payload.id) {
+      if (payload.privilege !== "ADMIN") {
+        const error = new AppError(
+          "UnauthorizedException",
+          "You are not authorized to access this vehicle"
+        );
+        return next(error);
+      }
     }
 
     const updatedVehicle = await prisma.vehicle.update({

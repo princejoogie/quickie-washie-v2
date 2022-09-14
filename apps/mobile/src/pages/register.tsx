@@ -97,7 +97,7 @@ export const Register = ({
       />
 
       <TouchableOpacity
-        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-xl border-2 border-green-500 disabled:opacity-50"
+        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
         disabled={register.isLoading}
         onPress={async () => {
           try {
