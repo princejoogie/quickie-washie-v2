@@ -7,6 +7,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { RootStack } from "./pages/types";
 import { Login, Register } from "./pages";
 import { UserDashboard } from "./pages/dashboard/customer";
+import { AdminDashboard } from "./pages/dashboard/admin";
 import { AuthProvider, useAuthContext } from "./contexts/auth-context";
 import { queryClient } from "./services/api";
 
@@ -37,6 +38,11 @@ const App = () => {
                 <RootStack.Screen name="Login" component={Login} />
                 <RootStack.Screen name="Register" component={Register} />
               </>
+            ) : data.privilege === "ADMIN" ? (
+              <RootStack.Screen
+                name="AdminDashboard"
+                component={AdminDashboard}
+              />
             ) : (
               <RootStack.Screen
                 name="UserDashboard"
