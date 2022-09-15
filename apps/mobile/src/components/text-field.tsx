@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { View, Text, TextInput, TextInputProps } from "react-native";
 
 interface TextFieldProps extends TextInputProps {
@@ -5,19 +6,22 @@ interface TextFieldProps extends TextInputProps {
   containerClassname?: string;
 }
 
-export const TextField = ({
-  label,
-  containerClassname = "mt-4",
-  ...rest
-}: TextFieldProps) => {
-  return (
-    <View className={containerClassname}>
-      {label && <Text className="text-gray-400 text-xs ml-2">{label}</Text>}
-      <TextInput
-        {...rest}
-        placeholderTextColor="#71717a"
-        className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 px-4 py-3 text-white"
-      />
-    </View>
-  );
-};
+// eslint-disable-next-line react/display-name
+export const TextField = forwardRef<TextInput, TextFieldProps>(
+  ({ label, containerClassname = "mt-4", editable = true, ...rest }, ref) => {
+    return (
+      <View className={containerClassname}>
+        {label && <Text className="text-gray-400 text-xs ml-2">{label}</Text>}
+        <TextInput
+          {...rest}
+          ref={ref}
+          editable={editable}
+          placeholderTextColor="#71717a"
+          className={`border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 px-4 py-3 text-white ${
+            editable ? "opacity-100" : "opacity-60"
+          }`}
+        />
+      </View>
+    );
+  }
+);

@@ -38,11 +38,22 @@ export const NewVehicle = ({
       className="mt-4"
     >
       <TextField
+        placeholder="ABC-123"
+        maxLength={10}
         label="Plate Number"
         value={plateNumber}
-        onChangeText={setPlateNumber}
+        onChangeText={(e) => {
+          setPlateNumber(e.toUpperCase());
+        }}
       />
-      <TextField label="Model" value={model} onChangeText={setModel} />
+
+      <TextField
+        placeholder="Audi A3 2022"
+        maxLength={50}
+        label="Model"
+        value={model}
+        onChangeText={setModel}
+      />
 
       <Text className="text-gray-400 text-xs ml-2 mt-4">Vehicle Type</Text>
       <Picker

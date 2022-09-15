@@ -23,12 +23,26 @@ api.interceptors.request.use(async (config) => {
       Authorization: `Bearer ${accessToken}`,
     };
   }
-  console.log("--> ", config.url, "DATA:", config.data, config.headers);
+  console.log(
+    "[OUTGOING >>]",
+    config.method?.toUpperCase(),
+    config.url,
+    config.data ? "\nDATA:" : "",
+    config.data ? JSON.stringify(config.data, null, 2) : ""
+  );
   return config;
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(
+      "[<< INCOMING]",
+      response.config.url,
+      response.data ? "\nDATA:" : "",
+      response.data ? JSON.stringify(response.data, null, 2) : ""
+    );
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 

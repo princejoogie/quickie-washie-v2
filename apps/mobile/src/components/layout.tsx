@@ -15,7 +15,7 @@ interface Props {
   children: React.ReactNode;
   customNav?: React.ReactNode;
   className?: string;
-  onRefresh?: () => Promise<any>;
+  onRefresh?: () => Promise<any> | any;
   nav?: {
     title: string;
     canGoBack?: boolean;

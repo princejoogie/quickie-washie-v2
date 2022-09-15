@@ -2,6 +2,7 @@ import { Text, TouchableOpacity } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useIsFocused } from "@react-navigation/native";
 
 import { VehiclesStack, VehiclesStackParamList } from "./types";
 import { NewVehicle } from "./new-vehicle";
@@ -38,6 +39,11 @@ const AllVehicles = ({
   navigation,
 }: NativeStackScreenProps<VehiclesStackParamList, "AllVehicles">) => {
   const vehicles = useQuery(["vehicles"], vehiclesService.getAll);
+  const isFocused = useIsFocused();
+
+  if (isFocused && vehicles.isStale) {
+    vehicles.refetch();
+  }
 
   return (
     <Layout

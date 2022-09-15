@@ -23,7 +23,7 @@ const updateVehicleController: RequestHandler<
     }
 
     const { vehicleId } = req.params;
-    const { type, plateNumber } = req.body;
+    const { type, plateNumber, model } = req.body;
 
     const vehicle = await prisma.vehicle.findUnique({
       where: { id: vehicleId },
@@ -49,6 +49,7 @@ const updateVehicleController: RequestHandler<
       data: {
         type: (type as VehicleType) ?? vehicle.type,
         plateNumber: plateNumber ?? vehicle.plateNumber,
+        model: model ?? vehicle.model,
       },
       select: {
         id: true,
