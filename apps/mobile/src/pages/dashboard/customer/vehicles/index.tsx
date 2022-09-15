@@ -6,7 +6,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 import { VehiclesStack, VehiclesStackParamList } from "./types";
 import { NewVehicle } from "./new-vehicle";
-import { VehicleDetails } from "./vehicle-details";
+import { VehicleDetail } from "./vehicle-detail";
 
 import { CustomerDashboardParamList } from "../types";
 
@@ -30,7 +30,7 @@ export const Vehicles = ({}: BottomTabScreenProps<
     >
       <VehiclesStack.Screen name="AllVehicles" component={AllVehicles} />
       <VehiclesStack.Screen name="NewVehicle" component={NewVehicle} />
-      <VehiclesStack.Screen name="VehicleDetails" component={VehicleDetails} />
+      <VehiclesStack.Screen name="VehicleDetail" component={VehicleDetail} />
     </VehiclesStack.Navigator>
   );
 };

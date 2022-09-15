@@ -12,10 +12,10 @@ import vehiclesService from "../../../../services/vehicles";
 import { queryClient } from "../../../../services/api";
 import { IVehicleType, VehicleTypeNames } from "../../../../constants";
 
-export const VehicleDetails = ({
+export const VehicleDetail = ({
   route,
   navigation,
-}: NativeStackScreenProps<VehiclesStackParamList, "VehicleDetails">) => {
+}: NativeStackScreenProps<VehiclesStackParamList, "VehicleDetail">) => {
   const props = route.params;
 
   const [isEditing, setIsEditing] = useState(false);

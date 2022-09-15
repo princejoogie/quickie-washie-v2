@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 export type VehiclesStackParamList = {
   AllVehicles: undefined;
   NewVehicle: undefined;
-  VehicleDetails: GetAllVehiclesResponse[number];
+  VehicleDetail: GetAllVehiclesResponse[number];
 };
 
 export const VehiclesStack =

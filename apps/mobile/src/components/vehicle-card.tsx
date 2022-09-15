@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GetAllVehiclesResponse } from "@qw/dto";
-import { VehiclesStackParamList } from "../pages/dashboard/vehicles/types";
+import { VehiclesStackParamList } from "../pages/dashboard/customer/vehicles/types";
 
 type VehicleCardProps = GetAllVehiclesResponse[number] & {
   navigation: NativeStackNavigationProp<
@@ -16,7 +16,7 @@ export const VehicleCard = ({ navigation, ...props }: VehicleCardProps) => {
     <TouchableOpacity
       className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative"
       onPress={() => {
-        navigation.navigate("VehicleDetails", props);
+        navigation.navigate("VehicleDetail", props);
       }}
     >
       <View className="flex flex-row items-center p-3">
