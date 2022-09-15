@@ -38,6 +38,7 @@ api.interceptors.response.use(
 
       if (!!token) {
         const data = await refreshToken({ refreshToken: token });
+        await setTokens(data.accessToken, data.refreshToken);
         api.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
         return await api(originalRequest);
       }
