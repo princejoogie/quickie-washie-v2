@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { View, Text, TouchableOpacity, Alert, Keyboard } from "react-native";
+import { View, Text, TouchableOpacity, Keyboard } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { GetVehicleByIdResponse } from "@qw/dto";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -9,7 +9,6 @@ import { VehiclesStackParamList } from "./types";
 
 import { Layout, TextField } from "../../../components";
 import vehiclesService from "../../../services/vehicles";
-import { handleError } from "../../../utils/helpers";
 import { queryClient } from "../../../services/api";
 import { IVehicleType, VehicleTypeNames } from "../../../constants";
 
@@ -143,13 +142,8 @@ export const VehicleDetails = ({
       <TouchableOpacity
         className="self-end"
         disabled={deleteVehicle.isLoading}
-        onPress={async () => {
-          try {
-            await deleteVehicle.mutateAsync({ vehicleId: props.id });
-          } catch (e) {
-            const err = handleError(e);
-            Alert.alert("Error", err.message);
-          }
+        onPress={() => {
+          deleteVehicle.mutateAsync({ vehicleId: props.id });
         }}
       >
         <Text className="text-red-600">Delete Vehicle</Text>

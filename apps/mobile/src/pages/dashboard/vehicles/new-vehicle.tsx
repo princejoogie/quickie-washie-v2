@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { TouchableOpacity, Text, Alert } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -9,7 +9,6 @@ import { VehiclesStackParamList } from "./types";
 import vehiclesService from "../../../services/vehicles";
 import { IVehicleType, VehicleTypeNames } from "../../../constants";
 import { Layout, TextField } from "../../../components";
-import { handleError } from "../../../utils/helpers";
 import { queryClient } from "../../../services/api";
 
 export const NewVehicle = ({
@@ -72,13 +71,8 @@ export const NewVehicle = ({
       <TouchableOpacity
         className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
         disabled={createVehicle.isLoading}
-        onPress={async () => {
-          try {
-            await createVehicle.mutateAsync({ plateNumber, model, type });
-          } catch (e) {
-            const err = handleError(e);
-            Alert.alert("Error", err.message);
-          }
+        onPress={() => {
+          createVehicle.mutate({ plateNumber, model, type });
         }}
       >
         <Text className="text-white">Submit</Text>

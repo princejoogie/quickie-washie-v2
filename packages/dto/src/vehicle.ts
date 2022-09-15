@@ -5,8 +5,8 @@ import type { ValidatorSchema } from "./common";
 // Create
 
 export const createVehicleBodySchema = z.object({
-  plateNumber: z.string().min(1).max(20),
-  model: z.string().min(1).max(255),
+  plateNumber: z.string().min(1).max(10),
+  model: z.string().min(1).max(25),
   type: z.string(),
 });
 
@@ -34,8 +34,8 @@ export const createVehicleSchema: ValidatorSchema = {
 // UPDATE
 
 export const updateVehicleBodySchema = z.object({
-  plateNumber: z.string().optional(),
-  model: z.string().optional(),
+  plateNumber: z.string().min(1).max(10).optional(),
+  model: z.string().min(1).max(25).optional(),
   type: z.string().optional(),
 });
 

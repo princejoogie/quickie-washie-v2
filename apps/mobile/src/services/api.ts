@@ -4,12 +4,22 @@ import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { RefreshTokenResponse, RefreshTokenBody } from "@qw/dto";
 import { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY } from "../constants";
+import { handleError } from "../utils/helpers";
+import { Alert } from "react-native";
 
 export const API_BASE_URL = Constants.manifest?.extra?.API_BASE_URL;
 export const queryCache = new QueryCache();
 export const queryClient = new QueryClient({
   queryCache,
   logger: console,
+  defaultOptions: {
+    mutations: {
+      onError: (e) => {
+        const error = handleError(e);
+        Alert.alert("Error", error.message);
+      },
+    },
+  },
 });
 
 export const api = axios.create({
@@ -80,5 +90,5 @@ export const setTokens = async (accessToken: string, refreshToken: string) => {
 
 export const unsetTokens = async () => {
   await AsyncStorage.clear();
-  queryClient.resetQueries(["profile"]);
+  queryClient.resetQueries();
 };
