@@ -32,6 +32,7 @@ export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <>
         <View style={{ height: top }} />
+
         {nav && (
           <View className="p-4 border-b-2 border-gray-800 flex flex-row items-center justify-between">
             <View className="flex flex-row items-center">
@@ -53,10 +54,6 @@ export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
             {nav.actions && nav.actions}
           </View>
         )}
-
-        {/*
-          flatlist to render children and fill the screen
-        */}
 
         <FlatList
           data={[1]}
