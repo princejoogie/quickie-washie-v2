@@ -1,11 +1,11 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Text, TouchableOpacity } from "react-native";
-import { ImageInput, Layout, TextField } from "../../../components";
-import { useAuthContext } from "../../../contexts/auth-context";
-import { DashboardParamList } from "../types";
+import { ImageInput, Layout, TextField } from "../../../../components";
+import { useAuthContext } from "../../../../contexts/auth-context";
+import { CustomerDashboardParamList } from "../types";
 
 export const Profile = ({}: BottomTabScreenProps<
-  DashboardParamList,
+  CustomerDashboardParamList,
   "Profile"
 >) => {
   const { data, logout } = useAuthContext();

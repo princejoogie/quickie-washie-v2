@@ -7,10 +7,10 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { VehiclesStackParamList } from "./types";
 
-import { Layout, TextField } from "../../../components";
-import vehiclesService from "../../../services/vehicles";
-import { queryClient } from "../../../services/api";
-import { IVehicleType, VehicleTypeNames } from "../../../constants";
+import { Layout, TextField } from "../../../../components";
+import vehiclesService from "../../../../services/vehicles";
+import { queryClient } from "../../../../services/api";
+import { IVehicleType, VehicleTypeNames } from "../../../../constants";
 
 export const VehicleDetails = ({
   route,

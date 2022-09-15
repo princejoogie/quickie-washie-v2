@@ -8,14 +8,14 @@ import { VehiclesStack, VehiclesStackParamList } from "./types";
 import { NewVehicle } from "./new-vehicle";
 import { VehicleDetails } from "./vehicle-details";
 
-import { DashboardParamList } from "../types";
+import { CustomerDashboardParamList } from "../types";
 
-import { Layout, VehicleCard } from "../../../components";
-import vehiclesService from "../../../services/vehicles";
-import { PlusIcon } from "../../../components/icon/plus-icon";
+import { Layout, VehicleCard } from "../../../../components";
+import vehiclesService from "../../../../services/vehicles";
+import { PlusIcon } from "../../../../components/icon/plus-icon";
 
 export const Vehicles = ({}: BottomTabScreenProps<
-  DashboardParamList,
+  CustomerDashboardParamList,
   "Vehicles"
 >) => {
   return (

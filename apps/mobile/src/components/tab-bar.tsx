@@ -1,6 +1,6 @@
 import { View, TouchableOpacity } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { DashboardParamKeys } from "../pages/dashboard/types";
+import { CustomerDashboardParamKeys } from "../pages/dashboard/customer/types";
 import { HomeIcon } from "./icon/home-icon";
 import { VehicleIcon } from "./icon/vehicle-icon";
 import { CalendarIcon } from "./icon/calendar-icon";
@@ -12,39 +12,39 @@ const GetIcon = ({
   name,
   active = false,
 }: {
-  name: DashboardParamKeys;
+  name: CustomerDashboardParamKeys;
   active: boolean;
 }) => {
   switch (name) {
-    case DashboardParamKeys.Home:
+    case CustomerDashboardParamKeys.Home:
       return (
         <HomeIcon
           filled={active}
           styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
-    case DashboardParamKeys.Vehicles:
+    case CustomerDashboardParamKeys.Vehicles:
       return (
         <VehicleIcon
           filled={active}
           styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
-    case DashboardParamKeys.Appointments:
+    case CustomerDashboardParamKeys.Appointments:
       return (
         <CalendarIcon
           filled={active}
           styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
-    case DashboardParamKeys.Notifications:
+    case CustomerDashboardParamKeys.Notifications:
       return (
         <NotificationIcon
           filled={active}
           styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
-    case DashboardParamKeys.Profile:
+    case CustomerDashboardParamKeys.Profile:
       return (
         <UserIcon
           filled={active}
@@ -54,7 +54,7 @@ const GetIcon = ({
   }
 };
 
-export const TabBar = ({
+export const CustomerTabBar = ({
   insets,
   state,
   descriptors,
@@ -102,7 +102,7 @@ export const TabBar = ({
             className="pt-6"
           >
             <GetIcon
-              name={route.name as DashboardParamKeys}
+              name={route.name as CustomerDashboardParamKeys}
               active={isFocused}
             />
           </TouchableOpacity>

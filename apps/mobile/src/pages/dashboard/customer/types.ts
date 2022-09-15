@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type DashboardParamList = {
+export type CustomerDashboardParamList = {
   Home: undefined;
   Vehicles: undefined;
   Appointments: undefined;
@@ -9,7 +9,7 @@ export type DashboardParamList = {
   Profile: undefined;
 };
 
-export enum DashboardParamKeys {
+export enum CustomerDashboardParamKeys {
   Home = "Home",
   Vehicles = "Vehicles",
   Appointments = "Appointments",
@@ -17,4 +17,5 @@ export enum DashboardParamKeys {
   Profile = "Profile",
 }
 
-export const BottomTab = createBottomTabNavigator<DashboardParamList>();
+export const CustomerBottomTab =
+  createBottomTabNavigator<CustomerDashboardParamList>();

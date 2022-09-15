@@ -1,9 +1,9 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { Layout } from "../../../components";
-import { DashboardParamList } from "../types";
+import { Layout } from "../../../../components";
+import { CustomerDashboardParamList } from "../types";
 
 export const Notifications = ({}: BottomTabScreenProps<
-  DashboardParamList,
+  CustomerDashboardParamList,
   "Notifications"
 >) => {
   return <Layout nav={{ title: "Notifications" }}>{null}</Layout>;

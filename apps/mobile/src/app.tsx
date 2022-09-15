@@ -5,7 +5,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 import { RootStack } from "./pages/types";
-import { Login, Dashboard, Register } from "./pages";
+import { Login, Register } from "./pages";
+import { UserDashboard } from "./pages/dashboard/customer";
 import { AuthProvider, useAuthContext } from "./contexts/auth-context";
 import { queryClient } from "./services/api";
 
@@ -37,7 +38,10 @@ const App = () => {
                 <RootStack.Screen name="Register" component={Register} />
               </>
             ) : (
-              <RootStack.Screen name="Dashboard" component={Dashboard} />
+              <RootStack.Screen
+                name="UserDashboard"
+                component={UserDashboard}
+              />
             )}
           </RootStack.Navigator>
         )}
