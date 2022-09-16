@@ -114,6 +114,7 @@ export const getServiceByIdResponse =
       description: true,
       createdAt: true,
       updatedAt: true,
+      additionalPrices: true,
       appointments: {
         select: {
           id: true,

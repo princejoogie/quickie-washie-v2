@@ -7,6 +7,7 @@ import type {
 
 import prisma from "../../lib/prisma";
 import { AppError, handleControllerError } from "../../utils/error";
+import type { Prisma, VehicleType } from "@qw/db";
 
 const updateServiceController: RequestHandler<
   UpdateServiceParams,
@@ -22,10 +23,11 @@ const updateServiceController: RequestHandler<
     }
 
     const { serviceId } = req.params;
-    const { name, basePrice, description } = req.body;
+    const { name, basePrice, description, additionalPrices } = req.body;
 
     const service = await prisma.service.findUnique({
       where: { id: serviceId },
+      include: { additionalPrices: true },
     });
 
     if (!service) {
@@ -39,6 +41,24 @@ const updateServiceController: RequestHandler<
         "You are not authorized to access this service"
       );
       return next(error);
+    }
+
+    if (additionalPrices) {
+      await prisma.additionalPrice.deleteMany({
+        where: { serviceId },
+      });
+
+      await prisma.additionalPrice.createMany({
+        data: additionalPrices.map((e) => {
+          const q: Prisma.AdditionalPriceCreateManyInput = {
+            serviceId,
+            vehicleType: e.vehicleType as VehicleType,
+            price: e.price,
+          };
+
+          return q;
+        }),
+      });
     }
 
     const updatedService = await prisma.service.update({

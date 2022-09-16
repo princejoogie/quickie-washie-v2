@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { TouchableOpacity, Text, View } from "react-native";
@@ -24,7 +24,7 @@ export const ServiceDetail = ({
   const {
     control,
     handleSubmit,
-    /* setValue, */
+    setValue,
     formState: { errors },
   } = useForm<ServiceBodySchema>({
     mode: "all",
@@ -42,24 +42,31 @@ export const ServiceDetail = ({
     name: "additionalPrices",
   });
 
+  const serviceDetails = useQuery(
+    ["service", props.id],
+    (e) => servicesService.getById({ serviceId: e.queryKey[1] }),
+    {
+      onSuccess: (data) => {
+        setValue(
+          "additionalPrices",
+          data.additionalPrices.map((e) => ({
+            vehicleType: e.vehicleType,
+            price: e.price.toString(),
+          }))
+        );
+      },
+    }
+  );
+
   const updateService = useMutation(servicesService.update, {
     onSuccess: () => {
-      if (navigation.canGoBack()) {
-        queryClient.invalidateQueries(["services"]);
-        navigation.goBack();
-      }
+      serviceDetails.refetch();
+      /* if (navigation.canGoBack()) { */
+      /* queryClient.invalidateQueries(["services"]); */
+      /* navigation.goBack(); */
+      /* } */
     },
   });
-
-  /* const serviceDetails = useQuery( */
-  /*   ["service", props.id], */
-  /*   (e) => servicesService.getById({ serviceId: e.queryKey[1] }), */
-  /*   { */
-  /*     onSuccess: (data) => { */
-  /*       setValue("additionalPrices", data.additionalPrices); */
-  /*     }, */
-  /*   } */
-  /* ); */
 
   return (
     <Layout

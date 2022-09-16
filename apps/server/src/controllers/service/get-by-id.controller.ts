@@ -27,6 +27,7 @@ const getServiceByIdController: RequestHandler<
         description: true,
         createdAt: true,
         updatedAt: true,
+        additionalPrices: true,
         appointments: {
           select: {
             id: true,
