@@ -1,13 +1,13 @@
 import axios from "axios";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
-import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { RefreshTokenResponse, RefreshTokenBody } from "@qw/dto";
 import { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY } from "../constants";
 import { handleError } from "../utils/helpers";
 import { Alert } from "react-native";
 
-export const API_BASE_URL = Constants.manifest?.extra?.API_BASE_URL;
+export const API_BASE_URL = process.env.API_BASE_URL;
+console.log("API_BASE_URL:", API_BASE_URL);
 export const queryCache = new QueryCache();
 export const queryClient = new QueryClient({
   queryCache,

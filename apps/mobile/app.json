@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "qwashie",
     "name": "quickie-washie",
     "slug": "quickie-washie",
     "version": "1.0.0",
@@ -14,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -22,10 +25,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.qwashie.quickiewashie"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7a6cb8b3-41fe-4725-b3da-02f62a932b4b"
+      }
     }
   }
 }
