@@ -19,16 +19,17 @@ const createServiceBodySchema = z.object({
 
 export type CreateServiceBody = z.infer<typeof createServiceBodySchema>;
 
-export const createServiceResponseSchema = Prisma.validator<PrismaType.ServiceArgs>()({
-  select: {
-    id: true,
-    name: true,
-    basePrice: true,
-    description: true,
-    createdAt: true,
-    updatedAt: true,
-  },
-});
+export const createServiceResponseSchema =
+  Prisma.validator<PrismaType.ServiceArgs>()({
+    select: {
+      id: true,
+      name: true,
+      basePrice: true,
+      description: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
 
 export type CreateServiceResponse = PrismaType.ServiceGetPayload<
   typeof createServiceResponseSchema
@@ -41,14 +42,14 @@ export const createServiceSchema: ValidatorSchema = {
 // UPDATE
 
 export const updateServiceBodySchema = z.object({
-  name: z.string().optional(),
-  basePrice: z.number().optional(),
-  description: z.string().optional(),
+  name: z.string().min(1).max(255).optional(),
+  basePrice: z.number().min(0).optional(),
+  description: z.string().min(1).max(255).optional(),
   additionalPrices: z
     .array(
       z.object({
-        price: z.number(),
-        vehicleType: z.string(),
+        price: z.number().min(0),
+        vehicleType: z.string().min(1).max(255),
       })
     )
     .optional(),
@@ -104,32 +105,33 @@ export const getServiceByIdParamsSchema = z.object({
 
 export type GetServiceByIdParams = z.infer<typeof getServiceByIdParamsSchema>;
 
-export const getServiceByIdResponse = Prisma.validator<PrismaType.ServiceArgs>()({
-  select: {
-    id: true,
-    name: true,
-    basePrice: true,
-    description: true,
-    createdAt: true,
-    updatedAt: true,
-    appointments: {
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        date: true,
-        status: true,
-        Vehicle: {
-          select: {
-            plateNumber: true,
-            model: true,
-            type: true,
+export const getServiceByIdResponse =
+  Prisma.validator<PrismaType.ServiceArgs>()({
+    select: {
+      id: true,
+      name: true,
+      basePrice: true,
+      description: true,
+      createdAt: true,
+      updatedAt: true,
+      appointments: {
+        select: {
+          id: true,
+          createdAt: true,
+          updatedAt: true,
+          date: true,
+          status: true,
+          Vehicle: {
+            select: {
+              plateNumber: true,
+              model: true,
+              type: true,
+            },
           },
         },
       },
     },
-  },
-});
+  });
 
 export type GetServiceByIdResponse = PrismaType.ServiceGetPayload<
   typeof getServiceByIdResponse

@@ -3,31 +3,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { TouchableOpacity, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { z } from "zod";
 
-import { ServicesStackParamList } from "./types";
+import {
+  ServiceBodySchema,
+  serviceBodySchema,
+  ServicesStackParamList,
+} from "./types";
 
 import { Layout, TextField } from "../../../../components";
 import { queryClient } from "../../../../services/api";
 import servicesService from "../../../../services/services";
 import { PlusIcon } from "../../../../components/icon/plus-icon";
-
-const createServiceBodySchema = z.object({
-  name: z.string().min(1, { message: "Invalid name" }).max(255),
-  basePrice: z.string().min(1, { message: "Should be greater than 0" }),
-  description: z.string().min(1, { message: "Invalid description" }).max(255),
-  additionalPrices: z.array(
-    z.object({
-      price: z.string().min(1, { message: "Should be greater than 0" }),
-      vehicleType: z
-        .string()
-        .min(1, { message: "Invalid Vehicle type" })
-        .max(255),
-    })
-  ),
-});
-
-type CreateServiceBody = z.infer<typeof createServiceBodySchema>;
 
 export const NewService = ({
   navigation,
@@ -36,9 +22,9 @@ export const NewService = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateServiceBody>({
+  } = useForm<ServiceBodySchema>({
     mode: "all",
-    resolver: zodResolver(createServiceBodySchema),
+    resolver: zodResolver(serviceBodySchema),
     defaultValues: {
       additionalPrices: [],
       basePrice: "",
