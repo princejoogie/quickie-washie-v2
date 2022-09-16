@@ -1,6 +1,8 @@
 import {
   CreateServiceBody,
   CreateServiceResponse,
+  DeleteServiceParams,
+  DeleteServiceResponse,
   GetAllServicesResponse,
   GetServiceByIdParams,
   GetServiceByIdResponse,
@@ -41,8 +43,16 @@ const update = async ({
   return response.data;
 };
 
+const deleteService = async (params: DeleteServiceParams) => {
+  const response = await api.delete<DeleteServiceResponse>(
+    `/service/${params.serviceId}`
+  );
+  return response.data;
+};
+
 const servicesService = {
   create,
+  deleteService,
   getAll,
   getById,
   update,

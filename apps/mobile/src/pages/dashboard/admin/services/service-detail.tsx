@@ -11,7 +11,6 @@ import {
 } from "./types";
 
 import { Layout, TextField } from "../../../../components";
-import { queryClient } from "../../../../services/api";
 import servicesService from "../../../../services/services";
 import { PlusIcon } from "../../../../components/icon/plus-icon";
 
@@ -58,13 +57,12 @@ export const ServiceDetail = ({
     }
   );
 
-  const updateService = useMutation(servicesService.update, {
+  const updateService = useMutation(servicesService.update);
+  const deleteService = useMutation(servicesService.deleteService, {
     onSuccess: () => {
-      serviceDetails.refetch();
-      /* if (navigation.canGoBack()) { */
-      /* queryClient.invalidateQueries(["services"]); */
-      /* navigation.goBack(); */
-      /* } */
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      }
     },
   });
 
@@ -74,6 +72,31 @@ export const ServiceDetail = ({
         title: "Service Detail",
         canGoBack: navigation.canGoBack(),
         onBack: navigation.goBack,
+        actions: (
+          <TouchableOpacity
+            onPress={handleSubmit(
+              async ({ basePrice, additionalPrices, ...rest }) => {
+                await updateService.mutateAsync({
+                  params: {
+                    serviceId: props.id,
+                  },
+                  body: {
+                    ...rest,
+                    basePrice: parseFloat(basePrice),
+                    additionalPrices: additionalPrices.map((price) => ({
+                      ...price,
+                      price: parseFloat(price.price),
+                    })),
+                  },
+                });
+
+                await serviceDetails.refetch();
+              }
+            )}
+          >
+            <Text className="text-blue-600 font-bold">Update</Text>
+          </TouchableOpacity>
+        ),
       }}
     >
       <Controller
@@ -146,8 +169,8 @@ export const ServiceDetail = ({
       </View>
 
       {fields.map((field, idx) => (
-        <View key={field.id} className="mt-2 ml-4">
-          <View className="flex flex-row items-center justify-between mt-4">
+        <View key={field.id} className="ml-4">
+          <View className="flex flex-row items-center justify-between mt-3">
             <Text className="text-gray-400 text-xs ml-2">
               Additional {idx + 1}
             </Text>
@@ -205,24 +228,13 @@ export const ServiceDetail = ({
       ))}
 
       <TouchableOpacity
-        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
-        onPress={handleSubmit(({ basePrice, additionalPrices, ...rest }) => {
-          return updateService.mutateAsync({
-            params: {
-              serviceId: props.id,
-            },
-            body: {
-              ...rest,
-              basePrice: parseFloat(basePrice),
-              additionalPrices: additionalPrices.map((price) => ({
-                ...price,
-                price: parseFloat(price.price),
-              })),
-            },
-          });
-        })}
+        className="self-end mt-6 disabled:opacity-50"
+        disabled={deleteService.isLoading}
+        onPress={() => {
+          deleteService.mutate({ serviceId: props.id });
+        }}
       >
-        <Text className="text-white">Submit</Text>
+        <Text className="text-red-600 font-bold">Delete service</Text>
       </TouchableOpacity>
     </Layout>
   );

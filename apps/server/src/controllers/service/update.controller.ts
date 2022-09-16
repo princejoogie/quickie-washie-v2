@@ -44,21 +44,23 @@ const updateServiceController: RequestHandler<
     }
 
     if (additionalPrices) {
-      await prisma.additionalPrice.deleteMany({
-        where: { serviceId },
-      });
-
-      await prisma.additionalPrice.createMany({
-        data: additionalPrices.map((e) => {
-          const q: Prisma.AdditionalPriceCreateManyInput = {
-            serviceId,
-            vehicleType: e.vehicleType as VehicleType,
-            price: e.price,
-          };
-
-          return q;
+      await prisma.$transaction([
+        prisma.additionalPrice.deleteMany({
+          where: { serviceId },
         }),
-      });
+
+        prisma.additionalPrice.createMany({
+          data: additionalPrices.map((e) => {
+            const q: Prisma.AdditionalPriceCreateManyInput = {
+              serviceId,
+              vehicleType: e.vehicleType as VehicleType,
+              price: e.price,
+            };
+
+            return q;
+          }),
+        }),
+      ]);
     }
 
     const updatedService = await prisma.service.update({
