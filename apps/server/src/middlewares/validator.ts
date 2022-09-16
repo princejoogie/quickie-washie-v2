@@ -1,12 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
+import type { ValidatorSchema } from "@qw/dto";
 import { AppError } from "../utils/error";
-import { type ZodSchema, ZodError } from "zod";
-
-export interface ValidatorSchema {
-  body?: ZodSchema;
-  params?: ZodSchema;
-  query?: ZodSchema;
-}
+import { ZodError } from "zod";
 
 const validator = (schema: ValidatorSchema) => {
   return async (req: Request, _: Response, next: NextFunction) => {

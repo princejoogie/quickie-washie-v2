@@ -13,32 +13,30 @@ import getAllServicesController from "../controllers/service/get-all.controller"
 import getServiceByIdController from "../controllers/service/get-by-id.controller";
 import updateServiceController from "../controllers/service/update.controller";
 
-const router = Router();
+export const serviceRouter = Router();
 
-router.get("/", checkJwt, getAllServicesController);
+serviceRouter.get("/", checkJwt, getAllServicesController);
 
-router.post(
+serviceRouter.post(
   "/",
   [checkJwt, validator(createServiceSchema)],
   createServiceController
 );
 
-router.get(
+serviceRouter.get(
   "/:serviceId",
   [checkJwt, validator(getServiceByIdSchema)],
   getServiceByIdController
 );
 
-router.put(
+serviceRouter.put(
   "/:serviceId",
   [checkJwt, validator(updateServiceSchema)],
   updateServiceController
 );
 
-router.delete(
+serviceRouter.delete(
   "/:serviceId",
   [checkJwt, validator(deleteServiceSchema)],
   deleteServiceController
 );
-
-export default router;

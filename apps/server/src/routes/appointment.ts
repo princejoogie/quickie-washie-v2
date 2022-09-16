@@ -1,9 +1,7 @@
 import { Router } from "express";
 
-const router = Router();
+export const appointmentRouter = Router();
 
-router.get("/", (req, res) => {
+appointmentRouter.get("/", (req, res) => {
   res.json({ message: `Hello World from ${req.originalUrl}` });
 });
-
-export default router;

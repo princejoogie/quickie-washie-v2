@@ -7,15 +7,13 @@ import registerController from "../controllers/auth/register.controller";
 import profileController from "../controllers/auth/profile.controller";
 import refreshTokenController from "../controllers/auth/refresh-token.controller";
 
-const router = Router();
+export const authRouter = Router();
 
-router.get("/profile", checkJwt, profileController);
-router.post("/login", validator(loginSchema), loginController);
-router.post("/register", validator(registerSchema), registerController);
-router.post(
+authRouter.get("/profile", checkJwt, profileController);
+authRouter.post("/login", validator(loginSchema), loginController);
+authRouter.post("/register", validator(registerSchema), registerController);
+authRouter.post(
   "/refresh-token",
   validator(refreshTokenSchema),
   refreshTokenController
 );
-
-export default router;

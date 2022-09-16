@@ -13,32 +13,30 @@ import getAllVehiclesController from "../controllers/vehicle/get-all.controller"
 import getVehicleByIdController from "../controllers/vehicle/get-by-id.controller";
 import updateVehicleController from "../controllers/vehicle/update.controller";
 
-const router = Router();
+export const vehicleRouter = Router();
 
-router.get("/", checkJwt, getAllVehiclesController);
+vehicleRouter.get("/", checkJwt, getAllVehiclesController);
 
-router.post(
+vehicleRouter.post(
   "/",
   [checkJwt, validator(createVehicleSchema)],
   createVehicleController
 );
 
-router.get(
+vehicleRouter.get(
   "/:vehicleId",
   [checkJwt, validator(getVehicleByIdSchema)],
   getVehicleByIdController
 );
 
-router.put(
+vehicleRouter.put(
   "/:vehicleId",
   [checkJwt, validator(updateVehicleSchema)],
   updateVehicleController
 );
 
-router.delete(
+vehicleRouter.delete(
   "/:vehicleId",
   [checkJwt, validator(deleteVehicleSchema)],
   deleteVehicleController
 );
-
-export default router;
