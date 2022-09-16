@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Keyboard,
   Text,
@@ -27,6 +27,28 @@ interface Props {
 export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
   const { top, bottom } = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
+
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      (e) => {
+        setKeyboardHeight(e.endCoordinates.height);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardHeight(0);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -60,7 +82,7 @@ export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
           renderItem={() => (
             <View
               className={`flex-1 px-4 flex-col ${className}`}
-              style={{ paddingBottom: bottom }}
+              style={{ paddingBottom: bottom + keyboardHeight }}
             >
               {children}
             </View>
@@ -81,29 +103,6 @@ export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
             )
           }
         />
-
-        {/* <ScrollView */}
-        {/*   showsVerticalScrollIndicator={false} */}
-        {/*   refreshControl={ */}
-        {/*     <RefreshControl */}
-        {/*       size={20} */}
-        {/*       colors={["#ffffff"]} */}
-        {/*       tintColor="#ffffff" */}
-        {/*       titleColor="#ffffff" */}
-        {/*       refreshing={refreshing} */}
-        {/*       onRefresh={async () => { */}
-        {/*         setRefreshing(true); */}
-        {/*         await onRefresh?.(); */}
-        {/*         setRefreshing(false); */}
-        {/*       }} */}
-        {/*     /> */}
-        {/*   } */}
-        {/* > */}
-        {/*   <View className={`flex bg-gray-900 px-6 flex-1 ${className}`}> */}
-        {/*     {children} */}
-        {/*     <View style={{ height: bottom * 3 }} /> */}
-        {/*   </View> */}
-        {/* </ScrollView> */}
       </>
     </TouchableWithoutFeedback>
   );

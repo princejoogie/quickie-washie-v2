@@ -12,7 +12,7 @@ const createServiceBodySchema = z.object({
   additionalPrices: z.array(
     z.object({
       price: z.number().min(0),
-      vehicleType: z.string(),
+      vehicleType: z.string().min(1).max(255),
     })
   ),
 });

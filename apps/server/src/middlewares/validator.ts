@@ -23,6 +23,7 @@ const validator = (schema: ValidatorSchema) => {
 
       return next();
     } catch (e) {
+      console.log("VALIDATION ERROR", e);
       if (e instanceof ZodError) {
         let newErr: string = "";
 
