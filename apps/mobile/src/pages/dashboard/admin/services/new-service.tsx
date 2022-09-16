@@ -1,31 +1,55 @@
-import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, Text } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { z } from "zod";
 
 import { ServicesStackParamList } from "./types";
 
-import vehiclesService from "../../../../services/vehicles";
-import { IVehicleType, VehicleTypeNames } from "../../../../constants";
 import { Layout, TextField } from "../../../../components";
 import { queryClient } from "../../../../services/api";
+import servicesService from "../../../../services/services";
+
+const createServiceBodySchema = z.object({
+  name: z.string().min(1).max(255),
+  basePrice: z.number().min(0),
+  description: z.string().min(1).max(255),
+  additionalPrices: z.array(
+    z.object({
+      price: z.number().min(0),
+      vehicleType: z.string(),
+    })
+  ),
+});
+
+type CreateServiceBody = z.infer<typeof createServiceBodySchema>;
 
 export const NewService = ({
   navigation,
 }: NativeStackScreenProps<ServicesStackParamList, "NewService">) => {
-  const createVehicle = useMutation(vehiclesService.create, {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid, isDirty, isSubmitted, dirtyFields },
+  } = useForm<CreateServiceBody>({
+    resolver: zodResolver(createServiceBodySchema),
+    defaultValues: {
+      additionalPrices: [],
+      basePrice: 0,
+      description: "",
+      name: "",
+    },
+  });
+
+  const createService = useMutation(servicesService.create, {
     onSuccess: () => {
       if (navigation.canGoBack()) {
-        queryClient.invalidateQueries(["vehicles"]);
+        queryClient.invalidateQueries(["services"]);
         navigation.goBack();
       }
     },
   });
-
-  const [plateNumber, setPlateNumber] = useState("");
-  const [type, setType] = useState<IVehicleType>("SEDAN_2_DOOR");
-  const [model, setModel] = useState("");
 
   return (
     <Layout
@@ -36,44 +60,71 @@ export const NewService = ({
       }}
       className="mt-4"
     >
-      <TextField
-        placeholder="ABC-123"
-        maxLength={10}
-        label="Plate Number"
-        value={plateNumber}
-        onChangeText={(e) => {
-          setPlateNumber(e.toUpperCase());
-        }}
-      />
+      <Text className="text-white">
+        {JSON.stringify(
+          {
+            errors,
+            isValid,
+            isDirty,
+            isSubmitted,
+            dirtyFields,
+          },
+          null,
+          2
+        )}
+      </Text>
 
-      <TextField
-        placeholder="Audi A3 2022"
-        maxLength={50}
-        label="Model"
-        value={model}
-        onChangeText={setModel}
+      <Controller
+        control={control}
+        name="name"
+        render={({ field: { value, onChange, ...rest } }) => (
+          <TextField
+            {...rest}
+            placeholder="Oil change"
+            label="Plate Number"
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
       />
+      {errors.name && <Text>{errors.name.message}</Text>}
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Vehicle Type</Text>
-      <Picker
-        itemStyle={{ color: "white" }}
-        mode="dialog"
-        selectedValue={type}
-        onValueChange={(e) => {
-          setType(e);
-        }}
-      >
-        {Object.entries(VehicleTypeNames).map(([key, value]) => (
-          <Picker.Item key={key} label={value} value={key} />
-        ))}
-      </Picker>
+      <Controller
+        control={control}
+        name="description"
+        render={({ field: { value, onChange, ...rest } }) => (
+          <TextField
+            {...rest}
+            placeholder="Description"
+            label="Model"
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
+      />
+      {errors.description && <Text>{errors.description.message}</Text>}
+
+      <Controller
+        control={control}
+        name="basePrice"
+        render={({ field: { value, onChange, ...rest } }) => (
+          <TextField
+            {...rest}
+            placeholder="0.00"
+            keyboardType="numeric"
+            label="Model"
+            value={`${value}`}
+            onChangeText={onChange}
+          />
+        )}
+      />
+      {errors.basePrice && <Text>{errors.basePrice.message}</Text>}
 
       <TouchableOpacity
         className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
-        disabled={createVehicle.isLoading}
-        onPress={() => {
-          createVehicle.mutate({ plateNumber, model, type });
-        }}
+        onPress={handleSubmit((data) => {
+          return createService.mutateAsync(data);
+        })}
       >
         <Text className="text-white">Submit</Text>
       </TouchableOpacity>

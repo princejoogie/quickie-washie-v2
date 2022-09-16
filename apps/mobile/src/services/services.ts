@@ -1,4 +1,8 @@
-import { GetAllServicesResponse } from "@qw/dto";
+import {
+  CreateServiceBody,
+  CreateServiceResponse,
+  GetAllServicesResponse,
+} from "@qw/dto";
 import { api } from "./api";
 
 const getAll = async () => {
@@ -6,7 +10,13 @@ const getAll = async () => {
   return response.data;
 };
 
+const create = async (body: CreateServiceBody) => {
+  const response = await api.post<CreateServiceResponse>("/service", body);
+  return response.data;
+};
+
 const servicesService = {
+  create,
   getAll,
 };
 

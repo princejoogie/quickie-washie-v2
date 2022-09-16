@@ -1,16 +1,17 @@
 import { z } from "zod";
 import { Prisma } from "@qw/db";
+import type { Prisma as PrismaType } from "@qw/db";
 import type { ValidatorSchema } from "./common";
 
 // Create
 
-export const createServiceBodySchema = z.object({
-  name: z.string(),
-  basePrice: z.number(),
-  description: z.string(),
+const createServiceBodySchema = z.object({
+  name: z.string().min(1).max(255),
+  basePrice: z.number().min(0),
+  description: z.string().min(1).max(255),
   additionalPrices: z.array(
     z.object({
-      price: z.number(),
+      price: z.number().min(0),
       vehicleType: z.string(),
     })
   ),
@@ -18,7 +19,7 @@ export const createServiceBodySchema = z.object({
 
 export type CreateServiceBody = z.infer<typeof createServiceBodySchema>;
 
-const createServiceResponseSchema = Prisma.validator<Prisma.ServiceArgs>()({
+export const createServiceResponseSchema = Prisma.validator<PrismaType.ServiceArgs>()({
   select: {
     id: true,
     name: true,
@@ -29,7 +30,7 @@ const createServiceResponseSchema = Prisma.validator<Prisma.ServiceArgs>()({
   },
 });
 
-export type CreateServiceResponse = Prisma.ServiceGetPayload<
+export type CreateServiceResponse = PrismaType.ServiceGetPayload<
   typeof createServiceResponseSchema
 >;
 
@@ -61,7 +62,7 @@ export const updateServiceParamsSchema = z.object({
 
 export type UpdateServiceParams = z.infer<typeof updateServiceParamsSchema>;
 
-const updateServiceResponseSchema = Prisma.validator<Prisma.ServiceArgs>()({
+const updateServiceResponseSchema = Prisma.validator<PrismaType.ServiceArgs>()({
   select: {
     id: true,
     name: true,
@@ -72,7 +73,7 @@ const updateServiceResponseSchema = Prisma.validator<Prisma.ServiceArgs>()({
   },
 });
 
-export type UpdateServiceResponse = Prisma.ServiceGetPayload<
+export type UpdateServiceResponse = PrismaType.ServiceGetPayload<
   typeof updateServiceResponseSchema
 >;
 
@@ -103,7 +104,7 @@ export const getServiceByIdParamsSchema = z.object({
 
 export type GetServiceByIdParams = z.infer<typeof getServiceByIdParamsSchema>;
 
-export const getServiceByIdResponse = Prisma.validator<Prisma.ServiceArgs>()({
+export const getServiceByIdResponse = Prisma.validator<PrismaType.ServiceArgs>()({
   select: {
     id: true,
     name: true,
@@ -130,7 +131,7 @@ export const getServiceByIdResponse = Prisma.validator<Prisma.ServiceArgs>()({
   },
 });
 
-export type GetServiceByIdResponse = Prisma.ServiceGetPayload<
+export type GetServiceByIdResponse = PrismaType.ServiceGetPayload<
   typeof getServiceByIdResponse
 >;
 
@@ -140,7 +141,7 @@ export const getServiceByIdSchema: ValidatorSchema = {
 
 // GET ALL
 
-const getAllServicesResponse = Prisma.validator<Prisma.ServiceArgs>()({
+const getAllServicesResponse = Prisma.validator<PrismaType.ServiceArgs>()({
   select: {
     id: true,
     name: true,
@@ -152,5 +153,5 @@ const getAllServicesResponse = Prisma.validator<Prisma.ServiceArgs>()({
 });
 
 export type GetAllServicesResponse = Array<
-  Prisma.ServiceGetPayload<typeof getAllServicesResponse>
+  PrismaType.ServiceGetPayload<typeof getAllServicesResponse>
 >;

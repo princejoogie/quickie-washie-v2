@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Prisma } from "@qw/db";
+import type { Prisma as PrismaType } from "@qw/db";
 import type { ValidatorSchema } from "./common";
 
 // Create
@@ -12,7 +13,7 @@ export const createVehicleBodySchema = z.object({
 
 export type CreateVehicleBody = z.infer<typeof createVehicleBodySchema>;
 
-const createVehicleResponse = Prisma.validator<Prisma.VehicleArgs>()({
+const createVehicleResponse = Prisma.validator<PrismaType.VehicleArgs>()({
   select: {
     id: true,
     createdAt: true,
@@ -23,7 +24,7 @@ const createVehicleResponse = Prisma.validator<Prisma.VehicleArgs>()({
   },
 });
 
-export type CreateVehicleResponse = Prisma.VehicleGetPayload<
+export type CreateVehicleResponse = PrismaType.VehicleGetPayload<
   typeof createVehicleResponse
 >;
 
@@ -47,7 +48,7 @@ export const updateVehicleParamsSchema = z.object({
 
 export type UpdateVehicleParams = z.infer<typeof updateVehicleParamsSchema>;
 
-export const updateVehicleResponse = Prisma.validator<Prisma.VehicleArgs>()({
+export const updateVehicleResponse = Prisma.validator<PrismaType.VehicleArgs>()({
   select: {
     id: true,
     createdAt: true,
@@ -58,7 +59,7 @@ export const updateVehicleResponse = Prisma.validator<Prisma.VehicleArgs>()({
   },
 });
 
-export type UpdateVehicleResponse = Prisma.VehicleGetPayload<
+export type UpdateVehicleResponse = PrismaType.VehicleGetPayload<
   typeof updateVehicleResponse
 >;
 
@@ -89,7 +90,7 @@ export const getVehicleByIdParamsSchema = z.object({
 
 export type GetVehicleByIdParams = z.infer<typeof getVehicleByIdParamsSchema>;
 
-export const getVehicleByIdResponse = Prisma.validator<Prisma.VehicleArgs>()({
+export const getVehicleByIdResponse = Prisma.validator<PrismaType.VehicleArgs>()({
   select: {
     id: true,
     createdAt: true,
@@ -116,7 +117,7 @@ export const getVehicleByIdResponse = Prisma.validator<Prisma.VehicleArgs>()({
   },
 });
 
-export type GetVehicleByIdResponse = Prisma.VehicleGetPayload<
+export type GetVehicleByIdResponse = PrismaType.VehicleGetPayload<
   typeof getVehicleByIdResponse
 >;
 
@@ -126,7 +127,7 @@ export const getVehicleByIdSchema: ValidatorSchema = {
 
 // GET ALL
 
-const getAllVehiclesResponse = Prisma.validator<Prisma.VehicleArgs>()({
+const getAllVehiclesResponse = Prisma.validator<PrismaType.VehicleArgs>()({
   select: {
     id: true,
     createdAt: true,
@@ -138,5 +139,5 @@ const getAllVehiclesResponse = Prisma.validator<Prisma.VehicleArgs>()({
 });
 
 export type GetAllVehiclesResponse = Array<
-  Prisma.VehicleGetPayload<typeof getAllVehiclesResponse>
+  PrismaType.VehicleGetPayload<typeof getAllVehiclesResponse>
 >;
