@@ -2,14 +2,11 @@
   "name": "@qw/db",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "index.ts"
-  ],
+  "exports": {
+    ".": "./index.ts"
+  },
   "scripts": {
     "generate": "prisma generate",
-    "build": "prisma generate && tsc",
     "clean": "rimraf dist/ .turbo/ node_modules/",
     "cache:clean": "rimraf dist/ .turbo/"
   },

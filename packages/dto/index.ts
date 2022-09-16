@@ -5,5 +5,5 @@ export * from "./src/common";
 
 export interface TokenPayload {
   id: string;
-  privilege: string;
+  privilege: "ADMIN" | "CUSTOMER";
 }
