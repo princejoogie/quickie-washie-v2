@@ -37,6 +37,7 @@ export const NewService = ({
     handleSubmit,
     formState: { errors },
   } = useForm<CreateServiceBody>({
+    mode: "all",
     resolver: zodResolver(createServiceBodySchema),
     defaultValues: {
       additionalPrices: [],

@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 import type { DeleteVehicleParams, DeleteVehicleResponse } from "@qw/dto";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 
 const deleteVehicleController: RequestHandler<
   DeleteVehicleParams,
@@ -43,11 +43,7 @@ const deleteVehicleController: RequestHandler<
 
     return res.status(200).json(true);
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 

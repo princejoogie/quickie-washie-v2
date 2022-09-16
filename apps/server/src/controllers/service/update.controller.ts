@@ -6,7 +6,7 @@ import type {
 } from "@qw/dto";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 
 const updateServiceController: RequestHandler<
   UpdateServiceParams,
@@ -60,11 +60,7 @@ const updateServiceController: RequestHandler<
 
     return res.status(200).json(updatedService);
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 

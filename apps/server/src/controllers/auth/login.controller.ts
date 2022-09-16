@@ -3,7 +3,7 @@ import type { LoginResponse, LoginBody } from "@qw/dto";
 import bcrypt from "bcryptjs";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 import { createTokens } from "../../utils/jwt-helper";
 
 const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
@@ -40,11 +40,7 @@ const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
 
     return res.status(200).json({ accessToken, refreshToken });
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 

@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 import type { ProfileResponse } from "@qw/dto";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 
 const profileController: RequestHandler<any, ProfileResponse> = async (
   req,
@@ -35,11 +35,7 @@ const profileController: RequestHandler<any, ProfileResponse> = async (
 
     return res.status(200).json(user);
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 

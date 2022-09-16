@@ -1,3 +1,6 @@
+import type { NextFunction } from "express";
+import { Prisma } from "@qw/db";
+
 export class AppError extends Error {
   private readonly statusCode: number;
 
@@ -19,6 +22,37 @@ export class AppError extends Error {
     };
   }
 }
+
+export const handleControllerError = (e: any, next: NextFunction) => {
+  if (e instanceof AppError) {
+    return next(e);
+  }
+
+  if (e instanceof Prisma.PrismaClientUnknownRequestError) {
+    const error = new AppError("BadRequestException", "Unknown Request Error");
+    return next(error);
+  }
+
+  if (e instanceof Prisma.PrismaClientValidationError) {
+    const error = new AppError("BadRequestException", "Validation Error");
+    return next(error);
+  }
+
+  if (e instanceof Prisma.PrismaClientKnownRequestError) {
+    const error = new AppError("BadRequestException", "Known Request Error");
+    return next(error);
+  }
+
+  if (e instanceof Prisma.PrismaClientRustPanicError) {
+    const error = new AppError("BadRequestException", "Rust Panic Error");
+    return next(error);
+  }
+
+  if (e instanceof Prisma.PrismaClientInitializationError) {
+    const error = new AppError("BadRequestException", "Initialization Error");
+    return next(error);
+  }
+};
 
 export const ErrorType = {
   BadRequestException: 400,

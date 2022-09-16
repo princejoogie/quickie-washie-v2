@@ -7,7 +7,7 @@ import type {
 import type { VehicleType } from "@qw/db";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 
 const updateVehicleController: RequestHandler<
   UpdateVehicleParams,
@@ -63,11 +63,7 @@ const updateVehicleController: RequestHandler<
 
     return res.status(200).json(updatedVehicle);
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 

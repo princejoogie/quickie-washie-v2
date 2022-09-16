@@ -3,7 +3,7 @@ import type { CreateServiceBody, CreateServiceResponse } from "@qw/dto";
 import type { VehicleType } from "@qw/db";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 
 const createServiceController: RequestHandler<
   any,
@@ -51,11 +51,7 @@ const createServiceController: RequestHandler<
 
     return res.status(200).json(service);
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 

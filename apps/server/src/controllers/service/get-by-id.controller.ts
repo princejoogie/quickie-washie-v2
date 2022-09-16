@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 import type { GetServiceByIdParams, GetServiceByIdResponse } from "@qw/dto";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 
 const getServiceByIdController: RequestHandler<
   GetServiceByIdParams,
@@ -53,11 +53,7 @@ const getServiceByIdController: RequestHandler<
 
     return res.status(200).json(service);
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 

@@ -3,7 +3,7 @@ import type { RegisterBody, RegisterResponse } from "@qw/dto";
 import bcrypt from "bcryptjs";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 import { createTokens, HASH_SALT } from "../../utils/jwt-helper";
 
 const registerController: RequestHandler<
@@ -41,11 +41,7 @@ const registerController: RequestHandler<
 
     return res.status(200).json({ accessToken, refreshToken, user: newUser });
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 

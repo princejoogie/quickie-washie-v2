@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 import type { GetAllServicesResponse } from "@qw/dto";
 
 import prisma from "../../lib/prisma";
-import { AppError } from "../../utils/error";
+import { AppError, handleControllerError } from "../../utils/error";
 
 const getAllServicesController: RequestHandler<
   any,
@@ -30,11 +30,7 @@ const getAllServicesController: RequestHandler<
 
     return res.status(200).json(services);
   } catch (e) {
-    const error = new AppError(
-      "InternalServerErrorException",
-      (e as any).message
-    );
-    return next(error);
+    handleControllerError(e, next);
   }
 };
 
