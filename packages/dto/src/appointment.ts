@@ -41,6 +41,102 @@ export const createAppointmentSchema: ValidatorSchema = {
   body: createAppointmentBodySchema,
 };
 
+// UPDATE
+
+export const updateAppointmentBodySchema = z.object({
+  date: z.string().min(1),
+  status: z.enum(["PENDING", "ONGOING", "FINISHED", "CANCELLED"]),
+});
+
+export type UpdateAppointmentBody = z.infer<typeof updateAppointmentBodySchema>;
+
+export const updateAppointmentParamsSchema = z.object({
+  appointmentId: z.string().cuid(),
+});
+
+export type UpdateAppointmentParams = z.infer<
+  typeof updateAppointmentParamsSchema
+>;
+
+export const updateAppointmentResponseSchema =
+  Prisma.validator<PrismaType.AppointmentArgs>()({
+    include: {
+      AdditionalPrice: true,
+      Service: true,
+      Vehicle: true,
+      User: {
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          licenseUrl: true,
+          photoUrl: true,
+        },
+      },
+    },
+  });
+
+export type UpdateAppointmentResponse = PrismaType.AppointmentGetPayload<
+  typeof updateAppointmentResponseSchema
+>;
+
+export const updateAppointmentSchema: ValidatorSchema = {
+  body: updateAppointmentBodySchema,
+  params: updateAppointmentParamsSchema,
+};
+
+// DELETE
+
+export const deleteAppointmentParamsSchema = z.object({
+  appointmentId: z.string().cuid(),
+});
+
+export type DeleteAppointmentParams = z.infer<
+  typeof deleteAppointmentParamsSchema
+>;
+
+export type DeleteAppointmentResponse = boolean;
+
+export const deleteAppointmentSchema: ValidatorSchema = {
+  params: deleteAppointmentParamsSchema,
+};
+
+// GET BY ID
+
+export const getAppointmentByIdParamsSchema = z.object({
+  appointmentId: z.string().cuid(),
+});
+
+export type GetAppointmentByIdParams = z.infer<
+  typeof getAppointmentByIdParamsSchema
+>;
+
+export const getAppointmentByIdResponseSchema =
+  Prisma.validator<PrismaType.AppointmentArgs>()({
+    include: {
+      AdditionalPrice: true,
+      Service: true,
+      Vehicle: true,
+      User: {
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          licenseUrl: true,
+          photoUrl: true,
+        },
+      },
+    },
+  });
+
+export type GetAppointmentByIdResponse = PrismaType.AppointmentGetPayload<
+  typeof getAppointmentByIdResponseSchema
+>;
+
+export const getAppointmentByIdSchema: ValidatorSchema = {
+  params: getAppointmentByIdParamsSchema,
+};
+
 // GET ALL
 
 const getAllAppointmentsResponse =

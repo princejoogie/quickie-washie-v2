@@ -1,4 +1,4 @@
-import type { ZodSchema } from "zod";
+import { type ZodSchema, z } from "zod";
 
 export interface ValidatorSchema {
   body?: ZodSchema;
@@ -6,3 +6,14 @@ export interface ValidatorSchema {
   query?: ZodSchema;
 }
 
+export const vehicleTypeSchema = z.enum([
+  "CONVERTIBLE",
+  "HATCHBACK",
+  "MINIVAN",
+  "PICKUP_TRUCK",
+  "SEDAN_2_DOOR",
+  "SEDAN_4_DOOR",
+  "SPORTS_CAR",
+  "STATION_WAGON",
+  "SUV",
+]);
