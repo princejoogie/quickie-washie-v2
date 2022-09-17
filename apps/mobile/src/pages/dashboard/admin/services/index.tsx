@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -10,7 +10,7 @@ import { ServiceDetail } from "./service-detail";
 
 import { AdminDashboardParamList } from "../types";
 
-import { Layout } from "../../../../components";
+import { Layout, ServiceCard } from "../../../../components";
 import { PlusIcon } from "../../../../components/icon/plus-icon";
 import servicesService from "../../../../services/services";
 
@@ -63,18 +63,17 @@ export const AllServices = ({
       }}
     >
       {services.data?.map((service) => (
-        <TouchableOpacity
+        <ServiceCard
+          key={service.id}
           onPress={() => {
             navigation.navigate("ServiceDetail", service);
           }}
-          key={service.id}
-          className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative"
-        >
-          <View className="p-3">
-            <Text className="text-gray-200">{service.name}</Text>
-            <Text className="text-gray-400 text-xs">{service.description}</Text>
-          </View>
-        </TouchableOpacity>
+          service={{
+            name: service.name,
+            basePrice: service.basePrice.toString(),
+            description: service.description,
+          }}
+        />
       ))}
     </Layout>
   );
