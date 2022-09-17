@@ -4,12 +4,11 @@ import checkJwt from "../middlewares/check-jwt";
 
 import { createAppointmentSchema } from "@qw/dto";
 import createAppointmentController from "../controllers/appointment/create.controller";
+import getAllAppointmentsController from "../controllers/appointment/get-all.controller";
 
 export const appointmentRouter = Router();
 
-appointmentRouter.get("/", (req, res) => {
-  res.json({ message: `Hello World from ${req.originalUrl}` });
-});
+appointmentRouter.get("/", checkJwt, getAllAppointmentsController);
 
 appointmentRouter.post(
   "/",
