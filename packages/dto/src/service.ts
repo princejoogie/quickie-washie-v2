@@ -5,7 +5,7 @@ import type { ValidatorSchema } from "./common";
 
 // Create
 
-const createServiceBodySchema = z.object({
+export const createServiceBodySchema = z.object({
   name: z.string().min(1).max(255),
   basePrice: z.number().min(0),
   description: z.string().min(1).max(255),

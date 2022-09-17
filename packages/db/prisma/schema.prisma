@@ -43,7 +43,8 @@ model AdditionalPrice {
   vehicleType VehicleType
   serviceId   String?
 
-  Service Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  Service     Service?      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  Appointment Appointment[]
 }
 
 model Service {
@@ -58,18 +59,20 @@ model Service {
 }
 
 model Appointment {
-  id        String            @id @default(cuid())
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  date      DateTime          @default(now())
-  status    AppointmentStatus @default(PENDING)
-  userId    String?
-  vehicleId String?
-  serviceId String?
+  id                String            @id @default(cuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  date              DateTime          @default(now())
+  status            AppointmentStatus @default(PENDING)
+  userId            String?
+  vehicleId         String?
+  serviceId         String?
+  additionalPriceId String?
 
-  Vehicle Vehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
-  User    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  Service Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  Vehicle         Vehicle?         @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  User            User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  Service         Service?         @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  AdditionalPrice AdditionalPrice? @relation(fields: [additionalPriceId], references: [id], onDelete: SetNull)
 }
 
 enum AppointmentStatus {

@@ -24,6 +24,8 @@ export class AppError extends Error {
 }
 
 export const handleControllerError = (e: any, next: NextFunction) => {
+  console.log("controllerError:", e);
+
   if (e instanceof AppError) {
     return next(e);
   }
