@@ -82,7 +82,6 @@ export const refreshToken = async (params: RefreshTokenBody) => {
 };
 
 export const setTokens = async (accessToken: string, refreshToken: string) => {
-  console.log("[SETTING TOKENS]");
   await AsyncStorage.multiSet([
     [ACCESS_TOKEN_KEY, accessToken],
     [REFRESH_TOKEN_KEY, refreshToken],
@@ -90,8 +89,12 @@ export const setTokens = async (accessToken: string, refreshToken: string) => {
   console.log("[TOKENS SET]");
 };
 
+export const getRefreshToken = async () => {
+  const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN_KEY);
+  return refreshToken;
+};
+
 export const unsetTokens = async () => {
-  console.log("[UNSETTING TOKENS]");
   await AsyncStorage.clear();
   queryClient.resetQueries();
   console.log("[TOKENS UNSET]");

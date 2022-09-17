@@ -13,7 +13,7 @@ export const Profile = ({}: BottomTabScreenProps<
   CustomerDashboardParamList,
   "Profile"
 >) => {
-  const { data, logout } = useAuthContext();
+  const { logout } = useAuthContext();
   const profile = useQuery(["profile"], authService.profile);
   const isFocused = useIsFocused();
 
@@ -38,13 +38,13 @@ export const Profile = ({}: BottomTabScreenProps<
         editable={false}
         containerClassname=""
         label="Full name *"
-        value={data?.name}
+        value={profile.data?.name}
       />
       <TextField
         editable={false}
         keyboardType="email-address"
         label="Email *"
-        value={data?.email}
+        value={profile.data?.email}
       />
 
       <ImageInput label="Drivers license *" uri={null} callback={() => {}} />

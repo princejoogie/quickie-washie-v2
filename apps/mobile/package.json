@@ -26,6 +26,7 @@
     "expo": "~46.0.9",
     "expo-image-picker": "~13.3.1",
     "expo-status-bar": "~1.4.0",
+    "jwt-decode": "^3.1.2",
     "nativewind": "^2.0.10",
     "react": "18.0.0",
     "react-dom": "18.0.0",
