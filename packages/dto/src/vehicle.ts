@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { Prisma } from "@qw/db";
 import type { Prisma as PrismaType } from "@qw/db";
-import { type ValidatorSchema, vehicleTypeSchema } from "./common";
+import { type ValidatorSchema } from "./common";
 
 // Create
 
 export const createVehicleBodySchema = z.object({
   plateNumber: z.string().min(1).max(10),
   model: z.string().min(1).max(25),
-  type: vehicleTypeSchema,
+  type: z.string().min(1).max(50),
 });
 
 export type CreateVehicleBody = z.infer<typeof createVehicleBodySchema>;
@@ -37,7 +37,7 @@ export const createVehicleSchema: ValidatorSchema = {
 export const updateVehicleBodySchema = z.object({
   plateNumber: z.string().min(1).max(10).optional(),
   model: z.string().min(1).max(25).optional(),
-  type: vehicleTypeSchema.optional(),
+  type: z.string().min(1).max(50).optional(),
 });
 
 export type UpdateVehicleBody = z.infer<typeof updateVehicleBodySchema>;

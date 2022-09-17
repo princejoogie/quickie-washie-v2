@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Prisma } from "@qw/db";
 import type { Prisma as PrismaType } from "@qw/db";
-import { type ValidatorSchema, vehicleTypeSchema } from "./common";
+import { type ValidatorSchema } from "./common";
 
 // Create
 
@@ -12,7 +12,7 @@ export const createServiceBodySchema = z.object({
   additionalPrices: z.array(
     z.object({
       price: z.number().min(0),
-      vehicleType: vehicleTypeSchema,
+      vehicleType: z.string().min(1).max(50),
     })
   ),
 });
@@ -49,7 +49,7 @@ export const updateServiceBodySchema = z.object({
     .array(
       z.object({
         price: z.number().min(0),
-        vehicleType: vehicleTypeSchema,
+        vehicleType: z.string().min(1).max(50),
       })
     )
     .optional(),
