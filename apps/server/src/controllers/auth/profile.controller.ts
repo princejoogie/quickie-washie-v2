@@ -25,6 +25,7 @@ const profileController: RequestHandler<any, ProfileResponse> = async (
         photoUrl: true,
         name: true,
         privilege: true,
+        licenseUrl: true,
       },
     });
 

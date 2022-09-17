@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Image, Text, TouchableOpacity } from "react-native";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { useIsFocused } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
@@ -34,20 +34,29 @@ export const Profile = ({}: BottomTabScreenProps<
       }}
       onRefresh={profile.refetch}
     >
+      <Image
+        className="mx-auto h-32 w-32 rounded-full"
+        source={{ uri: profile.data?.photoUrl ?? undefined }}
+      />
+
       <TextField
         editable={false}
         containerClassname=""
-        label="Full name *"
+        label="Full name"
         value={profile.data?.name}
       />
       <TextField
         editable={false}
         keyboardType="email-address"
-        label="Email *"
+        label="Email"
         value={profile.data?.email}
       />
 
-      <ImageInput label="Drivers license *" uri={null} callback={() => {}} />
+      <ImageInput
+        label="Drivers license"
+        uri={profile.data?.licenseUrl ?? null}
+        callback={() => {}}
+      />
     </Layout>
   );
 };

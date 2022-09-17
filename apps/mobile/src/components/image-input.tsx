@@ -6,7 +6,7 @@ interface ImageInputProps {
   className?: string;
   containerClassname?: string;
   uri: string | null;
-  callback: (value: string | null) => void;
+  callback: (value: { uri: string; base64: string | undefined } | null) => void;
 }
 
 export const ImageInput = ({

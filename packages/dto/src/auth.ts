@@ -27,6 +27,7 @@ export const registerBodySchema = z.object({
   email: z.string().email().trim(),
   password: z.string().trim().min(6),
   licenseUrl: z.string().url().trim(),
+  imageUrl: z.string().url().trim(),
   name: z.string().trim(),
 });
 
@@ -70,6 +71,7 @@ const profileResponse = Prisma.validator<PrismaType.UserArgs>()({
     photoUrl: true,
     name: true,
     privilege: true,
+    licenseUrl: true,
   },
 });
 

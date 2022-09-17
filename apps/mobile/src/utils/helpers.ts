@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import * as ImagePicker from "expo-image-picker";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 
 export const getImage = async ({
   mediaTypes = ImagePicker.MediaTypeOptions.Images,
@@ -12,10 +13,24 @@ export const getImage = async ({
     mediaTypes,
     allowsEditing,
     quality,
+    base64: true,
   });
 
   if (!result.cancelled) {
-    return result.uri;
+    const file = await manipulateAsync(
+      result.uri,
+      result.width > 500 ? [{ resize: { width: 500 } }] : undefined,
+      {
+        base64: true,
+        format: SaveFormat.JPEG,
+        compress: 0.5,
+      }
+    );
+
+    return {
+      uri: file.uri,
+      base64: file.base64,
+    };
   }
 
   return null;

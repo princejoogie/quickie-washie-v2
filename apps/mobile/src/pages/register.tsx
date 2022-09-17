@@ -11,6 +11,7 @@ import { getImage } from "../utils/helpers";
 
 import { RootStackParamList } from "./types";
 import { useAuthContext } from "../contexts/auth-context";
+import { uploadImage } from "../services/firebase";
 
 export const Register = ({
   navigation,
@@ -56,7 +57,7 @@ export const Register = ({
             className="w-full h-full flex items-center justify-center"
             onPress={async () => {
               const res = await getImage({ aspect: [1, 1] });
-              if (res) setImageUrl(res);
+              if (res) setImageUrl(res.uri);
             }}
           >
             {!imageUrl ? (
@@ -94,19 +95,36 @@ export const Register = ({
       <ImageInput
         label="Drivers license *"
         uri={licenseUrl}
-        callback={setLicenseUrl}
+        callback={async (e) => {
+          if (e?.uri) {
+            setLicenseUrl(e.uri);
+          }
+        }}
       />
 
       <TouchableOpacity
         className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
         disabled={register.isLoading}
-        onPress={() => {
-          register.mutate({
-            email,
-            name,
-            password,
-            licenseUrl: licenseUrl ?? "no license",
-          });
+        onPress={async () => {
+          if (licenseUrl && imageUrl) {
+            const licenseDownloadUrl = await uploadImage(
+              licenseUrl,
+              (progress) => {
+                console.log(`${progress}%`);
+              }
+            );
+            const imageDownloadUrl = await uploadImage(imageUrl, (progress) => {
+              console.log(`${progress}%`);
+            });
+
+            await register.mutateAsync({
+              email,
+              name,
+              password,
+              licenseUrl: licenseDownloadUrl,
+              imageUrl: imageDownloadUrl,
+            });
+          }
         }}
       >
         <Text className="text-white">
