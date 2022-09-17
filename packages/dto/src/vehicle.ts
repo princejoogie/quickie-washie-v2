@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Prisma } from "@qw/db";
 import type { Prisma as PrismaType } from "@qw/db";
-import { type ValidatorSchema } from "./common";
+import type { ValidatorSchema } from "./common";
 
 // Create
 
