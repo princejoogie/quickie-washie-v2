@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { View, Text, TouchableOpacity, Image } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 import authService from "../services/auth";
 import { ChevronIcon } from "../components/icon/chevron-icon";
@@ -10,25 +12,67 @@ import { PencilSquareIcon } from "../components/icon/pencil-square-icon";
 import { getImage } from "../utils/helpers";
 
 import { RootStackParamList } from "./types";
-import { useAuthContext } from "../contexts/auth-context";
 import { uploadImage } from "../services/firebase";
+
+const registerSchema = z
+  .object({
+    email: z.string().email().trim(),
+    password: z
+      .string()
+      .trim()
+      .min(6, { message: "Password must be at least 6 characters" }),
+    confirmPassword: z
+      .string()
+      .trim()
+      .min(6, { message: "Password must be at least 6 characters" }),
+    licenseUrl: z
+      .string()
+      .min(1, { message: "Please upload a license" })
+      .url()
+      .trim(),
+    imageUrl: z
+      .string()
+      .min(1, { message: "Please upload a profile picture" })
+      .url()
+      .trim(),
+    name: z.string().min(1, { message: "Invalid name" }).trim(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type RegisterSchema = z.infer<typeof registerSchema>;
 
 export const Register = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Register">) => {
-  const { login } = useAuthContext();
-  const [name, setName] = useState("John Doe");
-  const [email, setEmail] = useState("john@gmail.com");
-  const [password, setPassword] = useState("qweqwe");
-  const [confirmPassword, setConfirmPassword] = useState("qweqwe");
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [licenseUrl, setLicenseUrl] = useState<string | null>(null);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValidating },
+  } = useForm<RegisterSchema>({
+    mode: "all",
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: "",
+      imageUrl: "",
+      licenseUrl: "",
+      name: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const register = useMutation(authService.register, {
     onSuccess: async () => {
-      await login(email, password);
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      }
     },
   });
+
+  const isLoading = isSubmitting || isValidating || register.isLoading;
 
   return (
     <Layout>
@@ -53,60 +97,135 @@ export const Register = ({
 
       <View className="flex items-center mt-8">
         <View className="bg-gray-800 h-32 w-32 border-2 border-gray-700 rounded-full flex items-center justify-center">
-          <TouchableOpacity
-            className="w-full h-full flex items-center justify-center"
-            onPress={async () => {
-              const res = await getImage({ aspect: [1, 1] });
-              if (res) setImageUrl(res.uri);
-            }}
-          >
-            {!imageUrl ? (
-              <PencilSquareIcon styleName="text-blue-600" />
-            ) : (
-              <Image
-                className="h-full w-full rounded-full"
-                source={{ uri: imageUrl }}
-              />
+          <Controller
+            control={control}
+            name="imageUrl"
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TouchableOpacity
+                onBlur={onBlur}
+                className="w-full h-full flex items-center justify-center"
+                onPress={async () => {
+                  const res = await getImage({ aspect: [1, 1] });
+                  if (res) onChange(res.uri);
+                }}
+              >
+                {!value ? (
+                  <PencilSquareIcon styleName="text-blue-600" />
+                ) : (
+                  <Image
+                    className="h-full w-full rounded-full"
+                    source={{ uri: value }}
+                  />
+                )}
+              </TouchableOpacity>
             )}
-          </TouchableOpacity>
+          />
         </View>
       </View>
+      {errors.imageUrl && (
+        <Text className="text-xs text-center text-red-600 ml-2 mt-1">
+          {errors.imageUrl.message}
+        </Text>
+      )}
 
-      <TextField label="Full name *" value={name} onChangeText={setName} />
-      <TextField
-        keyboardType="email-address"
-        label="Email *"
-        value={email}
-        onChangeText={setEmail}
+      <Controller
+        control={control}
+        name="name"
+        render={({ field: { onChange, value, ...rest } }) => (
+          <TextField
+            {...rest}
+            label="Full name *"
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
       />
-      <TextField
-        label="Password *"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TextField
-        label="Confirm password *"
-        secureTextEntry
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-      />
+      {errors.name && (
+        <Text className="text-xs text-red-600 ml-2 mt-1">
+          {errors.name.message}
+        </Text>
+      )}
 
-      <ImageInput
-        label="Drivers license *"
-        uri={licenseUrl}
-        callback={async (e) => {
-          if (e?.uri) {
-            setLicenseUrl(e.uri);
-          }
-        }}
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, value, ...rest } }) => (
+          <TextField
+            {...rest}
+            label="Email *"
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
       />
+      {errors.email && (
+        <Text className="text-xs text-red-600 ml-2 mt-1">
+          {errors.email.message}
+        </Text>
+      )}
+
+      <Controller
+        control={control}
+        name="password"
+        render={({ field: { onChange, value, ...rest } }) => (
+          <TextField
+            {...rest}
+            label="Password *"
+            secureTextEntry
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
+      />
+      {errors.password && (
+        <Text className="text-xs text-red-600 ml-2 mt-1">
+          {errors.password.message}
+        </Text>
+      )}
+
+      <Controller
+        control={control}
+        name="confirmPassword"
+        render={({ field: { onChange, value, ...rest } }) => (
+          <TextField
+            {...rest}
+            label="Confirm password *"
+            secureTextEntry
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
+      />
+      {errors.confirmPassword && (
+        <Text className="text-xs text-red-600 ml-2 mt-1">
+          {errors.confirmPassword.message}
+        </Text>
+      )}
+
+      <Controller
+        control={control}
+        name="licenseUrl"
+        render={({ field: { onChange, value } }) => (
+          <ImageInput
+            label="Drivers license *"
+            uri={value}
+            callback={async (e) => {
+              if (e) onChange(e.uri);
+            }}
+          />
+        )}
+      />
+      {errors.licenseUrl && (
+        <Text className="text-xs text-red-600 ml-2 mt-1">
+          {errors.licenseUrl.message}
+        </Text>
+      )}
 
       <TouchableOpacity
         className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
-        disabled={register.isLoading}
-        onPress={async () => {
-          if (licenseUrl && imageUrl) {
+        disabled={isLoading}
+        onPress={handleSubmit(
+          async ({ licenseUrl, imageUrl, confirmPassword, ...rest }) => {
             const licenseDownloadUrl = await uploadImage(
               licenseUrl,
               (progress) => {
@@ -118,17 +237,15 @@ export const Register = ({
             });
 
             await register.mutateAsync({
-              email,
-              name,
-              password,
+              ...rest,
               licenseUrl: licenseDownloadUrl,
               imageUrl: imageDownloadUrl,
             });
           }
-        }}
+        )}
       >
         <Text className="text-white">
-          {register.isLoading ? "Loading..." : "Register"}
+          {isLoading ? "Loading..." : "Register"}
         </Text>
       </TouchableOpacity>
     </Layout>
