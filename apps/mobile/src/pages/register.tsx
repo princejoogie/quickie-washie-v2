@@ -13,6 +13,7 @@ import { getImage } from "../utils/helpers";
 
 import { RootStackParamList } from "./types";
 import { uploadImage } from "../services/firebase";
+import { useAuthContext } from "../contexts/auth-context";
 
 const registerSchema = z
   .object({
@@ -47,6 +48,7 @@ type RegisterSchema = z.infer<typeof registerSchema>;
 export const Register = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Register">) => {
+  const { login } = useAuthContext();
   const {
     control,
     handleSubmit,
@@ -64,13 +66,7 @@ export const Register = ({
     },
   });
 
-  const register = useMutation(authService.register, {
-    onSuccess: async () => {
-      if (navigation.canGoBack()) {
-        navigation.goBack();
-      }
-    },
-  });
+  const register = useMutation(authService.register);
 
   const isLoading = isSubmitting || isValidating || register.isLoading;
 
@@ -226,21 +222,18 @@ export const Register = ({
         disabled={isLoading}
         onPress={handleSubmit(
           async ({ licenseUrl, imageUrl, confirmPassword, ...rest }) => {
-            const licenseDownloadUrl = await uploadImage(
-              licenseUrl,
-              (progress) => {
-                console.log(`${progress}%`);
-              }
-            );
-            const imageDownloadUrl = await uploadImage(imageUrl, (progress) => {
-              console.log(`${progress}%`);
-            });
+            const [licenseDownloadUrl, imageDownloadUrl] = await Promise.all([
+              uploadImage(licenseUrl),
+              uploadImage(imageUrl),
+            ]);
 
             await register.mutateAsync({
               ...rest,
               licenseUrl: licenseDownloadUrl,
               imageUrl: imageDownloadUrl,
             });
+
+            await login(rest.email, rest.password);
           }
         )}
       >

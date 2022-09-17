@@ -1,6 +1,8 @@
-import { useState } from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 import { Layout, TextField } from "../components";
 
@@ -8,12 +10,34 @@ import { RootStackParamList } from "./types";
 import { handleError } from "../utils/helpers";
 import { useAuthContext } from "../contexts/auth-context";
 
+const loginSchema = z.object({
+  email: z.string().email().trim(),
+  password: z
+    .string()
+    .trim()
+    .min(6, { message: "Password must be at least 6 characters" }),
+});
+
+type LoginSchema = z.infer<typeof loginSchema>;
+
 export const Login = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Login">) => {
   const { login } = useAuthContext();
-  const [email, setEmail] = useState("test@gmail.com");
-  const [password, setPassword] = useState("qweqwe");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValidating },
+  } = useForm<LoginSchema>({
+    mode: "all",
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const isLoading = isSubmitting || isValidating;
 
   return (
     <Layout className="px-6">
@@ -24,31 +48,56 @@ export const Login = ({
         <Text className="mt-1 text-gray-400">Hello, welcome back!</Text>
       </View>
 
-      <TextField
-        keyboardType="email-address"
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, value, ...rest } }) => (
+          <TextField
+            {...rest}
+            label="Email"
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
       />
-      <TextField
-        label="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
+      {errors.email && (
+        <Text className="text-xs text-red-600 ml-2 mt-1">
+          {errors.email.message}
+        </Text>
+      )}
+
+      <Controller
+        control={control}
+        name="password"
+        render={({ field: { onChange, value, ...rest } }) => (
+          <TextField
+            {...rest}
+            label="Password *"
+            secureTextEntry
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
       />
+      {errors.password && (
+        <Text className="text-xs text-red-600 ml-2 mt-1">
+          {errors.password.message}
+        </Text>
+      )}
 
       <TouchableOpacity
         className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
-        onPress={async () => {
+        disabled={isLoading}
+        onPress={handleSubmit(async ({ email, password }) => {
           try {
             await login(email, password);
           } catch (e) {
             const err = handleError(e);
             Alert.alert("Error", err.message);
           }
-        }}
+        })}
       >
-        <Text className="text-white">Login</Text>
+        <Text className="text-white">{isLoading ? "Loading..." : "Login"}</Text>
       </TouchableOpacity>
 
       <View className="self-end mt-2">
