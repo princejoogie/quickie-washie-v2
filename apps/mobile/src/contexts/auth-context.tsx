@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { ProfileResponse } from "@qw/dto";
 import authService from "../services/auth";
+import { setTokens, unsetTokens } from "../services/api";
 
 interface TAuthContext {
   isLoading: boolean;
@@ -23,30 +23,21 @@ interface AuthContextProps {
 
 export const AuthProvider = ({ children }: AuthContextProps) => {
   const [data, setData] = useState<TAuthContext["data"]>(null);
-
-  const profile = useQuery(["profile"], authService.profile, {
-    retry: false,
-    cacheTime: 0,
-    onSuccess: (data) => {
-      setData({ ...data });
-    },
-    onError: () => {
-      setData(null);
-    },
-  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const logout = async () => {
-    await authService.logout();
+    await unsetTokens();
     setData(null);
   };
 
   const login = async (email: string, password: string) => {
-    await authService.login({ email, password });
-    await profile.refetch();
+    setIsLoading(true);
+    const tokens = await authService.login({ email, password });
+    await setTokens(tokens.accessToken, tokens.refreshToken);
+    const data = await authService.profile();
+    setData(data);
+    setIsLoading(false);
   };
-
-  const isLoading =
-    profile.isLoading || profile.isFetching || profile.isRefetching;
 
   return (
     <AuthContext.Provider value={{ isLoading, data, logout, login }}>

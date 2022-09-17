@@ -5,7 +5,7 @@ import type {
   RegisterResponse,
   ProfileResponse,
 } from "@qw/dto";
-import { api, setTokens, unsetTokens } from "./api";
+import { api, setTokens } from "./api";
 
 const profile = async () => {
   const response = await api.get<ProfileResponse>("/auth/profile");
@@ -24,13 +24,8 @@ const register = async (params: RegisterBody) => {
   return response.data;
 };
 
-const logout = async () => {
-  await unsetTokens();
-};
-
 const authService = {
   login,
-  logout,
   profile,
   register,
 };

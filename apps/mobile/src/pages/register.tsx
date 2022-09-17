@@ -8,13 +8,14 @@ import { ChevronIcon } from "../components/icon/chevron-icon";
 import { Layout, TextField, ImageInput } from "../components";
 import { PencilSquareIcon } from "../components/icon/pencil-square-icon";
 import { getImage } from "../utils/helpers";
-import { queryClient } from "../services/api";
 
 import { RootStackParamList } from "./types";
+import { useAuthContext } from "../contexts/auth-context";
 
 export const Register = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Register">) => {
+  const { login } = useAuthContext();
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("john@gmail.com");
   const [password, setPassword] = useState("qweqwe");
@@ -23,8 +24,8 @@ export const Register = ({
   const [licenseUrl, setLicenseUrl] = useState<string | null>(null);
 
   const register = useMutation(authService.register, {
-    onSuccess() {
-      queryClient.resetQueries(["profile"]);
+    onSuccess: async () => {
+      await login(email, password);
     },
   });
 

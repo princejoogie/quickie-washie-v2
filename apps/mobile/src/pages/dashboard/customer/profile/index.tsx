@@ -1,7 +1,12 @@
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Text, TouchableOpacity } from "react-native";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { useIsFocused } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
+
 import { ImageInput, Layout, TextField } from "../../../../components";
 import { useAuthContext } from "../../../../contexts/auth-context";
+import authService from "../../../../services/auth";
+
 import { CustomerDashboardParamList } from "../types";
 
 export const Profile = ({}: BottomTabScreenProps<
@@ -9,6 +14,12 @@ export const Profile = ({}: BottomTabScreenProps<
   "Profile"
 >) => {
   const { data, logout } = useAuthContext();
+  const profile = useQuery(["profile"], authService.profile);
+  const isFocused = useIsFocused();
+
+  if (isFocused && profile.isStale) {
+    profile.refetch();
+  }
 
   return (
     <Layout
@@ -21,6 +32,7 @@ export const Profile = ({}: BottomTabScreenProps<
           </TouchableOpacity>
         ),
       }}
+      onRefresh={profile.refetch}
     >
       <TextField
         editable={false}
