@@ -6,7 +6,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "generate": "tsc",
     "clean": "rimraf dist/ .turbo/ node_modules/",
     "cache:clean": "rimraf dist/ .turbo/"
   },
