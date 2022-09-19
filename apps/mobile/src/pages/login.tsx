@@ -9,6 +9,7 @@ import { Layout, TextField } from "../components";
 import { RootStackParamList } from "./types";
 import { handleError } from "../utils/helpers";
 import { useAuthContext } from "../contexts/auth-context";
+import { LoginCar } from "../components/icon/login-car";
 
 const loginSchema = z.object({
   email: z.string().email().trim(),
@@ -47,6 +48,8 @@ export const Login = ({
         </Text>
         <Text className="mt-1 text-gray-400">Hello, welcome back!</Text>
       </View>
+
+      <LoginCar styleName="mx-auto my-14" />
 
       <Controller
         control={control}
@@ -101,9 +104,9 @@ export const Login = ({
       </TouchableOpacity>
 
       <View className="self-end mt-2">
-        <Text className="text-white">Not registered yet?</Text>
+        <Text className="text-white text-xs">Not registered yet?</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text className="text-blue-600">Create an account</Text>
+          <Text className="text-blue-600 text-xs">Create an account</Text>
         </TouchableOpacity>
       </View>
     </Layout>

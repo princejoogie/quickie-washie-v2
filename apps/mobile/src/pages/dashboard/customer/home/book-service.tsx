@@ -29,6 +29,23 @@ export const BookService = ({
     },
   });
 
+  const getAdditionalPrice = () => {
+    if (vehicles.data && serviceDetails.data) {
+      const vehicle = vehicles.data.find((e) => e.id === vehicleId);
+      if (vehicle) {
+        const additionalPrice = serviceDetails.data.additionalPrices.find(
+          (e) => e.vehicleType === vehicle.type
+        );
+
+        if (additionalPrice) {
+          return additionalPrice.price.toString();
+        }
+      }
+    }
+
+    return "0.00";
+  };
+
   return (
     <Layout
       nav={{
@@ -57,8 +74,6 @@ export const BookService = ({
         value={`₱ ${serviceDetails.data?.basePrice.toString() ?? "0.00"}`}
       />
 
-      <TextField editable={false} label="Additional price" value="₱ 0.00" />
-
       <Text className="text-gray-400 text-xs ml-2 mt-4">Select vehicle</Text>
       {vehicles.data && vehicles.data.length > 0 && (
         <Picker
@@ -74,6 +89,12 @@ export const BookService = ({
           ))}
         </Picker>
       )}
+
+      <TextField
+        editable={false}
+        label="Additional price"
+        value={`₱ ${getAdditionalPrice()}`}
+      />
 
       <Text className="text-gray-400 text-xs ml-2 mt-4">Select date</Text>
     </Layout>
