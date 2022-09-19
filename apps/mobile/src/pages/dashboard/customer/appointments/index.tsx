@@ -18,6 +18,7 @@ import { CustomerDashboardParamList } from "../types";
 
 import { Layout } from "../../../../components";
 import appointmentService from "../../../../services/appointment";
+import { AppointmentDetail } from "./appointment-detail";
 
 export const Appointments = ({}: BottomTabScreenProps<
   CustomerDashboardParamList,
@@ -36,6 +37,10 @@ export const Appointments = ({}: BottomTabScreenProps<
       <CustomerAppointmentsStack.Screen
         name="AllAppointments"
         component={AllAppointments}
+      />
+      <CustomerAppointmentsStack.Screen
+        name="AppointmentDetail"
+        component={AppointmentDetail}
       />
     </CustomerAppointmentsStack.Navigator>
   );
@@ -87,7 +92,7 @@ const AppointmentItem = ({ appointment, navigation }: AppointmentItemProps) => {
     <TouchableOpacity
       key={appointment.id}
       onPress={() => {
-        /* navigation.na */
+        navigation.navigate("AppointmentDetail", appointment);
       }}
       className="border-gray-700 bg-gray-800 mt-3 rounded-xl border-2 relative p-3"
     >
