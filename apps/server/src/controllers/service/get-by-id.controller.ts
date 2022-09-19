@@ -12,8 +12,7 @@ const getServiceByIdController: RequestHandler<
     const payload = req.tokenPayload;
 
     if (!payload) {
-      const error = new AppError("UnauthorizedException", "No token provided");
-      return next(error);
+      const error = new AppError("UnauthorizedException", "No token provided"); return next(error);
     }
 
     const { serviceId } = req.params;
@@ -48,7 +47,7 @@ const getServiceByIdController: RequestHandler<
     });
 
     if (!service) {
-      const error = new AppError("NotFoundException", "Vehicle not found");
+      const error = new AppError("NotFoundException", "Service not found");
       return next(error);
     }
 

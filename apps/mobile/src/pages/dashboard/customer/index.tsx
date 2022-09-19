@@ -3,12 +3,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CustomerTabBar } from "../../../components";
 import { RootStackParamList } from "../../types";
 
-import { Appointments } from "./appointments";
 import { CustomerBottomTab } from "./types";
 import { Home } from "./home";
 import { Notifications } from "./notifications";
 import { Profile } from "./profile";
 import { Vehicles } from "./vehicles";
+import { Appointments } from "./appointments";
 
 export const UserDashboard = ({}: NativeStackScreenProps<
   RootStackParamList,

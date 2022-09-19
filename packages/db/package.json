@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "prisma generate && tsc",
-    "generate": "prisma generate && tsc",
+    "generate": "prisma generate",
     "clean": "rimraf dist/ .turbo/ node_modules/",
     "cache:clean": "rimraf dist/ .turbo/"
   },

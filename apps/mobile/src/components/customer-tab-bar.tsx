@@ -1,12 +1,14 @@
 import { View, TouchableOpacity } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { Platform } from "expo-modules-core";
+
 import { CustomerDashboardParamKeys } from "../pages/dashboard/customer/types";
+
 import { HomeIcon } from "./icon/home-icon";
 import { VehicleIcon } from "./icon/vehicle-icon";
 import { CalendarIcon } from "./icon/calendar-icon";
 import { NotificationIcon } from "./icon/notification-icon";
 import { UserIcon } from "./icon/user-icon";
-import { Platform } from "expo-modules-core";
 
 const GetIcon = ({
   name,

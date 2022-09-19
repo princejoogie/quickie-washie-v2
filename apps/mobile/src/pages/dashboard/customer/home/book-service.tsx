@@ -1,21 +1,61 @@
-import { Text } from "react-native";
-import { useQuery } from "@tanstack/react-query";
+import { z } from "zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Picker } from "@react-native-picker/picker";
+import { Text, TouchableOpacity } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { Layout, TextField } from "../../../../components";
 import servicesService from "../../../../services/services";
 
 import { HomeStackParamList } from "./types";
 import vehiclesService from "../../../../services/vehicles";
-import { useState } from "react";
+import { useAuthContext } from "../../../../contexts/auth-context";
+import { useEffect } from "react";
+import appointmentService from "../../../../services/appointment";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { CustomerDashboardParamList } from "../types";
+
+const bookServiceSchema = z.object({
+  serviceId: z.string().cuid(),
+  vehicleId: z.string().cuid(),
+  additionalPriceId: z.string().cuid().nullable(),
+  userId: z.string().cuid(),
+  date: z.date(),
+});
+
+type BookServiceSchema = z.infer<typeof bookServiceSchema>;
 
 export const BookService = ({
   route,
   navigation,
 }: NativeStackScreenProps<HomeStackParamList, "BookService">) => {
+  const { data } = useAuthContext();
   const props = route.params;
-  const [vehicleId, setVehicleId] = useState("");
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    watch,
+    formState: { errors, isValidating },
+  } = useForm<BookServiceSchema>({
+    resolver: zodResolver(bookServiceSchema),
+    defaultValues: {
+      serviceId: props.serviceId,
+      vehicleId: "",
+      additionalPriceId: "",
+      userId: "",
+      date: new Date(),
+    },
+  });
+
+  useEffect(() => {
+    if (data?.id) {
+      setValue("userId", data.id);
+    }
+  }, [data?.id]);
 
   const serviceDetails = useQuery(["serviceDetails", props.serviceId], (e) =>
     servicesService.getById({ serviceId: e.queryKey[1] })
@@ -24,10 +64,51 @@ export const BookService = ({
   const vehicles = useQuery(["vehicles"], vehiclesService.getAll, {
     onSuccess: (data) => {
       if (data.length > 0) {
-        setVehicleId(data[0].id);
+        setValue("vehicleId", data[0].id);
       }
     },
   });
+
+  const createAppointment = useMutation(appointmentService.create, {
+    onSuccess: () => {
+      navigation
+        .getParent<
+          BottomTabNavigationProp<CustomerDashboardParamList, "Home">
+        >()
+        .navigate("Appointments");
+    },
+  });
+
+  const isLoading =
+    serviceDetails.isLoading ||
+    vehicles.isLoading ||
+    createAppointment.isLoading ||
+    isValidating;
+
+  const getAdditionalPrice = () => {
+    if (vehicles.data && serviceDetails.data) {
+      const vehicle = vehicles.data.find((e) => e.id === watch("vehicleId"));
+      if (vehicle) {
+        const additionalPrice = serviceDetails.data.additionalPrices.find(
+          (e) => e.vehicleType === vehicle.type
+        );
+
+        if (additionalPrice) {
+          return {
+            id: additionalPrice.id,
+            value: additionalPrice.price.toString(),
+          };
+        }
+      }
+    }
+
+    return {
+      id: null,
+      value: "0.00",
+    };
+  };
+
+  setValue("additionalPriceId", getAdditionalPrice().id);
 
   return (
     <Layout
@@ -57,25 +138,105 @@ export const BookService = ({
         value={`₱ ${serviceDetails.data?.basePrice.toString() ?? "0.00"}`}
       />
 
-      <TextField editable={false} label="Additional price" value="₱ 0.00" />
+      <Text className="text-gray-400 text-xs ml-2 mt-4">
+        Select your vehicle
+      </Text>
+      <Controller
+        name="vehicleId"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <>
+            {vehicles.data && vehicles.data.length > 0 && (
+              <Picker
+                itemStyle={{ color: "white" }}
+                mode="dialog"
+                selectedValue={value}
+                onValueChange={(e) => {
+                  onChange(e);
+                }}
+              >
+                {vehicles.data.map((e) => (
+                  <Picker.Item key={e.id} label={e.plateNumber} value={e.id} />
+                ))}
+              </Picker>
+            )}
+          </>
+        )}
+      />
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Select vehicle</Text>
-      {vehicles.data && vehicles.data.length > 0 && (
-        <Picker
-          itemStyle={{ color: "white" }}
-          mode="dialog"
-          selectedValue={vehicleId}
-          onValueChange={(e) => {
-            setVehicleId(e);
-          }}
-        >
-          {vehicles.data.map((e) => (
-            <Picker.Item key={e.id} label={e.plateNumber} value={e.id} />
-          ))}
-        </Picker>
-      )}
+      <TextField
+        editable={false}
+        label="Additional price (auto calculated)"
+        value={`₱ ${getAdditionalPrice().value}`}
+      />
 
       <Text className="text-gray-400 text-xs ml-2 mt-4">Select date</Text>
+      <Controller
+        name="date"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <DateTimePicker
+            minimumDate={new Date()}
+            mode="date"
+            display="inline"
+            textColor="white"
+            themeVariant="dark"
+            value={value}
+            onChange={(_, date) => {
+              if (date) {
+                const copy = new Date(date);
+                copy.setHours(value.getHours());
+                copy.setMinutes(value.getMinutes());
+                copy.setSeconds(0);
+                onChange(copy);
+              } else onChange(value);
+            }}
+          />
+        )}
+      />
+
+      <Text className="text-gray-400 text-xs ml-2 mt-4">Select time</Text>
+      <Controller
+        name="date"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <DateTimePicker
+            minimumDate={new Date()}
+            minuteInterval={10}
+            mode="time"
+            display="spinner"
+            textColor="white"
+            themeVariant="dark"
+            is24Hour={false}
+            value={value}
+            onChange={(_, date) => {
+              if (date) {
+                const copy = new Date(date);
+                copy.setFullYear(value.getFullYear());
+                copy.setMonth(value.getMonth());
+                copy.setDate(value.getDate());
+                copy.setSeconds(0);
+                onChange(copy);
+              } else onChange(value);
+            }}
+          />
+        )}
+      />
+
+      <TouchableOpacity
+        onPress={handleSubmit(({ date, ...rest }) => {
+          createAppointment.mutate({
+            ...rest,
+            date: date.toISOString(),
+          });
+        })}
+        disabled={isLoading}
+        className={`bg-green-600 w-full mt-6 px-8 py-2 rounded-lg border-2 border-green-500 ${
+          isLoading ? "opacity-50" : ""
+        }`}
+      >
+        <Text className="text-white text-center">Book Service</Text>
+      </TouchableOpacity>
     </Layout>
   );
 };
