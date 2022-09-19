@@ -9,7 +9,7 @@ export const createAppointmentBodySchema = z.object({
   userId: z.string().cuid(),
   vehicleId: z.string().cuid(),
   serviceId: z.string().cuid(),
-  additionalPriceId: z.string().cuid(),
+  additionalPriceId: z.string().cuid().nullable(),
   date: z.string().min(1),
 });
 
