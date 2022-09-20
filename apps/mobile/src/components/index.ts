@@ -8,3 +8,4 @@ export * from "./messages-page";
 export * from "./service-card";
 export * from "./text-field";
 export * from "./vehicle-card";
+export * from "./vehicle-type-modal";

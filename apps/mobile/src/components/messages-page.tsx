@@ -7,7 +7,8 @@ import {
 } from "react-native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { Layout, TextField } from ".";
+import { Layout } from "./layout";
+import { TextField } from "./text-field";
 import messageService from "../services/messages";
 import { useAuthContext } from "../contexts/auth-context";
 import { queryClient } from "../services/api";
