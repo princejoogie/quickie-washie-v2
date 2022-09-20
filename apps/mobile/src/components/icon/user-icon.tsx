@@ -5,7 +5,10 @@ export interface UserIconProps {
   styleName?: string;
 }
 
-export const UserIcon = ({ filled, styleName = "" }: UserIconProps) => {
+export const UserIcon = ({
+  filled,
+  styleName = "text-blue-600",
+}: UserIconProps) => {
   return filled ? (
     <Svg
       viewBox="0 0 24 24"

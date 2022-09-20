@@ -10,7 +10,7 @@ interface ChevronIconProps {
 
 export const ChevronIcon = ({
   direction = "left",
-  styleName = "",
+  styleName = "text-blue-600",
   strokeWidth = 1.5,
 }: ChevronIconProps) => {
   switch (direction) {

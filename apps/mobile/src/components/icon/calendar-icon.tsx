@@ -5,7 +5,10 @@ export interface CalendarIconProps {
   styleName?: string;
 }
 
-export const CalendarIcon = ({ filled, styleName = "" }: CalendarIconProps) => {
+export const CalendarIcon = ({
+  filled,
+  styleName = "text-blue-600",
+}: CalendarIconProps) => {
   return filled ? (
     <Svg
       viewBox="0 0 24 24"

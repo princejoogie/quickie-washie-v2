@@ -7,7 +7,7 @@ export interface NotificationIconProps {
 
 export const NotificationIcon = ({
   filled,
-  styleName = "",
+  styleName = "text-blue-600",
 }: NotificationIconProps) => {
   return filled ? (
     <Svg

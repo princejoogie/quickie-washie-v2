@@ -5,7 +5,10 @@ export interface VehicleIconProps {
   styleName?: string;
 }
 
-export const VehicleIcon = ({ filled, styleName = "" }: VehicleIconProps) => {
+export const VehicleIcon = ({
+  filled,
+  styleName = "text-blue-600",
+}: VehicleIconProps) => {
   return filled ? (
     <Svg
       viewBox="0 0 24 24"

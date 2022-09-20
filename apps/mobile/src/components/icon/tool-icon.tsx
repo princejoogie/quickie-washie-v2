@@ -5,7 +5,10 @@ export interface ToolIconProps {
   styleName?: string;
 }
 
-export const ToolIcon = ({ filled, styleName = "" }: ToolIconProps) => {
+export const ToolIcon = ({
+  filled,
+  styleName = "text-blue-600",
+}: ToolIconProps) => {
   return filled ? (
     <Svg
       viewBox="0 0 24 24"
