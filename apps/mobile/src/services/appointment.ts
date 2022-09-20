@@ -4,6 +4,8 @@ import {
   DeleteAppointmentParams,
   DeleteAppointmentResponse,
   GetAllAppointmentsResponse,
+  GetAppointmentByIdParams,
+  GetAppointmentByIdResponse,
   UpdateAppointmentBody,
   UpdateAppointmentParams,
   UpdateAppointmentResponse,
@@ -12,6 +14,13 @@ import { api } from "./api";
 
 const getAll = async () => {
   const response = await api.get<GetAllAppointmentsResponse>("/appointment");
+  return response.data;
+};
+
+const getById = async (params: GetAppointmentByIdParams) => {
+  const response = await api.get<GetAppointmentByIdResponse>(
+    `/appointment/${params.appointmentId}`
+  );
   return response.data;
 };
 
@@ -48,6 +57,7 @@ const appointmentService = {
   create,
   deleteAppointment,
   getAll,
+  getById,
   update,
 };
 

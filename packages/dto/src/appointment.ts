@@ -113,7 +113,17 @@ export type GetAppointmentByIdParams = z.infer<
 
 export const getAppointmentByIdResponseSchema =
   Prisma.validator<PrismaType.AppointmentArgs>()({
-    include: {
+    select: {
+      _count: {
+        select: {
+          messages: { where: { seen: false } },
+        },
+      },
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+      status: true,
+      date: true,
       AdditionalPrice: true,
       Service: true,
       Vehicle: true,

@@ -4,26 +4,26 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { format } from "date-fns";
 
 import {
-  CustomerAppointmentsStackParamList,
-  AppointmentMessagesStack,
-  AppointmentMessagesStackParamList,
+  AdminAppointmentMessagesStack,
+  AdminAppointmentMessagesStackParamList,
+  AdminAppointmentsStackParamList,
 } from "./types";
-import { Messages } from "./messages";
 
 import appointmentService from "../../../../services/appointment";
 import { Layout } from "../../../../components";
 import { ChatIcon } from "../../../../components/chat-icon";
+import { Messages } from "./messages";
 
-export const AppointmentDetail = ({
+export const AdminAppointmentDetail = ({
   route,
 }: NativeStackScreenProps<
-  CustomerAppointmentsStackParamList,
+  AdminAppointmentsStackParamList,
   "AppointmentDetail"
 >) => {
   const props = route.params;
 
   return (
-    <AppointmentMessagesStack.Navigator
+    <AdminAppointmentMessagesStack.Navigator
       screenOptions={{
         headerShown: false,
         contentStyle: {
@@ -32,20 +32,26 @@ export const AppointmentDetail = ({
       }}
       initialRouteName="Details"
     >
-      <AppointmentMessagesStack.Screen
+      <AdminAppointmentMessagesStack.Screen
         name="Details"
         component={Details}
         initialParams={props}
       />
-      <AppointmentMessagesStack.Screen name="Messages" component={Messages} />
-    </AppointmentMessagesStack.Navigator>
+      <AdminAppointmentMessagesStack.Screen
+        name="Messages"
+        component={Messages}
+      />
+    </AdminAppointmentMessagesStack.Navigator>
   );
 };
 
 const Details = ({
   route,
   navigation,
-}: NativeStackScreenProps<AppointmentMessagesStackParamList, "Details">) => {
+}: NativeStackScreenProps<
+  AdminAppointmentMessagesStackParamList,
+  "Details"
+>) => {
   const props = route.params;
   const appointment = useQuery(["appointment", props.id], (e) =>
     appointmentService.getById({ appointmentId: e.queryKey[1] })

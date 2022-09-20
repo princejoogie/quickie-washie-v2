@@ -23,7 +23,17 @@ const getAppointmentByIdController: RequestHandler<
 
     const appointment = await prisma.appointment.findUnique({
       where: { id: appointmentId },
-      include: {
+      select: {
+        _count: {
+          select: {
+            messages: { where: { seen: false } },
+          },
+        },
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        status: true,
+        date: true,
         AdditionalPrice: true,
         Service: true,
         Vehicle: true,

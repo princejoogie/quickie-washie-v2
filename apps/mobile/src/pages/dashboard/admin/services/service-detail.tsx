@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
@@ -10,7 +11,7 @@ import {
   ServicesStackParamList,
 } from "./types";
 
-import { Layout, TextField } from "../../../../components";
+import { Layout, TextField, VehicleTypeModal } from "../../../../components";
 import servicesService from "../../../../services/services";
 import { PlusIcon } from "../../../../components/icon/plus-icon";
 
@@ -18,6 +19,8 @@ export const ServiceDetail = ({
   route,
   navigation,
 }: NativeStackScreenProps<ServicesStackParamList, "ServiceDetail">) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [activeAPIndex, setActiveAPIndex] = useState(0);
   const props = route.params;
 
   const {
@@ -57,7 +60,11 @@ export const ServiceDetail = ({
     }
   );
 
-  const updateService = useMutation(servicesService.update);
+  const updateService = useMutation(servicesService.update, {
+    onSuccess: () => {
+      navigation.goBack();
+    },
+  });
   const deleteService = useMutation(servicesService.deleteService, {
     onSuccess: () => {
       if (navigation.canGoBack()) {
@@ -188,14 +195,18 @@ export const ServiceDetail = ({
             <Controller
               name={`additionalPrices.${idx}.vehicleType`}
               control={control}
-              render={({ field: { value, onChange, ...rest } }) => (
-                <TextField
-                  {...rest}
-                  containerClassname="mt-0 mr-1 grow-0 w-2/3"
-                  placeholder="SUV"
-                  value={value}
-                  onChangeText={onChange}
-                />
+              render={({ field: { value } }) => (
+                <TouchableOpacity
+                  className="rounded-lg border-2 px-4 py-3 items-center justify-center border-gray-700 bg-gray-800 mt-1 mr-1 grow-0 w-2/3"
+                  onPress={() => {
+                    setActiveAPIndex(idx);
+                    setModalVisible(true);
+                  }}
+                >
+                  <Text className="text-gray-400 ml-2 p-0">
+                    {!!value ? value : "Vehicle type"}
+                  </Text>
+                </TouchableOpacity>
               )}
             />
 
@@ -226,6 +237,17 @@ export const ServiceDetail = ({
           )}
         </View>
       ))}
+
+      <VehicleTypeModal
+        visible={modalVisible}
+        onDismiss={(type) => {
+          setValue(`additionalPrices.${activeAPIndex}.vehicleType`, type);
+          setModalVisible(false);
+        }}
+        closeModal={() => {
+          setModalVisible(false);
+        }}
+      />
 
       <TouchableOpacity
         className="self-end mt-6 disabled:opacity-50"
