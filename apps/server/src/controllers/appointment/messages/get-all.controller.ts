@@ -25,6 +25,7 @@ const getAppointmentMessagesController: RequestHandler<
       where: { appointmentId },
       orderBy: { createdAt: "asc" },
       select: {
+        id: true,
         content: true,
         createdAt: true,
         seen: true,

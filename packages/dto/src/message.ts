@@ -58,6 +58,7 @@ export type GetAllMessagesParamsSchema = z.infer<
 export const getAllMessagesResponseSchema =
   Prisma.validator<PrismaType.MessageArgs>()({
     select: {
+      id: true,
       content: true,
       createdAt: true,
       seen: true,
