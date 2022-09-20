@@ -187,6 +187,7 @@ export const BookService = ({
             {vehicles.data && vehicles.data.length > 0 && (
               <Picker
                 itemStyle={{ color: "white" }}
+                style={{ color: "white" }}
                 mode="dialog"
                 selectedValue={value}
                 onValueChange={(e) => {

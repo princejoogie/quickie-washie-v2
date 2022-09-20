@@ -117,6 +117,7 @@ export const VehicleDetail = ({
       >
         <Picker
           itemStyle={{ color: "white" }}
+          style={{ color: "white" }}
           selectedValue={type}
           enabled={isEditing}
           onValueChange={(e) => {
