@@ -6,14 +6,16 @@ interface VehicleTypeModalProps {
   visible: boolean;
   closeModal: () => void;
   onDismiss: (type: IVehicleType) => void;
+  disabledKeys: IVehicleType[];
 }
 
 export const VehicleTypeModal = ({
   visible,
   onDismiss,
   closeModal,
+  disabledKeys,
 }: VehicleTypeModalProps) => {
-  const [type, setType] = useState<IVehicleType>("SEDAN_2_DOOR");
+  const [type, setType] = useState<IVehicleType>("" as IVehicleType);
 
   return (
     <View className="flex-1">
@@ -21,7 +23,6 @@ export const VehicleTypeModal = ({
         transparent
         animationType="fade"
         visible={visible}
-        /* onDismiss={() => onDismiss(type)} */
         onRequestClose={closeModal}
       >
         <TouchableOpacity
@@ -32,7 +33,11 @@ export const VehicleTypeModal = ({
           <View className="bg-gray-900 w-10/12 rounded-lg border-2 border-gray-800 p-3">
             {Object.entries(VehicleTypeNames).map(([key, value]) => (
               <TouchableOpacity
+                className={
+                  disabledKeys.includes(key as IVehicleType) ? "opacity-30" : ""
+                }
                 key={key}
+                disabled={disabledKeys.includes(key as IVehicleType)}
                 onPress={() => {
                   setType(key as IVehicleType);
                 }}

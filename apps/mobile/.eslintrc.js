@@ -16,6 +16,9 @@ module.exports = {
     tsconfigRootDir: __dirname,
     ecmaVersion: "latest",
     sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   rules: {
     "prettier/prettier": "error",

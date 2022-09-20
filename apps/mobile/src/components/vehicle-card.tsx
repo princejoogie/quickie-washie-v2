@@ -24,6 +24,7 @@ export const VehicleCard = ({ onClick, vehicle }: VehicleCardProps) => {
   return (
     <TouchableOpacity
       className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative"
+      disabled={!onClick}
       onPress={() => {
         if (onClick) onClick();
       }}
