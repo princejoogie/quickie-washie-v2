@@ -60,7 +60,11 @@ export const ServiceDetail = ({
     }
   );
 
-  const updateService = useMutation(servicesService.update);
+  const updateService = useMutation(servicesService.update, {
+    onSuccess: () => {
+      navigation.goBack();
+    },
+  });
   const deleteService = useMutation(servicesService.deleteService, {
     onSuccess: () => {
       if (navigation.canGoBack()) {
