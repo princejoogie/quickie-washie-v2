@@ -102,17 +102,17 @@ export const getVehicleByIdResponse =
       model: true,
       type: true,
       appointments: {
-        select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          date: true,
-          status: true,
-          Service: {
+        include: {
+          AdditionalPrice: true,
+          Service: true,
+          Vehicle: true,
+          User: {
             select: {
+              id: true,
+              email: true,
               name: true,
-              description: true,
-              additionalPrices: true,
+              licenseUrl: true,
+              photoUrl: true,
             },
           },
         },
