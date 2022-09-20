@@ -1,3 +1,4 @@
+export * from "./appointment-card";
 export * from "./admin-tab-bar";
 export * from "./avatar";
 export * from "./image-input";
