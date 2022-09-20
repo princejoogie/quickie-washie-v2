@@ -104,6 +104,10 @@ const AppointmentItem = ({ appointment, navigation }: AppointmentItemProps) => {
       </Text>
       <Text className="text-gray-400 text-xs">{format(date, "hh:mm aa")}</Text>
 
+      <View className="bg-green-600 border border-green-500 rounded px-2 absolute top-1 right-1">
+        <Text className="text-white text-xs">{appointment.status}</Text>
+      </View>
+
       <View className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative">
         <View className="flex flex-row items-center p-3">
           <View className="h-12 w-12 rounded-full bg-pink-600 mr-2" />
@@ -127,10 +131,6 @@ const AppointmentItem = ({ appointment, navigation }: AppointmentItemProps) => {
               {vehicle?.model}
             </Text>
           </View>
-        </View>
-
-        <View className="bg-blue-600 border border-blue-500 rounded px-2 absolute top-1 right-1">
-          <Text className="text-white text-xs">{vehicle?.type}</Text>
         </View>
       </View>
     </TouchableOpacity>
