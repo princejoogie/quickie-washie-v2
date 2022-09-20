@@ -12,7 +12,7 @@ import { Messages } from "./messages";
 
 import appointmentService from "../../../../services/appointment";
 import { Layout } from "../../../../components";
-import { ChatIcon } from "../../../../components/chat-icon";
+import { ChatIcon } from "../../../../components/icon/chat-icon";
 
 export const AppointmentDetail = ({
   route,

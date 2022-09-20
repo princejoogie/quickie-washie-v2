@@ -11,7 +11,7 @@ import {
 
 import appointmentService from "../../../../services/appointment";
 import { Layout } from "../../../../components";
-import { ChatIcon } from "../../../../components/chat-icon";
+import { ChatIcon } from "../../../../components/icon/chat-icon";
 import { Messages } from "./messages";
 
 export const AdminAppointmentDetail = ({

@@ -85,6 +85,7 @@ export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
               style={{ paddingBottom: bottom + keyboardHeight }}
             >
               {children}
+              <View className="h-20" />
             </View>
           )}
           refreshControl={

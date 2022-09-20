@@ -5,7 +5,10 @@ export interface ChatIconProps {
   styleName?: string;
 }
 
-export const ChatIcon = ({ filled, styleName = "" }: ChatIconProps) => {
+export const ChatIcon = ({
+  filled,
+  styleName = "text-blue-600",
+}: ChatIconProps) => {
   return filled ? (
     <Svg
       viewBox="0 0 24 24"

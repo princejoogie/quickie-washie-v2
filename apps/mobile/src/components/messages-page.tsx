@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -65,7 +66,9 @@ export const MessagesPage = ({
         })}
       </Layout>
 
-      <KeyboardAvoidingView behavior="position">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "position" : "padding"}
+      >
         <View className="flex items-center flex-row absolute bottom-0 left-0 right-0 px-4 pb-2">
           <TextField
             containerClassname="flex-1"

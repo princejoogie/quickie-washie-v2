@@ -17,8 +17,10 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
           ref={ref}
           editable={editable}
           placeholderTextColor="#71717a"
-          className={`border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 px-4 py-3 text-white ${
-            editable ? "opacity-100" : "opacity-60"
+          className={`bg-gray-800 mt-1 rounded-lg border-2 px-4 py-3 text-white ${
+            editable
+              ? "opacity-100 border-gray-700"
+              : "opacity-60 border-transparent"
           }`}
         />
       </View>

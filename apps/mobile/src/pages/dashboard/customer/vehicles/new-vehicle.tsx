@@ -57,6 +57,7 @@ export const NewVehicle = ({
       <Text className="text-gray-400 text-xs ml-2 mt-4">Vehicle Type</Text>
       <Picker
         itemStyle={{ color: "white" }}
+        style={{ color: "white" }}
         mode="dialog"
         selectedValue={type}
         onValueChange={(e) => {

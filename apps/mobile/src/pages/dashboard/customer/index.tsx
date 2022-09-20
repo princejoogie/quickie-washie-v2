@@ -19,6 +19,7 @@ export const UserDashboard = ({}: NativeStackScreenProps<
       sceneContainerStyle={{ backgroundColor: "#111827" }}
       screenOptions={{ headerShown: false }}
       tabBar={CustomerTabBar}
+      initialRouteName="Home"
     >
       <CustomerBottomTab.Screen name="Home" component={Home} />
       <CustomerBottomTab.Screen name="Vehicles" component={Vehicles} />
