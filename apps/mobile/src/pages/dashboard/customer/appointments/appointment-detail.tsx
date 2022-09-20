@@ -3,7 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { format } from "date-fns";
 
-import { CustomerAppointmentsStackParamList } from "./types";
+import {
+  CustomerAppointmentsStackParamList,
+  AppointmentMessagesStack,
+  AppointmentMessagesStackParamList,
+} from "./types";
+import { Messages } from "./messages";
 
 import appointmentService from "../../../../services/appointment";
 import { Layout } from "../../../../components";
@@ -11,11 +16,36 @@ import { ChatIcon } from "../../../../components/chat-icon";
 
 export const AppointmentDetail = ({
   route,
-  navigation,
 }: NativeStackScreenProps<
   CustomerAppointmentsStackParamList,
   "AppointmentDetail"
 >) => {
+  const props = route.params;
+
+  return (
+    <AppointmentMessagesStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: "#111827",
+        },
+      }}
+      initialRouteName="Details"
+    >
+      <AppointmentMessagesStack.Screen
+        name="Details"
+        component={Details}
+        initialParams={props}
+      />
+      <AppointmentMessagesStack.Screen name="Messages" component={Messages} />
+    </AppointmentMessagesStack.Navigator>
+  );
+};
+
+const Details = ({
+  route,
+  navigation,
+}: NativeStackScreenProps<AppointmentMessagesStackParamList, "Details">) => {
   const props = route.params;
   const appointment = useQuery(["appointment", props.id], (e) =>
     appointmentService.getById({ appointmentId: e.queryKey[1] })
@@ -59,10 +89,19 @@ export const AppointmentDetail = ({
         canGoBack: navigation.canGoBack(),
         onBack: navigation.goBack,
         actions: (
-          <TouchableOpacity className="flex flex-row">
-            <View className="mr-1 px-2 py-1 rounded-full bg-blue-600 items-center, justify-center">
-              <Text className="text-white text-xs h-4">12</Text>
-            </View>
+          <TouchableOpacity
+            className="flex flex-row"
+            onPress={() => {
+              navigation.navigate("Messages", { appointmentId: a.id });
+            }}
+          >
+            {a._count.messages > 0 && (
+              <View className="mr-1 px-2 py-1 rounded-full bg-blue-600 items-center, justify-center">
+                <Text className="text-white text-xs h-4">
+                  {a._count.messages}
+                </Text>
+              </View>
+            )}
             <ChatIcon />
           </TouchableOpacity>
         ),
