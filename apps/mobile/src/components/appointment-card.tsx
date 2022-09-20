@@ -1,6 +1,7 @@
 import type { GetAllAppointmentsResponse } from "@qw/dto";
 import { TouchableOpacity, Text, View } from "react-native";
 import { format } from "date-fns";
+import { VehicleCard } from ".";
 
 interface AppointmentCardProps {
   onClick: () => void;
@@ -32,31 +33,7 @@ export const AppointmentCard = ({
         <Text className="text-white text-xs">{appointment.status}</Text>
       </View>
 
-      <View className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative">
-        <View className="flex flex-row items-center p-3">
-          <View className="h-12 w-12 rounded-full bg-pink-600 mr-2" />
-
-          <View className="flex-1">
-            <Text
-              style={{ flex: 1 }}
-              className="text-lg text-gray-200 font-bold"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {vehicle?.plateNumber}
-            </Text>
-
-            <Text
-              style={{ flex: 1 }}
-              className="text-gray-400 text-xs"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {vehicle?.model}
-            </Text>
-          </View>
-        </View>
-      </View>
+      <VehicleCard vehicle={vehicle ?? undefined} />
     </TouchableOpacity>
   );
 };

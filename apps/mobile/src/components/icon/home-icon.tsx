@@ -5,7 +5,10 @@ export interface HomeIconProps {
   styleName?: string;
 }
 
-export const HomeIcon = ({ filled, styleName = "" }: HomeIconProps) => {
+export const HomeIcon = ({
+  filled,
+  styleName = "text-blue-600",
+}: HomeIconProps) => {
   return filled ? (
     <Svg
       viewBox="0 0 24 24"

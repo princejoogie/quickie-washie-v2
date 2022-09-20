@@ -5,7 +5,10 @@ export interface PieChartIconProps {
   styleName?: string;
 }
 
-export const PieChartIcon = ({ filled, styleName = "" }: PieChartIconProps) => {
+export const PieChartIcon = ({
+  filled,
+  styleName = "text-blue-600",
+}: PieChartIconProps) => {
   return filled ? (
     <Svg
       viewBox="0 0 24 24"

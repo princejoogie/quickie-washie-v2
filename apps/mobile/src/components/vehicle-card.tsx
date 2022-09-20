@@ -1,22 +1,32 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { GetAllVehiclesResponse } from "@qw/dto";
-import { VehiclesStackParamList } from "../pages/dashboard/customer/vehicles/types";
 
-type VehicleCardProps = GetAllVehiclesResponse[number] & {
-  navigation: NativeStackNavigationProp<
-    VehiclesStackParamList,
-    "AllVehicles",
-    undefined
-  >;
-};
+interface VehicleCardProps {
+  onClick?: () => void;
+  vehicle?: {
+    plateNumber: string;
+    model: string;
+    type: string;
+    id: string;
+  };
+}
 
-export const VehicleCard = ({ navigation, ...props }: VehicleCardProps) => {
+export const VehicleCard = ({ onClick, vehicle }: VehicleCardProps) => {
+  if (!vehicle?.id) {
+    return (
+      <View className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative">
+        <View className="flex flex-row items-center p-3">
+          <Text className="text-gray-400 text-xs">Unknown vehicle</Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <TouchableOpacity
       className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative"
+      disabled={!onClick}
       onPress={() => {
-        navigation.navigate("VehicleDetail", props);
+        if (onClick) onClick();
       }}
     >
       <View className="flex flex-row items-center p-3">
@@ -29,7 +39,7 @@ export const VehicleCard = ({ navigation, ...props }: VehicleCardProps) => {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {props.plateNumber}
+            {vehicle?.plateNumber}
           </Text>
 
           <Text
@@ -38,13 +48,13 @@ export const VehicleCard = ({ navigation, ...props }: VehicleCardProps) => {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {props.model}
+            {vehicle?.model}
           </Text>
         </View>
       </View>
 
       <View className="bg-blue-600 border border-blue-500 rounded px-2 absolute top-1 right-1">
-        <Text className="text-white text-xs">{props.type}</Text>
+        <Text className="text-white text-xs">{vehicle?.type}</Text>
       </View>
     </TouchableOpacity>
   );

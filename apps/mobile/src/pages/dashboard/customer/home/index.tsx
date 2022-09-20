@@ -1,4 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import {
@@ -13,7 +14,6 @@ import { CustomerDashboardParamList } from "../types";
 
 import { HomeStack, HomeStackParamList } from "./types";
 import { BookService } from "./book-service";
-import { useIsFocused } from "@react-navigation/native";
 
 export const Home = ({}: BottomTabScreenProps<
   CustomerDashboardParamList,

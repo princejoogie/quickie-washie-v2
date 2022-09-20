@@ -66,7 +66,13 @@ const AllVehicles = ({
         <Text>Loading...</Text>
       ) : (
         vehicles.data?.map((vehicle) => (
-          <VehicleCard {...vehicle} key={vehicle.id} navigation={navigation} />
+          <VehicleCard
+            vehicle={vehicle}
+            key={vehicle.id}
+            onClick={() => {
+              navigation.navigate("VehicleDetail", vehicle);
+            }}
+          />
         ))
       )}
     </Layout>

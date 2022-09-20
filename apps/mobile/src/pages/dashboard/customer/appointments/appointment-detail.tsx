@@ -11,8 +11,8 @@ import {
 import { Messages } from "./messages";
 
 import appointmentService from "../../../../services/appointment";
-import { Layout } from "../../../../components";
-import { ChatIcon } from "../../../../components/chat-icon";
+import { Layout, VehicleCard } from "../../../../components";
+import { ChatIcon } from "../../../../components/icon/chat-icon";
 
 export const AppointmentDetail = ({
   route,
@@ -122,31 +122,7 @@ const Details = ({
           <Text className="text-white text-xs">{a.status}</Text>
         </View>
 
-        <View className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative">
-          <View className="flex flex-row items-center p-3">
-            <View className="h-12 w-12 rounded-full bg-pink-600 mr-2" />
-
-            <View className="flex-1">
-              <Text
-                style={{ flex: 1 }}
-                className="text-lg text-gray-200 font-bold"
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {a.Vehicle?.plateNumber}
-              </Text>
-
-              <Text
-                style={{ flex: 1 }}
-                className="text-gray-400 text-xs"
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {a.Vehicle?.model}
-              </Text>
-            </View>
-          </View>
-        </View>
+        <VehicleCard vehicle={a.Vehicle ?? undefined} />
       </View>
 
       <Text className="text-gray-400 text-xs ml-2 mt-4">Documents</Text>

@@ -4,7 +4,7 @@ export interface PlusIconProps {
   styleName?: string;
 }
 
-export const PlusIcon = ({ styleName = "" }: PlusIconProps) => {
+export const PlusIcon = ({ styleName = "text-blue-600" }: PlusIconProps) => {
   return (
     <Svg
       fill="none"

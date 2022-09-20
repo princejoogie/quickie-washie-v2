@@ -2,14 +2,15 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { View, Text, TouchableOpacity, Keyboard } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { GetVehicleByIdResponse } from "@qw/dto";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { VehiclesStackParamList } from "./types";
 
 import vehiclesService from "../../../../services/vehicles";
 import { IVehicleType, VehicleTypeNames } from "../../../../constants";
-import { Layout, TextField } from "../../../../components";
+import { AppointmentCard, Layout, TextField } from "../../../../components";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { CustomerDashboardParamList } from "../types";
 
 export const VehicleDetail = ({
   route,
@@ -21,9 +22,6 @@ export const VehicleDetail = ({
   const [plateNumber, setPlateNumber] = useState(props.plateNumber);
   const [type, setType] = useState<IVehicleType>(props.type);
   const [model, setModel] = useState(props.model);
-  const [appointments, setAppointments] = useState<
-    GetVehicleByIdResponse["appointments"]
-  >([]);
 
   const vehicleDetails = useQuery(
     ["vehicle", props.id],
@@ -33,7 +31,6 @@ export const VehicleDetail = ({
         setPlateNumber(data.plateNumber);
         setType(data.type);
         setModel(data.model);
-        setAppointments(data.appointments);
       },
     }
   );
@@ -117,6 +114,7 @@ export const VehicleDetail = ({
       >
         <Picker
           itemStyle={{ color: "white" }}
+          style={{ color: "white" }}
           selectedValue={type}
           enabled={isEditing}
           onValueChange={(e) => {
@@ -131,14 +129,33 @@ export const VehicleDetail = ({
 
       <Text className="text-gray-400 text-xs ml-2 mt-4">Appointments</Text>
 
-      <View>
-        <Text className="text-gray-600 text-xs ml-2 mt-2">
-          {JSON.stringify(appointments, null, 2)}
-        </Text>
+      <View className="w-full">
+        {vehicleDetails.data && vehicleDetails.data.appointments.length > 0 ? (
+          vehicleDetails.data.appointments.map((apt) => (
+            <AppointmentCard
+              key={apt.id}
+              appointment={apt}
+              onClick={() => {
+                navigation
+                  .getParent<
+                    BottomTabNavigationProp<
+                      CustomerDashboardParamList,
+                      "Appointments"
+                    >
+                  >()
+                  .navigate("Appointments");
+              }}
+            />
+          ))
+        ) : (
+          <Text className="text-gray-600 text-xs ml-2 mt-2">
+            No appointments
+          </Text>
+        )}
       </View>
 
       <TouchableOpacity
-        className="self-end"
+        className="self-end mt-6"
         disabled={deleteVehicle.isLoading}
         onPress={() => {
           deleteVehicle.mutateAsync({ vehicleId: props.id });

@@ -7,7 +7,7 @@ export interface PencilSquareIconProps {
 
 export const PencilSquareIcon = ({
   filled,
-  styleName = "",
+  styleName = "text-blue-600",
 }: PencilSquareIconProps) => {
   return filled ? (
     <Svg

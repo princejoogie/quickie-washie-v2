@@ -15,6 +15,7 @@ import { Layout, TextField, VehicleTypeModal } from "../../../../components";
 import { queryClient } from "../../../../services/api";
 import servicesService from "../../../../services/services";
 import { PlusIcon } from "../../../../components/icon/plus-icon";
+import { IVehicleType } from "../../../../constants";
 
 export const NewService = ({
   navigation,
@@ -25,6 +26,7 @@ export const NewService = ({
     control,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<ServiceBodySchema>({
     mode: "all",
@@ -192,7 +194,11 @@ export const NewService = ({
       ))}
 
       <VehicleTypeModal
+        key={`vehicle-type-${activeAPIndex}`}
         visible={modalVisible}
+        disabledKeys={watch("additionalPrices").map(
+          (e) => e.vehicleType as IVehicleType
+        )}
         onDismiss={(type) => {
           setValue(`additionalPrices.${activeAPIndex}.vehicleType`, type);
           setModalVisible(false);
