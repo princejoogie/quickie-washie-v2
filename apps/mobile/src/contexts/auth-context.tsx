@@ -10,6 +10,8 @@ import decode from "jwt-decode";
 
 import authService from "../services/auth";
 import { getRefreshToken, setTokens, unsetTokens } from "../services/api";
+import { AxiosError } from "axios";
+import { Alert } from "react-native";
 
 interface TAuthContext {
   isLoading: boolean;
@@ -32,6 +34,7 @@ interface AuthContextProps {
 export const AuthProvider = ({ children }: AuthContextProps) => {
   const [data, setData] = useState<TokenPayload | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [_c, setC] = useState(0);
 
   useEffect(() => {
     setIsLoading(true);
@@ -45,7 +48,7 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
 
       setIsLoading(false);
     });
-  }, []);
+  }, [_c]);
 
   const logout = async () => {
     await unsetTokens();
@@ -53,12 +56,20 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
   };
 
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    const tokens = await authService.login({ email, password });
-    await setTokens(tokens.accessToken, tokens.refreshToken);
-    const data = await authService.profile();
-    setData(data);
-    setIsLoading(false);
+    try {
+      const tokens = await authService.login({ email, password });
+      await setTokens(tokens.accessToken, tokens.refreshToken);
+      setC(_c + 1);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        Alert.alert(
+          "Error",
+          e.response?.data.message ?? "Something went wrong"
+        );
+      } else {
+        Alert.alert("Error", "Something went wrong");
+      }
+    }
   };
 
   return (
