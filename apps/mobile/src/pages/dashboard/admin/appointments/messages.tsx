@@ -1,12 +1,15 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { AppointmentMessagesStackParamList } from "./types";
+import { AdminAppointmentMessagesStackParamList } from "./types";
 import { MessagesPage } from "../../../../components";
 
 export const Messages = ({
   route,
   navigation,
-}: NativeStackScreenProps<AppointmentMessagesStackParamList, "Messages">) => {
+}: NativeStackScreenProps<
+  AdminAppointmentMessagesStackParamList,
+  "Messages"
+>) => {
   const props = route.params;
 
   return (

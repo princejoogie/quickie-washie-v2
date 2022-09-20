@@ -8,6 +8,8 @@ import {
   AdminAppointmentsStackParamList,
   AdminAppointmentsStack,
 } from "./types";
+import { AdminAppointmentDetail } from "./appointment-detail";
+
 import { AdminDashboardParamList } from "../types";
 
 import { AppointmentCard, Layout } from "../../../../components";
@@ -30,6 +32,10 @@ export const Appointments = ({}: BottomTabScreenProps<
       <AdminAppointmentsStack.Screen
         name="AllAppointments"
         component={AllAppointments}
+      />
+      <AdminAppointmentsStack.Screen
+        name="AppointmentDetail"
+        component={AdminAppointmentDetail}
       />
     </AdminAppointmentsStack.Navigator>
   );
