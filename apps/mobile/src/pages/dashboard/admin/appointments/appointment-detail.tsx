@@ -201,60 +201,58 @@ const Details = ({
       </View>
 
       <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
-        {appointment.data.documents.length > 0 ? (
-          appointment.data.documents
-            .sort((a, b) => {
-              return (
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
-              );
-            })
-            .map((doc) => (
-              <View
-                key={doc.id}
-                className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded mt-1"
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    WebBrowser.openBrowserAsync(doc.downloadUrl);
-                  }}
-                  className="flex flex-row items-center flex-1"
-                >
-                  {doc.mimeType?.startsWith("image") ? (
-                    <ImageIcon filled styleName="w-5 h-5 text-gray-400" />
-                  ) : (
-                    <DocumentIcon filled styleName="w-5 h-5 text-gray-400" />
-                  )}
-
-                  <Text
-                    className="mx-1 flex-1 text-xs text-white text-left"
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {doc.name}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  disabled={deleteDocument.isLoading}
-                  onPress={() => {
-                    deleteDocument.mutate({ documentId: doc.id });
-                  }}
-                  className={
-                    deleteDocument.isLoading ? "opacity-50" : "opacity-100"
-                  }
-                >
-                  <Text className="text-xs text-red-600">Delete</Text>
-                </TouchableOpacity>
-              </View>
-            ))
-        ) : (
+        {appointment.data.documents.length <= 0 && documents.length <= 0 && (
           <Text className="text-xs text-white text-center">No documents</Text>
         )}
+        {appointment.data.documents
+          .sort((a, b) => {
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+          })
+          .map((doc) => (
+            <View
+              key={doc.id}
+              className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded mt-1"
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  WebBrowser.openBrowserAsync(doc.downloadUrl);
+                }}
+                className="flex flex-row items-center flex-1"
+              >
+                {doc.mimeType?.startsWith("image") ? (
+                  <ImageIcon filled styleName="w-5 h-5 text-gray-400" />
+                ) : (
+                  <DocumentIcon filled styleName="w-5 h-5 text-gray-400" />
+                )}
+
+                <Text
+                  className="mx-1 flex-1 text-xs text-white text-left"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {doc.name}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                disabled={deleteDocument.isLoading}
+                onPress={() => {
+                  deleteDocument.mutate({ documentId: doc.id });
+                }}
+                className={
+                  deleteDocument.isLoading ? "opacity-50" : "opacity-100"
+                }
+              >
+                <Text className="text-xs text-red-600">Delete</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
 
         {documents.length > 0 && (
           <>
-            <Text className="text-xs text-white text-center mt-3">
+            <Text className="text-xs text-white text-center mt-2">
               New documents
             </Text>
             {documents.map((doc) => (
