@@ -74,6 +74,13 @@ const Details = ({
     },
   });
 
+  const deleteDocument = useMutation(documentService.deleteDocument, {
+    onSuccess: async () => {
+      await appointment.refetch();
+    },
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
   const [documents, setDocuments] = useState<
     Array<{
       uri: string;
@@ -162,27 +169,32 @@ const Details = ({
 
         {documents.length > 0 && (
           <TouchableOpacity
-            disabled={uploadDocuments.isLoading}
+            disabled={uploadDocuments.isLoading || isLoading}
             onPress={async () => {
               if (profile.data && documents.length > 0) {
+                setIsLoading(true);
                 const promises = documents.map((doc) =>
                   uploadFile(doc.uri, profile.data.email)
                 );
                 const dlUrls = await Promise.all(promises);
 
-                uploadDocuments.mutateAsync({
+                await uploadDocuments.mutateAsync({
                   documents: documents.map((doc, idx) => ({
                     name: doc.name,
                     mimeType: doc.mimeType ?? "application/octet-stream",
                     downloadUrl: dlUrls[idx],
                   })),
                   appointmentId: a.id,
+                  userId: profile.data.id,
                 });
+                setIsLoading(false);
               }
             }}
           >
             <Text className="text-blue-600 text-xs mr-2">
-              {uploadDocuments.isLoading ? "Uploading..." : "Update"}
+              {uploadDocuments.isLoading || isLoading
+                ? "Uploading..."
+                : "Update"}
             </Text>
           </TouchableOpacity>
         )}
@@ -223,7 +235,15 @@ const Details = ({
                   </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                  disabled={deleteDocument.isLoading}
+                  onPress={() => {
+                    deleteDocument.mutate({ documentId: doc.id });
+                  }}
+                  className={
+                    deleteDocument.isLoading ? "opacity-50" : "opacity-100"
+                  }
+                >
                   <Text className="text-xs text-red-600">Delete</Text>
                 </TouchableOpacity>
               </View>

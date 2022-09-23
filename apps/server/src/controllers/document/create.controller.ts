@@ -17,7 +17,7 @@ const createDocumentController: RequestHandler<
       return next(error);
     }
 
-    const { documents, appointmentId } = req.body;
+    const { documents, appointmentId, userId } = req.body;
 
     const docs = await prisma.document.createMany({
       data: documents.map((e: any) => ({
@@ -25,6 +25,7 @@ const createDocumentController: RequestHandler<
         mimeType: e.mimeType,
         name: e.name,
         appointmentId,
+        userId,
       })),
       skipDuplicates: true,
     });

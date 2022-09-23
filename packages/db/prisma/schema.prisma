@@ -25,6 +25,7 @@ model User {
   appointments  Appointment[]
   messages      Message[]
   notifications Notification[]
+  documents     Document[]
 }
 
 model Vehicle {
@@ -112,9 +113,11 @@ model Document {
   downloadUrl   String
   name          String
   mimeType      String   @db.VarChar(128)
+  userId        String?
   appointmentId String?
 
   Appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  User        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 enum AppointmentStatus {
