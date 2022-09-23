@@ -21,14 +21,16 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
 
-export const uploadImage = async (
+export const uploadFile = async (
   uri: string,
+  email: string,
   cb?: (progress: number) => void
 ) => {
   const newUri = Platform.OS === "ios" ? uri.replace("file://", "") : uri;
+  const extension = newUri.split(".").pop();
   const response = await fetch(newUri);
   const blob = await response.blob();
-  const storageRef = ref(storage, `images/${uuid.v4()}.jpg`);
+  const storageRef = ref(storage, `${email}/${uuid.v4()}.${extension}`);
   const uploadTask = uploadBytesResumable(storageRef, blob);
 
   return await new Promise<string>((resolve, reject) => {
@@ -49,7 +51,7 @@ export const uploadImage = async (
         }
       },
       (err) => {
-        console.log("uploadImageError:", err);
+        console.log("uploadFileError:", err);
         reject(err.message);
       },
       async () => {

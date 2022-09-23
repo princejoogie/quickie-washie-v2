@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -13,6 +14,9 @@ import appointmentService from "../../../../services/appointment";
 import { Layout, VehicleCard } from "../../../../components";
 import { ChatIcon } from "../../../../components/icon/chat-icon";
 import { Messages } from "./messages";
+import { getDocument } from "../../../../utils/helpers";
+import { uploadFile } from "../../../../services/firebase";
+import authService from "../../../../services/auth";
 
 export const AdminAppointmentDetail = ({
   route,
@@ -56,6 +60,17 @@ const Details = ({
   const appointment = useQuery(["appointment", appointmentId], (e) =>
     appointmentService.getById({ appointmentId: e.queryKey[1] })
   );
+
+  const profile = useQuery(["profile"], authService.profile);
+
+  const [documents, setDocuments] = useState<
+    Array<{
+      uri: string;
+      name: string;
+      mimeType: string | undefined;
+      size: number | undefined;
+    }>
+  >([]);
 
   if (appointment.isLoading) {
     return (
@@ -133,10 +148,44 @@ const Details = ({
 
       <Text className="text-gray-400 text-xs ml-2 mt-4">Documents</Text>
       <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
-        <Text className="text-xs text-white text-center">No documents</Text>
+        {documents.length > 0 ? (
+          documents.map((doc) => (
+            <Text key={doc?.uri} className="text-xs text-white text-center">
+              {doc?.name}
+            </Text>
+          ))
+        ) : (
+          <Text className="text-xs text-white text-center">No documents</Text>
+        )}
 
-        <TouchableOpacity className="mt-2 self-center bg-gray-600 p-2 rounded">
-          <Text className="text-white">Upload documents</Text>
+        <TouchableOpacity
+          onPress={async () => {
+            const res = await getDocument();
+            if (res) {
+              setDocuments([...documents, res]);
+            }
+            console.log(res);
+          }}
+          className="mt-2 self-center bg-gray-600 p-2 rounded"
+        >
+          <Text className="text-white">Choose documents</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={async () => {
+            if (profile.data) {
+              const promises = documents.map((doc) =>
+                uploadFile(doc.uri, profile.data.email)
+              );
+              console.log("uploading...");
+              const docs = await Promise.all(promises);
+              console.log("uploaded");
+              console.log(docs);
+            }
+          }}
+          className="mt-2 self-center bg-green-600 p-2 rounded"
+        >
+          <Text className="text-white">Upload</Text>
         </TouchableOpacity>
       </View>
     </Layout>

@@ -1,6 +1,24 @@
 import { AxiosError } from "axios";
 import * as ImagePicker from "expo-image-picker";
+import * as DocumentPicker from "expo-document-picker";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
+
+export const getDocument = async () => {
+  const result = await DocumentPicker.getDocumentAsync({
+    copyToCacheDirectory: false,
+  });
+
+  if (result.type === "success") {
+    return {
+      uri: result.uri,
+      name: result.name,
+      mimeType: result.mimeType,
+      size: result.size,
+    };
+  }
+
+  return null;
+};
 
 export const getImage = async ({
   mediaTypes = ImagePicker.MediaTypeOptions.Images,

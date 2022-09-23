@@ -92,6 +92,7 @@ export const BookService = ({
   const showMode = (currentMode: AndroidNativeProps["mode"]) => {
     const value = watch("date");
     DateTimePickerAndroid.open({
+      minimumDate: new Date(),
       value: watch("date"),
       onChange: (_, date) => {
         if (date) {

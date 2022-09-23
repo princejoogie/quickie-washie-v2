@@ -12,7 +12,7 @@ import { PencilSquareIcon } from "../components/icon/pencil-square-icon";
 import { getImage } from "../utils/helpers";
 
 import { RootStackParamList } from "./types";
-import { uploadImage } from "../services/firebase";
+import { uploadFile } from "../services/firebase";
 import { useAuthContext } from "../contexts/auth-context";
 
 const registerSchema = z
@@ -223,8 +223,8 @@ export const Register = ({
         onPress={handleSubmit(
           async ({ licenseUrl, imageUrl, confirmPassword, ...rest }) => {
             const [licenseDownloadUrl, imageDownloadUrl] = await Promise.all([
-              uploadImage(licenseUrl),
-              uploadImage(imageUrl),
+              uploadFile(licenseUrl, rest.email),
+              uploadFile(imageUrl, rest.email),
             ]);
 
             await register.mutateAsync({
