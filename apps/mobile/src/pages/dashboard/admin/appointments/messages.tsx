@@ -10,13 +10,13 @@ export const Messages = ({
   AdminAppointmentMessagesStackParamList,
   "Messages"
 >) => {
-  const props = route.params;
+  const { appointmentId } = route.params;
 
   return (
     <MessagesPage
       onBack={navigation.goBack}
       canGoBack={navigation.canGoBack()}
-      appointmentId={props.appointmentId}
+      appointmentId={appointmentId}
     />
   );
 };

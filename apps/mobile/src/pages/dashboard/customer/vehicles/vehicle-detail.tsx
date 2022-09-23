@@ -7,7 +7,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { VehiclesStackParamList } from "./types";
 
 import vehiclesService from "../../../../services/vehicles";
-import { IVehicleType, VehicleTypeNames } from "../../../../constants";
+import { VehicleTypeNames } from "../../../../constants";
 import { AppointmentCard, Layout, TextField } from "../../../../components";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { CustomerDashboardParamList } from "../types";
@@ -16,15 +16,15 @@ export const VehicleDetail = ({
   route,
   navigation,
 }: NativeStackScreenProps<VehiclesStackParamList, "VehicleDetail">) => {
-  const props = route.params;
+  const { vehicleId } = route.params;
 
   const [isEditing, setIsEditing] = useState(false);
-  const [plateNumber, setPlateNumber] = useState(props.plateNumber);
-  const [type, setType] = useState<IVehicleType>(props.type);
-  const [model, setModel] = useState(props.model);
+  const [plateNumber, setPlateNumber] = useState("");
+  const [type, setType] = useState("");
+  const [model, setModel] = useState("");
 
   const vehicleDetails = useQuery(
-    ["vehicle", props.id],
+    ["vehicle", vehicleId],
     (e) => vehiclesService.getById({ vehicleId: e.queryKey[1] }),
     {
       onSuccess: (data) => {
@@ -55,7 +55,7 @@ export const VehicleDetail = ({
     <Layout
       onRefresh={vehicleDetails.refetch}
       nav={{
-        title: props.plateNumber,
+        title: vehicleDetails.data?.id ?? "Vehicle Details",
         canGoBack: navigation.canGoBack(),
         onBack: navigation.goBack,
         actions: (
@@ -70,7 +70,7 @@ export const VehicleDetail = ({
                     type,
                   },
                   params: {
-                    vehicleId: props.id,
+                    vehicleId,
                   },
                 });
                 setIsEditing(false);
@@ -158,7 +158,7 @@ export const VehicleDetail = ({
         className="self-end mt-6"
         disabled={deleteVehicle.isLoading}
         onPress={() => {
-          deleteVehicle.mutateAsync({ vehicleId: props.id });
+          deleteVehicle.mutateAsync({ vehicleId });
         }}
       >
         <Text className="text-red-600">Delete Vehicle</Text>

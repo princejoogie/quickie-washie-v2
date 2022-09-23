@@ -37,7 +37,7 @@ export const BookService = ({
   navigation,
 }: NativeStackScreenProps<HomeStackParamList, "BookService">) => {
   const { data } = useAuthContext();
-  const props = route.params;
+  const { serviceId } = route.params;
   const {
     control,
     setValue,
@@ -47,7 +47,7 @@ export const BookService = ({
   } = useForm<BookServiceSchema>({
     resolver: zodResolver(bookServiceSchema),
     defaultValues: {
-      serviceId: props.serviceId,
+      serviceId,
       vehicleId: "",
       additionalPriceId: "",
       userId: "",
@@ -61,7 +61,7 @@ export const BookService = ({
     }
   }, [data?.id]);
 
-  const serviceDetails = useQuery(["serviceDetails", props.serviceId], (e) =>
+  const serviceDetails = useQuery(["serviceDetails", serviceId], (e) =>
     servicesService.getById({ serviceId: e.queryKey[1] })
   );
 

@@ -22,7 +22,7 @@ export const ServiceDetail = ({
 }: NativeStackScreenProps<ServicesStackParamList, "ServiceDetail">) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [activeAPIndex, setActiveAPIndex] = useState(0);
-  const props = route.params;
+  const { serviceId } = route.params;
 
   const {
     control,
@@ -35,9 +35,6 @@ export const ServiceDetail = ({
     resolver: zodResolver(serviceBodySchema),
     defaultValues: {
       additionalPrices: [],
-      basePrice: props.basePrice.toString(),
-      description: props.description,
-      name: props.name,
     },
   });
 
@@ -47,7 +44,7 @@ export const ServiceDetail = ({
   });
 
   const serviceDetails = useQuery(
-    ["service", props.id],
+    ["service", serviceId],
     (e) => servicesService.getById({ serviceId: e.queryKey[1] }),
     {
       onSuccess: (data) => {
@@ -87,7 +84,7 @@ export const ServiceDetail = ({
               async ({ basePrice, additionalPrices, ...rest }) => {
                 await updateService.mutateAsync({
                   params: {
-                    serviceId: props.id,
+                    serviceId,
                   },
                   body: {
                     ...rest,
@@ -259,7 +256,7 @@ export const ServiceDetail = ({
         className="self-end mt-6 disabled:opacity-50"
         disabled={deleteService.isLoading}
         onPress={() => {
-          deleteService.mutate({ serviceId: props.id });
+          deleteService.mutate({ serviceId });
         }}
       >
         <Text className="text-red-600 font-bold">Delete service</Text>

@@ -66,7 +66,7 @@ export const AllServices = ({
         <ServiceCard
           key={service.id}
           onPress={() => {
-            navigation.navigate("ServiceDetail", service);
+            navigation.navigate("ServiceDetail", { serviceId: service.id });
           }}
           service={{
             name: service.name,

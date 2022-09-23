@@ -14,14 +14,10 @@ import appointmentService from "../../../../services/appointment";
 import { Layout, VehicleCard } from "../../../../components";
 import { ChatIcon } from "../../../../components/icon/chat-icon";
 
-export const AppointmentDetail = ({
-  route,
-}: NativeStackScreenProps<
+export const AppointmentDetail = ({}: NativeStackScreenProps<
   CustomerAppointmentsStackParamList,
   "AppointmentDetail"
 >) => {
-  const props = route.params;
-
   return (
     <AppointmentMessagesStack.Navigator
       screenOptions={{
@@ -32,11 +28,7 @@ export const AppointmentDetail = ({
       }}
       initialRouteName="Details"
     >
-      <AppointmentMessagesStack.Screen
-        name="Details"
-        component={Details}
-        initialParams={props}
-      />
+      <AppointmentMessagesStack.Screen name="Details" component={Details} />
       <AppointmentMessagesStack.Screen name="Messages" component={Messages} />
     </AppointmentMessagesStack.Navigator>
   );
@@ -46,8 +38,8 @@ const Details = ({
   route,
   navigation,
 }: NativeStackScreenProps<AppointmentMessagesStackParamList, "Details">) => {
-  const props = route.params;
-  const appointment = useQuery(["appointment", props.id], (e) =>
+  const { appointmentId } = route.params;
+  const appointment = useQuery(["appointment", appointmentId], (e) =>
     appointmentService.getById({ appointmentId: e.queryKey[1] })
   );
 

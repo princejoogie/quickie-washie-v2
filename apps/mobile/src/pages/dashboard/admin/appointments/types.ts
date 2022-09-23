@@ -1,10 +1,9 @@
-import { GetAllAppointmentsResponse } from "@qw/dto";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type AdminAppointmentsStackParamList = {
   AllAppointments: undefined;
-  AppointmentDetail: GetAllAppointmentsResponse[number];
+  AppointmentDetail: { appointmentId: string };
 };
 
 export const AdminAppointmentsStack =
@@ -12,7 +11,7 @@ export const AdminAppointmentsStack =
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type AdminAppointmentMessagesStackParamList = {
-  Details: GetAllAppointmentsResponse[number];
+  Details: { appointmentId: string };
   Messages: { appointmentId: string };
 };
 

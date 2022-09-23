@@ -16,7 +16,19 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
+      <NavigationContainer
+        linking={{
+          prefixes: ["https://qwashie.com", "qwashie://"],
+          config: {
+            screens: {
+              Login: "login",
+              Register: "register",
+              UserDashboard: "user-dashboard",
+              AdminDashboard: "admin-dashboard",
+            },
+          },
+        }}
+      >
         <StatusBar style="light" />
 
         {isLoading ? (

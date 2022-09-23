@@ -52,8 +52,8 @@ const Details = ({
   AdminAppointmentMessagesStackParamList,
   "Details"
 >) => {
-  const props = route.params;
-  const appointment = useQuery(["appointment", props.id], (e) =>
+  const { appointmentId } = route.params;
+  const appointment = useQuery(["appointment", appointmentId], (e) =>
     appointmentService.getById({ appointmentId: e.queryKey[1] })
   );
 

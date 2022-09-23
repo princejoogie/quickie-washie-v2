@@ -64,7 +64,9 @@ const AllAppointments = ({
             key={apt.id}
             appointment={apt}
             onClick={() => {
-              navigation.navigate("AppointmentDetail", apt);
+              navigation.navigate("AppointmentDetail", {
+                appointmentId: apt.id,
+              });
             }}
           />
         ))
