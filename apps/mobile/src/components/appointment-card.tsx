@@ -1,7 +1,7 @@
 import type { GetAllAppointmentsResponse } from "@qw/dto";
 import { TouchableOpacity, Text, View } from "react-native";
 import { format } from "date-fns";
-import { VehicleCard } from ".";
+import { VehicleCard } from "./vehicle-card";
 
 interface AppointmentCardProps {
   onClick: () => void;

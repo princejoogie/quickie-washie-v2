@@ -3,20 +3,21 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { View, Text, TouchableOpacity, Keyboard } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import * as Linking from "expo-linking";
 
 import { VehiclesStackParamList } from "./types";
 
 import vehiclesService from "../../../../services/vehicles";
 import { VehicleTypeNames } from "../../../../constants";
 import { AppointmentCard, Layout, TextField } from "../../../../components";
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { CustomerDashboardParamList } from "../types";
+import { useLinkTo } from "@react-navigation/native";
 
 export const VehicleDetail = ({
   route,
   navigation,
 }: NativeStackScreenProps<VehiclesStackParamList, "VehicleDetail">) => {
   const { vehicleId } = route.params;
+  const linkTo = useLinkTo();
 
   const [isEditing, setIsEditing] = useState(false);
   const [plateNumber, setPlateNumber] = useState("");
@@ -55,7 +56,7 @@ export const VehicleDetail = ({
     <Layout
       onRefresh={vehicleDetails.refetch}
       nav={{
-        title: vehicleDetails.data?.id ?? "Vehicle Details",
+        title: vehicleDetails.data?.plateNumber ?? "Vehicle Details",
         canGoBack: navigation.canGoBack(),
         onBack: navigation.goBack,
         actions: (
@@ -136,14 +137,7 @@ export const VehicleDetail = ({
               key={apt.id}
               appointment={apt}
               onClick={() => {
-                navigation
-                  .getParent<
-                    BottomTabNavigationProp<
-                      CustomerDashboardParamList,
-                      "Appointments"
-                    >
-                  >()
-                  .navigate("Appointments");
+                linkTo(`/customer-dashboard/appointments/${apt.id}`);
               }}
             />
           ))

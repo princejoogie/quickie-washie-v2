@@ -1,3 +1,4 @@
+import * as Linking from "expo-linking";
 import { View, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -6,10 +7,12 @@ import { QueryClientProvider } from "@tanstack/react-query";
 
 import { RootStack } from "./pages/types";
 import { Login, Register } from "./pages";
-import { UserDashboard } from "./pages/dashboard/customer";
+import { CustomerDashboard } from "./pages/dashboard/customer";
 import { AdminDashboard } from "./pages/dashboard/admin";
 import { AuthProvider, useAuthContext } from "./contexts/auth-context";
 import { queryClient } from "./services/api";
+
+const prefix = Linking.createURL("/");
 
 const App = () => {
   const { data, isLoading } = useAuthContext();
@@ -18,13 +21,28 @@ const App = () => {
     <SafeAreaProvider>
       <NavigationContainer
         linking={{
-          prefixes: ["https://qwashie.com", "qwashie://"],
+          prefixes: [prefix],
           config: {
             screens: {
-              Login: "login",
-              Register: "register",
-              UserDashboard: "user-dashboard",
-              AdminDashboard: "admin-dashboard",
+              CustomerDashboard: {
+                // @ts-expect-error
+                screens: {
+                  Appointments: {
+                    screens: {
+                      AppointmentDetail: {
+                        screens: {
+                          Details: {
+                            path: "customer-dashboard/appointments/:appointmentId",
+                            parse: {
+                              appointmentId: (id: string) => `${id}`,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
         }}
@@ -57,8 +75,8 @@ const App = () => {
               />
             ) : (
               <RootStack.Screen
-                name="UserDashboard"
-                component={UserDashboard}
+                name="CustomerDashboard"
+                component={CustomerDashboard}
               />
             )}
           </RootStack.Navigator>
