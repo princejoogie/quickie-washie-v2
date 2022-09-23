@@ -31,6 +31,7 @@
     "expo-image-picker": "~13.3.1",
     "expo-linking": "~3.2.2",
     "expo-status-bar": "~1.4.0",
+    "expo-web-browser": "~11.0.0",
     "firebase": "^9.10.0",
     "jwt-decode": "^3.1.2",
     "nativewind": "^2.0.10",
