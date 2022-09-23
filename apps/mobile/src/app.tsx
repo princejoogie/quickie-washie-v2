@@ -14,6 +14,29 @@ import { queryClient } from "./services/api";
 
 const prefix = Linking.createURL("/");
 
+const config: any = {
+  screens: {
+    CustomerDashboard: {
+      screens: {
+        Appointments: {
+          screens: {
+            AppointmentDetail: {
+              screens: {
+                Details: {
+                  path: "customer-dashboard/appointments/:appointmentId",
+                  parse: {
+                    appointmentId: (id: string) => `${id}`,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
 const App = () => {
   const { data, isLoading } = useAuthContext();
 
@@ -22,29 +45,7 @@ const App = () => {
       <NavigationContainer
         linking={{
           prefixes: [prefix],
-          config: {
-            screens: {
-              CustomerDashboard: {
-                // @ts-expect-error
-                screens: {
-                  Appointments: {
-                    screens: {
-                      AppointmentDetail: {
-                        screens: {
-                          Details: {
-                            path: "customer-dashboard/appointments/:appointmentId",
-                            parse: {
-                              appointmentId: (id: string) => `${id}`,
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
+          config,
         }}
       >
         <StatusBar style="light" />

@@ -14,7 +14,9 @@ import appointmentService from "../../../../services/appointment";
 import { Layout, VehicleCard } from "../../../../components";
 import { ChatIcon } from "../../../../components/icon/chat-icon";
 
-export const AppointmentDetail = ({}: NativeStackScreenProps<
+export const AppointmentDetail = ({
+  route,
+}: NativeStackScreenProps<
   CustomerAppointmentsStackParamList,
   "AppointmentDetail"
 >) => {
@@ -28,7 +30,11 @@ export const AppointmentDetail = ({}: NativeStackScreenProps<
       }}
       initialRouteName="Details"
     >
-      <AppointmentMessagesStack.Screen name="Details" component={Details} />
+      <AppointmentMessagesStack.Screen
+        name="Details"
+        component={Details}
+        initialParams={route.params}
+      />
       <AppointmentMessagesStack.Screen name="Messages" component={Messages} />
     </AppointmentMessagesStack.Navigator>
   );
