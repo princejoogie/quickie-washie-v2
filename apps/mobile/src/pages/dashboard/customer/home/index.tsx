@@ -14,6 +14,7 @@ import { CustomerDashboardParamList } from "../types";
 
 import { HomeStack, HomeStackParamList } from "./types";
 import { BookService } from "./book-service";
+import { AllServices } from "./all-services";
 
 export const Home = ({}: BottomTabScreenProps<
   CustomerDashboardParamList,
@@ -30,6 +31,7 @@ export const Home = ({}: BottomTabScreenProps<
       initialRouteName="CustomerHome"
     >
       <HomeStack.Screen name="CustomerHome" component={CustomerHome} />
+      <HomeStack.Screen name="AllServices" component={AllServices} />
       <HomeStack.Screen name="BookService" component={BookService} />
     </HomeStack.Navigator>
   );
@@ -63,12 +65,14 @@ const Services = ({
       <View className="flex px-2 flex-row items-center justify-between">
         <Text className="text-white text-lg font-bold">Services</Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AllServices")}>
           <Text className="text-blue-600 text-xs">See all</Text>
         </TouchableOpacity>
       </View>
 
-      {services.data?.map((service) => (
+      {/* only show 5 most recent services */}
+
+      {services.data?.slice(0, 5).map((service) => (
         <ServiceCard
           key={service.id}
           onPress={() => {
@@ -91,9 +95,9 @@ const Reviews = () => {
       <View className="flex px-2 flex-row items-center justify-between">
         <Text className="text-white text-lg font-bold">Reviews</Text>
 
-        <TouchableOpacity>
-          <Text className="text-blue-600 text-xs">See all</Text>
-        </TouchableOpacity>
+        {/* <TouchableOpacity> */}
+        {/*   <Text className="text-blue-600 text-xs">See all</Text> */}
+        {/* </TouchableOpacity> */}
       </View>
 
       <Text className="text-gray-400 text-center text-xs">No reviews yet.</Text>
