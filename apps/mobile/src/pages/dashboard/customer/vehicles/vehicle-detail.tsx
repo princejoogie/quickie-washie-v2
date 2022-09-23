@@ -3,28 +3,29 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { View, Text, TouchableOpacity, Keyboard } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import * as Linking from "expo-linking";
 
 import { VehiclesStackParamList } from "./types";
 
 import vehiclesService from "../../../../services/vehicles";
-import { IVehicleType, VehicleTypeNames } from "../../../../constants";
+import { VehicleTypeNames } from "../../../../constants";
 import { AppointmentCard, Layout, TextField } from "../../../../components";
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { CustomerDashboardParamList } from "../types";
+import { useLinkTo } from "@react-navigation/native";
 
 export const VehicleDetail = ({
   route,
   navigation,
 }: NativeStackScreenProps<VehiclesStackParamList, "VehicleDetail">) => {
-  const props = route.params;
+  const { vehicleId } = route.params;
+  const linkTo = useLinkTo();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [plateNumber, setPlateNumber] = useState(props.plateNumber);
-  const [type, setType] = useState<IVehicleType>(props.type);
-  const [model, setModel] = useState(props.model);
+  const [plateNumber, setPlateNumber] = useState("");
+  const [type, setType] = useState("");
+  const [model, setModel] = useState("");
 
   const vehicleDetails = useQuery(
-    ["vehicle", props.id],
+    ["vehicle", vehicleId],
     (e) => vehiclesService.getById({ vehicleId: e.queryKey[1] }),
     {
       onSuccess: (data) => {
@@ -55,7 +56,7 @@ export const VehicleDetail = ({
     <Layout
       onRefresh={vehicleDetails.refetch}
       nav={{
-        title: props.plateNumber,
+        title: vehicleDetails.data?.plateNumber ?? "Vehicle Details",
         canGoBack: navigation.canGoBack(),
         onBack: navigation.goBack,
         actions: (
@@ -70,7 +71,7 @@ export const VehicleDetail = ({
                     type,
                   },
                   params: {
-                    vehicleId: props.id,
+                    vehicleId,
                   },
                 });
                 setIsEditing(false);
@@ -136,14 +137,7 @@ export const VehicleDetail = ({
               key={apt.id}
               appointment={apt}
               onClick={() => {
-                navigation
-                  .getParent<
-                    BottomTabNavigationProp<
-                      CustomerDashboardParamList,
-                      "Appointments"
-                    >
-                  >()
-                  .navigate("Appointments");
+                linkTo(`/customer-dashboard/appointments/${apt.id}`);
               }}
             />
           ))
@@ -158,7 +152,7 @@ export const VehicleDetail = ({
         className="self-end mt-6"
         disabled={deleteVehicle.isLoading}
         onPress={() => {
-          deleteVehicle.mutateAsync({ vehicleId: props.id });
+          deleteVehicle.mutateAsync({ vehicleId });
         }}
       >
         <Text className="text-red-600">Delete Vehicle</Text>

@@ -26,7 +26,7 @@ const deleteAppointmentController: RequestHandler<
     });
 
     if (!appointment) {
-      const error = new AppError("NotFoundException", "Service not found");
+      const error = new AppError("NotFoundException", "Appointment not found");
       return next(error);
     }
 

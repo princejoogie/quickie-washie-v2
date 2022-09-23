@@ -1,4 +1,3 @@
-import { GetAllServicesResponse } from "@qw/dto";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { z } from "zod";
 
@@ -6,7 +5,7 @@ import { z } from "zod";
 export type ServicesStackParamList = {
   AllServices: undefined;
   NewService: undefined;
-  ServiceDetail: GetAllServicesResponse[number];
+  ServiceDetail: { serviceId: string };
 };
 
 export const ServicesStack =

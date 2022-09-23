@@ -18,6 +18,7 @@ const getAllAppointmentsController: RequestHandler<
 
     if (payload.privilege === "ADMIN") {
       const appointments = await prisma.appointment.findMany({
+        orderBy: { date: "asc" },
         include: {
           AdditionalPrice: true,
           Service: true,
@@ -38,7 +39,7 @@ const getAllAppointmentsController: RequestHandler<
     } else {
       const appointments = await prisma.appointment.findMany({
         where: { userId: payload.id },
-        orderBy: { date: "desc" },
+        orderBy: { date: "asc" },
         include: {
           AdditionalPrice: true,
           Service: true,

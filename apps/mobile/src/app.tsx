@@ -1,3 +1,4 @@
+import * as Linking from "expo-linking";
 import { View, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -6,17 +7,47 @@ import { QueryClientProvider } from "@tanstack/react-query";
 
 import { RootStack } from "./pages/types";
 import { Login, Register } from "./pages";
-import { UserDashboard } from "./pages/dashboard/customer";
+import { CustomerDashboard } from "./pages/dashboard/customer";
 import { AdminDashboard } from "./pages/dashboard/admin";
 import { AuthProvider, useAuthContext } from "./contexts/auth-context";
 import { queryClient } from "./services/api";
+
+const prefix = Linking.createURL("/");
+
+const config: any = {
+  screens: {
+    CustomerDashboard: {
+      screens: {
+        Appointments: {
+          screens: {
+            AppointmentDetail: {
+              screens: {
+                Details: {
+                  path: "customer-dashboard/appointments/:appointmentId",
+                  parse: {
+                    appointmentId: (id: string) => `${id}`,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
 
 const App = () => {
   const { data, isLoading } = useAuthContext();
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
+      <NavigationContainer
+        linking={{
+          prefixes: [prefix],
+          config,
+        }}
+      >
         <StatusBar style="light" />
 
         {isLoading ? (
@@ -45,8 +76,8 @@ const App = () => {
               />
             ) : (
               <RootStack.Screen
-                name="UserDashboard"
-                component={UserDashboard}
+                name="CustomerDashboard"
+                component={CustomerDashboard}
               />
             )}
           </RootStack.Navigator>

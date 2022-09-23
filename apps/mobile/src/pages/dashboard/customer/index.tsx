@@ -10,9 +10,9 @@ import { Profile } from "./profile";
 import { Vehicles } from "./vehicles";
 import { Appointments } from "./appointments";
 
-export const UserDashboard = ({}: NativeStackScreenProps<
+export const CustomerDashboard = ({}: NativeStackScreenProps<
   RootStackParamList,
-  "UserDashboard"
+  "CustomerDashboard"
 >) => {
   return (
     <CustomerBottomTab.Navigator

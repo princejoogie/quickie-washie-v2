@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 export type RootStackParamList = {
   Register: undefined;
   Login: undefined;
-  UserDashboard: undefined;
+  CustomerDashboard: undefined;
   AdminDashboard: undefined;
 };
 

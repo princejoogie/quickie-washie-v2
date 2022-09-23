@@ -4,6 +4,7 @@ export * from "./avatar";
 export * from "./customer-tab-bar";
 export * from "./image-input";
 export * from "./layout";
+export * from "./link-button";
 export * from "./messages-page";
 export * from "./service-card";
 export * from "./text-field";

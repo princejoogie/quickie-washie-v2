@@ -70,7 +70,7 @@ const AllVehicles = ({
             vehicle={vehicle}
             key={vehicle.id}
             onClick={() => {
-              navigation.navigate("VehicleDetail", vehicle);
+              navigation.navigate("VehicleDetail", { vehicleId: vehicle.id });
             }}
           />
         ))
