@@ -21,8 +21,14 @@ export const AppointmentCard = ({
       onPress={onClick}
       className="border-gray-700 bg-gray-800 mt-3 rounded-xl border-2 relative p-3"
     >
-      <Text className="text-white text-lg font-bold">
-        {appointment.Service?.name}
+      <Text
+        className={`font-bold ${
+          appointment.Service
+            ? "text-lg text-white"
+            : "text-sm text-red-600 italic"
+        }`}
+      >
+        {appointment.Service?.name ?? "Unknown Service"}
       </Text>
       <Text className="text-gray-400 text-xs">
         {format(date, "MMM d, yyyy")}

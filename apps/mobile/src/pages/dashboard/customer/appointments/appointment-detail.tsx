@@ -141,7 +141,13 @@ const Details = ({
     >
       <Text className="text-gray-400 text-xs ml-2 mt-4">Details</Text>
       <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
-        <Text className="text-white text-lg font-bold">{a.Service?.name}</Text>
+        <Text
+          className={`font-bold ${
+            a.Service ? "text-lg text-white" : "text-sm text-red-600 italic"
+          }`}
+        >
+          {a.Service?.name ?? "Unknown Service"}
+        </Text>
         <Text className="text-gray-400 text-xs">
           {format(date, "MMM d, yyyy")}
         </Text>
