@@ -105,3 +105,15 @@ export const profileResponse = Prisma.validator<PrismaType.UserArgs>()({
 });
 
 export type ProfileResponse = PrismaType.UserGetPayload<typeof profileResponse>;
+
+// REAUTHENTICATE
+
+export const reauthenticateBodySchema = z.object({
+  password: z.string().trim().min(6),
+});
+
+export type ReauthenticateBody = z.infer<typeof reauthenticateBodySchema>;
+
+export const reauthenticateSchema: ValidatorSchema = {
+  body: reauthenticateBodySchema,
+};

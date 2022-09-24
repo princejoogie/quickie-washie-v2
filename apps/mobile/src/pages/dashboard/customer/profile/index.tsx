@@ -14,6 +14,7 @@ import authService from "../../../../services/auth";
 import { CustomerDashboardParamList } from "../types";
 import { PencilSquareIcon } from "../../../../components/icon/pencil-square-icon";
 import { getImage } from "../../../../utils/helpers";
+import { uploadFile } from "../../../../services/firebase";
 
 const updateSchema = z.object({
   name: z.string().min(1, { message: "Invalid name" }).max(255).trim(),
@@ -28,7 +29,14 @@ export const Profile = ({}: BottomTabScreenProps<
   "Profile"
 >) => {
   const { logout } = useAuthContext();
-  const { control, handleSubmit, setValue, reset } = useForm<UpdateSchema>({
+  const [isEditing, setIsEditing] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<UpdateSchema>({
     mode: "all",
     resolver: zodResolver(updateSchema),
   });
@@ -42,18 +50,19 @@ export const Profile = ({}: BottomTabScreenProps<
   });
 
   const updateProfile = useMutation(authService.updateProfile, {
-    onSuccess: () => {
+    onSuccess: async () => {
+      setIsEditing(false);
       profile.refetch();
     },
   });
-
-  const [isEditing, setIsEditing] = useState(false);
 
   const isFocused = useIsFocused();
 
   if (isFocused && profile.isStale) {
     profile.refetch();
   }
+
+  const isUpdating = updateProfile.isLoading || isSubmitting;
 
   return (
     <Layout
@@ -73,8 +82,10 @@ export const Profile = ({}: BottomTabScreenProps<
         name="imageUrl"
         render={({ field: { onChange, value } }) => (
           <TouchableOpacity
-            disabled={!isEditing}
-            className="mx-auto h-32 w-32 rounded-full bg-gray-800 border-2 border-gray-700"
+            disabled={!isEditing || isUpdating}
+            className={`mx-auto h-32 w-32 rounded-full bg-gray-800 border-2 items-center justify-center ${
+              isEditing ? "border-gray-700" : "border-transparent"
+            }`}
             onPress={async () => {
               const res = await getImage({ aspect: [1, 1] });
               if (res) onChange(res.uri);
@@ -105,7 +116,7 @@ export const Profile = ({}: BottomTabScreenProps<
         render={({ field: { onChange, value, ...rest } }) => (
           <TextField
             {...rest}
-            editable={isEditing}
+            editable={isEditing || isUpdating}
             label="Full name"
             value={value}
             onChangeText={onChange}
@@ -118,7 +129,7 @@ export const Profile = ({}: BottomTabScreenProps<
         name="licenseUrl"
         render={({ field: { onChange, value } }) => (
           <ImageInput
-            editable={isEditing}
+            editable={isEditing || isUpdating}
             label="Drivers license"
             uri={value}
             callback={(e) => {
@@ -130,19 +141,41 @@ export const Profile = ({}: BottomTabScreenProps<
 
       <View className="flex flex-row items-center justify-between mt-6">
         <TouchableOpacity
+          disabled={isUpdating}
           className="bg-green-600 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
           onPress={() => {
-            if (isEditing) {
+            if (isEditing && profile.data) {
               Alert.prompt("Verify password", "", async (currentPassword) => {
+                try {
+                  await authService.reauthenticate({
+                    password: currentPassword,
+                  });
+                  await handleSubmit(async ({ imageUrl, licenseUrl, name }) => {
+                    const [licenseDownloadUrl, imageDownloadUrl] =
+                      await Promise.all([
+                        uploadFile(licenseUrl, profile.data.email),
+                        uploadFile(imageUrl, profile.data.email),
+                      ]);
+
+                    await updateProfile.mutateAsync({
+                      name,
+                      licenseUrl: licenseDownloadUrl,
+                      imageUrl: imageDownloadUrl,
+                    });
+                  })();
+                } catch {
+                  Alert.alert("Invalid password");
+                }
                 console.log({ currentPassword });
               });
-              setIsEditing(false);
             } else {
               setIsEditing(true);
             }
           }}
         >
-          <Text className="text-white">{isEditing ? "Save" : "Edit"}</Text>
+          <Text className="text-white">
+            {isUpdating ? "Updating..." : isEditing ? "Save" : "Edit"}
+          </Text>
         </TouchableOpacity>
 
         {isEditing && (

@@ -6,12 +6,14 @@ import {
   registerSchema,
   refreshTokenSchema,
   updateProfileSchema,
+  reauthenticateSchema,
 } from "@qw/dto";
 import loginController from "../controllers/auth/login.controller";
 import registerController from "../controllers/auth/register.controller";
 import profileController from "../controllers/auth/profile/profile.controller";
 import updateProfileController from "../controllers/auth/profile/update.controller";
 import refreshTokenController from "../controllers/auth/refresh-token.controller";
+import reauthenticateController from "../controllers/auth/reauthenticate.controller";
 
 export const authRouter = Router();
 
@@ -30,4 +32,9 @@ authRouter.post(
   "/refresh-token",
   validator(refreshTokenSchema),
   refreshTokenController
+);
+authRouter.post(
+  "/reauthenticate",
+  [checkJwt, validator(reauthenticateSchema)],
+  reauthenticateController
 );
