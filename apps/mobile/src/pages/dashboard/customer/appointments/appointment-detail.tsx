@@ -18,7 +18,7 @@ import documentService from "../../../../services/document";
 import { ChatIcon } from "../../../../components/icon/chat-icon";
 import { DocumentIcon } from "../../../../components/icon/document-icon";
 import { ImageIcon } from "../../../../components/icon/image-icon";
-import { Layout, VehicleCard } from "../../../../components";
+import { Layout, LoadingText, VehicleCard } from "../../../../components";
 import { getDocument } from "../../../../utils/helpers";
 import { uploadFile } from "../../../../services/firebase";
 
@@ -91,7 +91,7 @@ const Details = ({
           onBack: navigation.goBack,
         }}
       >
-        <Text>Loading...</Text>
+        <LoadingText />
       </Layout>
     );
   }
@@ -105,7 +105,7 @@ const Details = ({
           onBack: navigation.goBack,
         }}
       >
-        <Text>Appointment not found</Text>
+        <LoadingText text="Appointment not found" />
       </Layout>
     );
   }

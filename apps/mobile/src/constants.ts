@@ -20,6 +20,13 @@ export const IAppointmentStatusNames = {
   ONGOING: "Ongoing",
   FINISHED: "Finished",
   CANCELLED: "Cancelled",
-};
+} as const;
 
 export type IAppointmentStatus = keyof typeof IAppointmentStatusNames;
+
+export const FilterTypeNames = {
+  ALL: "All",
+  ...IAppointmentStatusNames,
+} as const;
+
+export type FilterType = keyof typeof FilterTypeNames;

@@ -10,7 +10,7 @@ import { VehicleDetail } from "./vehicle-detail";
 
 import { CustomerDashboardParamList } from "../types";
 
-import { Layout, VehicleCard } from "../../../../components";
+import { Layout, LoadingText, VehicleCard } from "../../../../components";
 import vehiclesService from "../../../../services/vehicles";
 import { PlusIcon } from "../../../../components/icon/plus-icon";
 
@@ -63,8 +63,8 @@ const AllVehicles = ({
       }}
     >
       {vehicles.isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
+        <LoadingText />
+      ) : vehicles.data && vehicles.data.length > 0 ? (
         vehicles.data?.map((vehicle) => (
           <VehicleCard
             vehicle={vehicle}
@@ -74,6 +74,10 @@ const AllVehicles = ({
             }}
           />
         ))
+      ) : (
+        <Text className="text-gray-400 text-center text-xs mt-4">
+          No vehicles available.
+        </Text>
       )}
     </Layout>
   );

@@ -1,4 +1,5 @@
-import { Text } from "react-native";
+import { useState } from "react";
+import { Text, TouchableOpacity } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { useIsFocused } from "@react-navigation/native";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
@@ -12,8 +13,15 @@ import { AdminAppointmentDetail } from "./appointment-detail";
 
 import { AdminDashboardParamList } from "../types";
 
-import { AppointmentCard, Layout } from "../../../../components";
+import {
+  AppointmentCard,
+  AppointmentFilterModal,
+  Layout,
+  LoadingText,
+} from "../../../../components";
 import appointmentService from "../../../../services/appointment";
+import { FilterType } from "../../../../constants";
+import { FilterIcon } from "../../../../components/icon/filter-icon";
 
 export const Appointments = ({}: BottomTabScreenProps<
   AdminDashboardParamList,
@@ -47,6 +55,8 @@ const AllAppointments = ({
   AdminAppointmentsStackParamList,
   "AllAppointments"
 >) => {
+  const [filter, setFilter] = useState<FilterType>("ALL");
+  const [modalVisible, setModalVisible] = useState(false);
   const appointments = useQuery(["appointments"], appointmentService.getAll);
   const isFocused = useIsFocused();
 
@@ -54,12 +64,30 @@ const AllAppointments = ({
     appointments.refetch();
   }
 
+  const filteredAppointments =
+    filter === "ALL"
+      ? appointments.data
+      : appointments.data?.filter((a) => a.status === filter);
+
   return (
-    <Layout nav={{ title: "Appointments" }} onRefresh={appointments.refetch}>
+    <Layout
+      nav={{
+        title: "Appointments",
+        actions: (
+          <TouchableOpacity
+            className="flex flex-row items-center"
+            onPress={() => setModalVisible(true)}
+          >
+            <FilterIcon />
+          </TouchableOpacity>
+        ),
+      }}
+      onRefresh={appointments.refetch}
+    >
       {appointments.isLoading ? (
-        <Text>Loading...</Text>
-      ) : appointments.data && appointments.data.length > 0 ? (
-        appointments.data.map((apt) => (
+        <LoadingText />
+      ) : filteredAppointments && filteredAppointments.length > 0 ? (
+        filteredAppointments?.map((apt) => (
           <AppointmentCard
             key={apt.id}
             appointment={apt}
@@ -74,6 +102,21 @@ const AllAppointments = ({
         <Text className="text-gray-400 text-center text-xs mt-4">
           No appointments available.
         </Text>
+      )}
+
+      {modalVisible && (
+        <AppointmentFilterModal
+          key={filter}
+          visible={true}
+          initialValue={filter}
+          onDismiss={(e) => {
+            setFilter(e);
+            setModalVisible(false);
+          }}
+          closeModal={() => {
+            setModalVisible(false);
+          }}
+        />
       )}
     </Layout>
   );
