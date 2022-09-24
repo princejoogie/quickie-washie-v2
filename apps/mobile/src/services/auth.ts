@@ -7,6 +7,7 @@ import type {
   UpdateProfileResponse,
   UpdateProfileBody,
   ReauthenticateBody,
+  ChangePasswordBody,
 } from "@qw/dto";
 import { api, setTokens } from "./api";
 
@@ -37,11 +38,17 @@ const reauthenticate = async (body: ReauthenticateBody) => {
   return response.data;
 };
 
+const changePassword = async (body: ChangePasswordBody) => {
+  const response = await api.post<LoginResponse>("/auth/change-password", body);
+  return response.data;
+};
+
 const authService = {
+  changePassword,
   login,
   profile,
-  register,
   reauthenticate,
+  register,
   updateProfile,
 };
 

@@ -117,3 +117,16 @@ export type ReauthenticateBody = z.infer<typeof reauthenticateBodySchema>;
 export const reauthenticateSchema: ValidatorSchema = {
   body: reauthenticateBodySchema,
 };
+
+// CHANGE PASSWORD
+
+export const changePasswordBodySchema = z.object({
+  password: z.string().trim().min(6),
+  newPassword: z.string().trim().min(6),
+});
+
+export type ChangePasswordBody = z.infer<typeof changePasswordBodySchema>;
+
+export const changePasswordSchema: ValidatorSchema = {
+  body: changePasswordBodySchema,
+};

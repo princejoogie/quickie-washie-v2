@@ -1,15 +1,15 @@
 import type { RequestHandler } from "express";
-import type { ReauthenticateBody, LoginResponse } from "@qw/dto";
+import type { ChangePasswordBody, LoginResponse } from "@qw/dto";
 import bcrypt from "bcryptjs";
 
 import prisma from "../../lib/prisma";
 import { AppError, handleControllerError } from "../../utils/error";
-import { createTokens } from "../../utils/jwt-helper";
+import { createTokens, HASH_SALT } from "../../utils/jwt-helper";
 
-const reauthenticateController: RequestHandler<
+const changePasswordController: RequestHandler<
   any,
   LoginResponse,
-  ReauthenticateBody
+  ChangePasswordBody
 > = async (req, res, next) => {
   try {
     const payload = req.tokenPayload;
@@ -19,7 +19,7 @@ const reauthenticateController: RequestHandler<
       return next(error);
     }
 
-    const { password } = req.body;
+    const { password, newPassword } = req.body;
 
     const user = await prisma.user.findUnique({
       where: { id: payload.id },
@@ -35,10 +35,17 @@ const reauthenticateController: RequestHandler<
     if (!isValid) {
       const error = new AppError(
         "UnauthorizedException",
-        "Invalid credentials"
+        "Invalid password provided"
       );
       return next(error);
     }
+
+    const hashedPassword = await bcrypt.hash(newPassword, HASH_SALT);
+
+    await prisma.user.update({
+      where: { id: payload.id },
+      data: { password: hashedPassword },
+    });
 
     const { accessToken, refreshToken } = createTokens({
       id: user.id,
@@ -51,4 +58,4 @@ const reauthenticateController: RequestHandler<
   }
 };
 
-export default reauthenticateController;
+export default changePasswordController;

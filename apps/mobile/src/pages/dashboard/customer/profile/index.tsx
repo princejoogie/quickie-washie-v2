@@ -195,7 +195,15 @@ export const Profile = ({}: BottomTabScreenProps<
         onPress={() => {
           Alert.prompt("Current password", "", async (currentPassword) => {
             Alert.prompt("New password", "", async (newPassword) => {
-              console.log({ currentPassword, newPassword });
+              try {
+                await authService.changePassword({
+                  password: currentPassword,
+                  newPassword,
+                });
+                Alert.alert("Password changed successfully");
+              } catch {
+                Alert.alert("Invalid password");
+              }
             });
           });
         }}
