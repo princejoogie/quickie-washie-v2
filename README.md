@@ -3,7 +3,7 @@
 prerequisite: [direnv](https://direnv.net/#getting-started)
 
 TODO:
-- [ ] Update Profile
+- [x] Update Profile
 - [ ] See user profile in appointment detail (admin)
 - [ ] Update Appointment status
 - [ ] Send Notifications

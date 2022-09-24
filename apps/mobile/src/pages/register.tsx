@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,11 @@ import { useAuthContext } from "../contexts/auth-context";
 const registerSchema = z
   .object({
     email: z.string().email().trim(),
+    phone: z
+      .string()
+      .trim()
+      .min(10, { message: "Invalid phone number" })
+      .max(10, { message: "Invalid phone number" }),
     password: z
       .string()
       .trim()
@@ -58,6 +63,7 @@ export const Register = ({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
+      phone: "",
       imageUrl: "",
       licenseUrl: "",
       name: "",
@@ -130,6 +136,7 @@ export const Register = ({
         render={({ field: { onChange, value, ...rest } }) => (
           <TextField
             {...rest}
+            placeholder="John Doe"
             label="Full name *"
             value={value}
             onChangeText={onChange}
@@ -148,6 +155,7 @@ export const Register = ({
         render={({ field: { onChange, value, ...rest } }) => (
           <TextField
             {...rest}
+            placeholder="john@gmail.com"
             label="Email *"
             value={value}
             onChangeText={onChange}
@@ -157,6 +165,33 @@ export const Register = ({
       {errors.email && (
         <Text className="text-xs text-red-600 ml-2 mt-1">
           {errors.email.message}
+        </Text>
+      )}
+
+      <Controller
+        control={control}
+        name="phone"
+        render={({ field: { onChange, value, ...rest } }) => (
+          <View className="mt-4">
+            <Text className="text-gray-400 text-xs ml-2">Phone *</Text>
+            <View className="flex flex-row py-3 items-center border-gray-700 bg-gray-800 mt-1 rounded-lg border-2">
+              <Text className="text-gray-300 pl-4">+63</Text>
+              <TextInput
+                {...rest}
+                maxLength={10}
+                keyboardType="numeric"
+                placeholderTextColor="#71717a"
+                className="flex-1 pl-1 pr-4 text-white"
+                value={value}
+                onChangeText={onChange}
+              />
+            </View>
+          </View>
+        )}
+      />
+      {errors.phone && (
+        <Text className="text-xs text-red-600 ml-2 mt-1">
+          {errors.phone.message}
         </Text>
       )}
 
@@ -221,7 +256,7 @@ export const Register = ({
         className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
         disabled={isLoading}
         onPress={handleSubmit(
-          async ({ licenseUrl, imageUrl, confirmPassword, ...rest }) => {
+          async ({ licenseUrl, imageUrl, confirmPassword, phone, ...rest }) => {
             const [licenseDownloadUrl, imageDownloadUrl] = await Promise.all([
               uploadFile(licenseUrl, rest.email),
               uploadFile(imageUrl, rest.email),
@@ -231,6 +266,7 @@ export const Register = ({
               ...rest,
               licenseUrl: licenseDownloadUrl,
               imageUrl: imageDownloadUrl,
+              phone: `+63${phone}`,
             });
 
             await login(rest.email, rest.password);

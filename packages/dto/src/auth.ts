@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Prisma, User } from "@qw/db";
-import { Prisma as PrismaType } from "@qw/db";
+import type { Prisma as PrismaType } from "@qw/db";
 import type { ValidatorSchema } from "./common";
 
 // LOGIN
@@ -56,6 +56,7 @@ export const registerBodySchema = z.object({
   email: z.string().email().trim(),
   password: z.string().trim().min(6),
   licenseUrl: z.string().url().trim(),
+  phone: z.string().min(13).max(13).trim(),
   imageUrl: z.string().url().trim(),
   name: z.string().trim(),
 });
