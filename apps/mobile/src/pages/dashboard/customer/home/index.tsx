@@ -65,26 +65,34 @@ const Services = ({
       <View className="flex px-2 flex-row items-center justify-between">
         <Text className="text-white text-lg font-bold">Services</Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate("AllServices")}>
-          <Text className="text-blue-600 text-xs">See all</Text>
-        </TouchableOpacity>
+        {services.data && services.data.length > 0 && (
+          <TouchableOpacity onPress={() => navigation.navigate("AllServices")}>
+            <Text className="text-blue-600 text-xs">See all</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {/* only show 5 most recent services */}
 
-      {services.data?.slice(0, 5).map((service) => (
-        <ServiceCard
-          key={service.id}
-          onPress={() => {
-            navigation.navigate("BookService", { serviceId: service.id });
-          }}
-          service={{
-            name: service.name,
-            basePrice: service.basePrice.toString(),
-            description: service.description,
-          }}
-        />
-      ))}
+      {services.data && services.data.length > 0 ? (
+        services.data.slice(0, 5).map((service) => (
+          <ServiceCard
+            key={service.id}
+            onPress={() => {
+              navigation.navigate("BookService", { serviceId: service.id });
+            }}
+            service={{
+              name: service.name,
+              basePrice: service.basePrice.toString(),
+              description: service.description,
+            }}
+          />
+        ))
+      ) : (
+        <Text className="text-gray-400 text-center text-xs">
+          No services available.
+        </Text>
+      )}
     </View>
   );
 };

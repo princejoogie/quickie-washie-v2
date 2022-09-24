@@ -44,8 +44,8 @@ export const createAppointmentSchema: ValidatorSchema = {
 // UPDATE
 
 export const updateAppointmentBodySchema = z.object({
-  date: z.string().min(1),
-  status: z.enum(["PENDING", "ONGOING", "FINISHED", "CANCELLED"]),
+  date: z.string().min(1).optional(),
+  status: z.enum(["PENDING", "ONGOING", "FINISHED", "CANCELLED"]).optional(),
 });
 
 export type UpdateAppointmentBody = z.infer<typeof updateAppointmentBodySchema>;
@@ -133,6 +133,7 @@ export const getAppointmentByIdResponseSchema =
           id: true,
           email: true,
           name: true,
+          phone: true,
           licenseUrl: true,
           photoUrl: true,
         },

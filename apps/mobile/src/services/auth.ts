@@ -4,6 +4,10 @@ import type {
   RegisterBody,
   RegisterResponse,
   ProfileResponse,
+  UpdateProfileResponse,
+  UpdateProfileBody,
+  ReauthenticateBody,
+  ChangePasswordBody,
 } from "@qw/dto";
 import { api, setTokens } from "./api";
 
@@ -12,22 +16,40 @@ const profile = async () => {
   return response.data;
 };
 
-const login = async (params: LoginBody) => {
-  const response = await api.post<LoginResponse>("/auth/login", params);
+const updateProfile = async (body: UpdateProfileBody) => {
+  const response = await api.put<UpdateProfileResponse>("/auth/profile", body);
+  return response.data;
+};
+
+const login = async (body: LoginBody) => {
+  const response = await api.post<LoginResponse>("/auth/login", body);
   await setTokens(response.data.accessToken, response.data.refreshToken);
   return response.data;
 };
 
-const register = async (params: RegisterBody) => {
-  const response = await api.post<RegisterResponse>("/auth/register", params);
+const register = async (body: RegisterBody) => {
+  const response = await api.post<RegisterResponse>("/auth/register", body);
   await setTokens(response.data.accessToken, response.data.refreshToken);
+  return response.data;
+};
+
+const reauthenticate = async (body: ReauthenticateBody) => {
+  const response = await api.post<LoginResponse>("/auth/reauthenticate", body);
+  return response.data;
+};
+
+const changePassword = async (body: ChangePasswordBody) => {
+  const response = await api.post<LoginResponse>("/auth/change-password", body);
   return response.data;
 };
 
 const authService = {
+  changePassword,
   login,
   profile,
+  reauthenticate,
   register,
+  updateProfile,
 };
 
 export default authService;

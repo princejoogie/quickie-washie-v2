@@ -14,3 +14,12 @@ export const VehicleTypeNames = {
 };
 
 export type IVehicleType = keyof typeof VehicleTypeNames;
+
+export const IAppointmentStatusNames = {
+  PENDING: "Pending",
+  ONGOING: "Ongoing",
+  FINISHED: "Finished",
+  CANCELLED: "Cancelled",
+};
+
+export type IAppointmentStatus = keyof typeof IAppointmentStatusNames;

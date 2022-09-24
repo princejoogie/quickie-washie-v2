@@ -43,6 +43,7 @@ const getAppointmentByIdController: RequestHandler<
             id: true,
             email: true,
             name: true,
+            phone: true,
             licenseUrl: true,
             photoUrl: true,
           },

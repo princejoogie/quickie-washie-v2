@@ -58,8 +58,8 @@ const AllAppointments = ({
     <Layout nav={{ title: "Appointments" }} onRefresh={appointments.refetch}>
       {appointments.isLoading ? (
         <Text>Loading...</Text>
-      ) : (
-        appointments.data?.map((apt) => (
+      ) : appointments.data && appointments.data.length > 0 ? (
+        appointments.data.map((apt) => (
           <AppointmentCard
             key={apt.id}
             appointment={apt}
@@ -70,6 +70,10 @@ const AllAppointments = ({
             }}
           />
         ))
+      ) : (
+        <Text className="text-gray-400 text-center text-xs mt-4">
+          No appointments available.
+        </Text>
       )}
     </Layout>
   );

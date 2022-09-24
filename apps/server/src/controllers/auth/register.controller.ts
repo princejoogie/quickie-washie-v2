@@ -12,7 +12,7 @@ const registerController: RequestHandler<
   RegisterBody
 > = async (req, res, next) => {
   try {
-    const { email, password, licenseUrl, name, imageUrl } = req.body;
+    const { email, password, licenseUrl, name, imageUrl, phone } = req.body;
 
     const user = await prisma.user.findUnique({
       where: { email },
@@ -27,6 +27,7 @@ const registerController: RequestHandler<
 
     const newUser = await prisma.user.create({
       data: {
+        phone,
         email,
         licenseUrl,
         name,

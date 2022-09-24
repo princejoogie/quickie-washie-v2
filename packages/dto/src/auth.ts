@@ -22,11 +22,43 @@ export const loginSchema: ValidatorSchema = {
   body: loginBodySchema,
 };
 
+// UPDATE
+export const updateProfileBodySchema = z.object({
+  name: z.string().trim().optional(),
+  imageUrl: z.string().url().optional(),
+  licenseUrl: z.string().url().optional(),
+  phone: z.string().min(13).max(13).trim().optional(),
+});
+
+export type UpdateProfileBody = z.infer<typeof updateProfileBodySchema>;
+
+export const updateProfileResponseSchema =
+  Prisma.validator<PrismaType.UserArgs>()({
+    select: {
+      id: true,
+      email: true,
+      photoUrl: true,
+      phone: true,
+      name: true,
+      privilege: true,
+      licenseUrl: true,
+    },
+  });
+
+export type UpdateProfileResponse = PrismaType.UserGetPayload<
+  typeof updateProfileResponseSchema
+>;
+
+export const updateProfileSchema: ValidatorSchema = {
+  body: updateProfileBodySchema,
+};
+
 // REGISTER
 export const registerBodySchema = z.object({
   email: z.string().email().trim(),
   password: z.string().trim().min(6),
   licenseUrl: z.string().url().trim(),
+  phone: z.string().min(13).max(13).trim(),
   imageUrl: z.string().url().trim(),
   name: z.string().trim(),
 });
@@ -64,11 +96,12 @@ export const refreshTokenSchema: ValidatorSchema = {
 
 // PROFILE
 
-const profileResponse = Prisma.validator<PrismaType.UserArgs>()({
+export const profileResponse = Prisma.validator<PrismaType.UserArgs>()({
   select: {
     id: true,
     email: true,
     photoUrl: true,
+    phone: true,
     name: true,
     privilege: true,
     licenseUrl: true,
@@ -76,3 +109,28 @@ const profileResponse = Prisma.validator<PrismaType.UserArgs>()({
 });
 
 export type ProfileResponse = PrismaType.UserGetPayload<typeof profileResponse>;
+
+// REAUTHENTICATE
+
+export const reauthenticateBodySchema = z.object({
+  password: z.string().trim().min(6),
+});
+
+export type ReauthenticateBody = z.infer<typeof reauthenticateBodySchema>;
+
+export const reauthenticateSchema: ValidatorSchema = {
+  body: reauthenticateBodySchema,
+};
+
+// CHANGE PASSWORD
+
+export const changePasswordBodySchema = z.object({
+  password: z.string().trim().min(6),
+  newPassword: z.string().trim().min(6),
+});
+
+export type ChangePasswordBody = z.infer<typeof changePasswordBodySchema>;
+
+export const changePasswordSchema: ValidatorSchema = {
+  body: changePasswordBodySchema,
+};

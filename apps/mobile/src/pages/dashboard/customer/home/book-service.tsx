@@ -245,7 +245,6 @@ export const BookService = ({
       />
 
       <Text className="text-gray-400 text-xs ml-2 mt-4">Select time</Text>
-
       <Controller
         name="date"
         control={control}
