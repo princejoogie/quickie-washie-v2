@@ -26,6 +26,10 @@ const updateAppointmentController: RequestHandler<
 
     const appointment = await prisma.appointment.findUnique({
       where: { id: appointmentId },
+      include: {
+        Service: true,
+        Vehicle: true,
+      },
     });
 
     if (!appointment) {
@@ -41,6 +45,30 @@ const updateAppointmentController: RequestHandler<
         );
         return next(error);
       }
+    }
+
+    if (appointment.Vehicle && appointment.Service && status) {
+      await prisma.notification.create({
+        data: {
+          userId: appointment.userId,
+          title: `${appointment.Service.name} appointment [${status}]`,
+          content: `Your appointment on ${appointment.Vehicle?.plateNumber} for ${appointment.Service?.name} is now ${status}`,
+        },
+      });
+    }
+
+    if (appointment.Vehicle && appointment.Service && date) {
+      await prisma.notification.create({
+        data: {
+          userId: appointment.userId,
+          title: `${appointment.Service.name} appointment date changed`,
+          content: `Your appointment on ${
+            appointment.Vehicle?.plateNumber
+          } for ${appointment.Service?.name} is now on ${new Date(
+            date
+          ).toLocaleDateString()} at ${new Date(date).toLocaleTimeString()}`,
+        },
+      });
     }
 
     const updatedAppointment = await prisma.appointment.update({
