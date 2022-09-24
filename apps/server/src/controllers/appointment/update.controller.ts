@@ -44,8 +44,8 @@ const updateAppointmentController: RequestHandler<
     const updatedAppointment = await prisma.appointment.update({
       where: { id: appointmentId },
       data: {
-        date,
-        status,
+        date: date ?? appointment.date,
+        status: status ?? appointment.status,
       },
       include: {
         AdditionalPrice: true,

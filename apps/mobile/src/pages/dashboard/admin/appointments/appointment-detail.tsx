@@ -16,7 +16,11 @@ import appointmentService from "../../../../services/appointment";
 import authService from "../../../../services/auth";
 import documentService from "../../../../services/document";
 import { ChatIcon } from "../../../../components/icon/chat-icon";
-import { Layout, VehicleCard } from "../../../../components";
+import {
+  AppointmentStatusModal,
+  Layout,
+  VehicleCard,
+} from "../../../../components";
 import { getDocument } from "../../../../utils/helpers";
 import { uploadFile } from "../../../../services/firebase";
 import { ImageIcon } from "../../../../components/icon/image-icon";
@@ -74,12 +78,19 @@ const Details = ({
     },
   });
 
+  const updateAppointment = useMutation(appointmentService.update, {
+    onSuccess: async () => {
+      await appointment.refetch();
+    },
+  });
+
   const deleteDocument = useMutation(documentService.deleteDocument, {
     onSuccess: async () => {
       await appointment.refetch();
     },
   });
 
+  const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [documents, setDocuments] = useState<
     Array<{
@@ -169,6 +180,28 @@ const Details = ({
 
         <VehicleCard vehicle={a.Vehicle ?? undefined} />
       </View>
+
+      <TouchableOpacity
+        onPress={() => {
+          setModalVisible(true);
+        }}
+        className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 relative py-2 px-3"
+      >
+        <Text className="text-center text-gray-400 font-normal">
+          Change Status
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          setModalVisible(true);
+        }}
+        className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 relative py-2 px-3"
+      >
+        <Text className="text-center text-gray-400 font-normal">
+          Change Date
+        </Text>
+      </TouchableOpacity>
 
       <Text className="text-gray-400 text-xs ml-2 mt-4">Customer</Text>
       <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
@@ -357,6 +390,24 @@ const Details = ({
           <Text className="text-white">Choose documents</Text>
         </TouchableOpacity>
       </View>
+
+      {modalVisible && (
+        <AppointmentStatusModal
+          key={a.status}
+          visible={true}
+          initialValue={a.status}
+          onDismiss={(status) => {
+            updateAppointment.mutate({
+              body: { status },
+              params: { appointmentId: a.id },
+            });
+            setModalVisible(false);
+          }}
+          closeModal={() => {
+            setModalVisible(false);
+          }}
+        />
+      )}
     </Layout>
   );
 };
