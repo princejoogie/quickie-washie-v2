@@ -1,4 +1,4 @@
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -62,19 +62,25 @@ export const AllServices = ({
         ),
       }}
     >
-      {services.data?.map((service) => (
-        <ServiceCard
-          key={service.id}
-          onPress={() => {
-            navigation.navigate("ServiceDetail", { serviceId: service.id });
-          }}
-          service={{
-            name: service.name,
-            basePrice: service.basePrice.toString(),
-            description: service.description,
-          }}
-        />
-      ))}
+      {services.data && services.data.length > 0 ? (
+        services.data?.map((service) => (
+          <ServiceCard
+            key={service.id}
+            onPress={() => {
+              navigation.navigate("ServiceDetail", { serviceId: service.id });
+            }}
+            service={{
+              name: service.name,
+              basePrice: service.basePrice.toString(),
+              description: service.description,
+            }}
+          />
+        ))
+      ) : (
+        <Text className="text-gray-400 text-center text-xs mt-4">
+          No services available.
+        </Text>
+      )}
     </Layout>
   );
 };
