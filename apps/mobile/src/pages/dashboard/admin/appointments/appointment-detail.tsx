@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image, Linking } from "react-native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { format } from "date-fns";
@@ -170,6 +170,56 @@ const Details = ({
         <VehicleCard vehicle={a.Vehicle ?? undefined} />
       </View>
 
+      <Text className="text-gray-400 text-xs ml-2 mt-4">Customer</Text>
+      <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
+        {a.User ? (
+          <>
+            <View className="flex flex-row items-center">
+              <Image
+                className="h-12 w-12 rounded-full bg-gray-700 mr-2"
+                source={{ uri: a.User.photoUrl }}
+              />
+
+              <View>
+                <Text className="text-white font-bold">{a.User.name}</Text>
+                <Text className="text-gray-300 text-xs" selectable>
+                  {a.User.email}
+                </Text>
+              </View>
+            </View>
+
+            <Text className="text-gray-400 text-xs mt-3">Phone number</Text>
+            <TouchableOpacity
+              className="px-3 py-2 rounded-md mt-2 border-2 border-gray-700"
+              onPress={() => {
+                if (a.User?.phone) {
+                  Linking.openURL(`tel:${a.User.phone}`);
+                }
+              }}
+            >
+              <Text className="text-gray-300 text-xs">{a.User.phone}</Text>
+            </TouchableOpacity>
+
+            <Text className="text-gray-400 text-xs mt-3">Drivers license</Text>
+            <TouchableOpacity
+              className="mt-2"
+              onPress={() => {
+                if (a.User?.licenseUrl) {
+                  WebBrowser.openBrowserAsync(a.User.licenseUrl);
+                }
+              }}
+            >
+              <Image
+                className="h-32 w-full bg-gray-900 rounded-md border-2 border-gray-700"
+                source={{ uri: a.User.licenseUrl }}
+              />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <Text className="text-red-600 italic">Customer not found</Text>
+        )}
+      </View>
+
       <View className="flex flex-row items-center justify-between mt-4">
         <Text className="text-gray-400 text-xs ml-2">Documents</Text>
 
@@ -219,7 +269,7 @@ const Details = ({
           .map((doc) => (
             <View
               key={doc.id}
-              className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded mt-1"
+              className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded-md mt-1"
             >
               <TouchableOpacity
                 onPress={() => {
@@ -264,7 +314,7 @@ const Details = ({
             {documents.map((doc) => (
               <View
                 key={doc.uri}
-                className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded mt-1"
+                className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded-md mt-1"
               >
                 <View className="flex flex-row items-center flex-1">
                   {doc.mimeType?.startsWith("image") ? (
@@ -302,7 +352,7 @@ const Details = ({
             }
             console.log(res);
           }}
-          className="mt-2 self-center bg-gray-600 p-2 rounded"
+          className="mt-2 self-center bg-gray-600 p-2 rounded-md"
         >
           <Text className="text-white">Choose documents</Text>
         </TouchableOpacity>
