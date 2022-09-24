@@ -19,6 +19,7 @@ import { ChatIcon } from "../../../../components/icon/chat-icon";
 import {
   AppointmentStatusModal,
   Layout,
+  LoadingText,
   VehicleCard,
 } from "../../../../components";
 import { getDocument } from "../../../../utils/helpers";
@@ -122,7 +123,7 @@ const Details = ({
           onBack: navigation.goBack,
         }}
       >
-        <Text>Loading...</Text>
+        <LoadingText />
       </Layout>
     );
   }
@@ -136,7 +137,7 @@ const Details = ({
           onBack: navigation.goBack,
         }}
       >
-        <Text>Appointment not found</Text>
+        <LoadingText text="Appointment not found" />
       </Layout>
     );
   }
