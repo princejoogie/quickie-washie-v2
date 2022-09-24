@@ -205,7 +205,7 @@ export const Register = ({
           <ImageInput
             label="Drivers license *"
             uri={value}
-            callback={async (e) => {
+            callback={(e) => {
               if (e) onChange(e.uri);
             }}
           />

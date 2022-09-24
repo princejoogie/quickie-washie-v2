@@ -20,7 +20,7 @@ model User {
   password      String
   licenseUrl    String
   name          String
-  photoUrl      String?
+  photoUrl      String
   vehicles      Vehicle[]
   appointments  Appointment[]
   messages      Message[]

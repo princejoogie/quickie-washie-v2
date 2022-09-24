@@ -4,6 +4,8 @@ import type {
   RegisterBody,
   RegisterResponse,
   ProfileResponse,
+  UpdateProfileResponse,
+  UpdateProfileBody,
 } from "@qw/dto";
 import { api, setTokens } from "./api";
 
@@ -12,14 +14,19 @@ const profile = async () => {
   return response.data;
 };
 
-const login = async (params: LoginBody) => {
-  const response = await api.post<LoginResponse>("/auth/login", params);
+const updateProfile = async (body: UpdateProfileBody) => {
+  const response = await api.put<UpdateProfileResponse>("/auth/profile", body);
+  return response.data;
+};
+
+const login = async (body: LoginBody) => {
+  const response = await api.post<LoginResponse>("/auth/login", body);
   await setTokens(response.data.accessToken, response.data.refreshToken);
   return response.data;
 };
 
-const register = async (params: RegisterBody) => {
-  const response = await api.post<RegisterResponse>("/auth/register", params);
+const register = async (body: RegisterBody) => {
+  const response = await api.post<RegisterResponse>("/auth/register", body);
   await setTokens(response.data.accessToken, response.data.refreshToken);
   return response.data;
 };
@@ -28,6 +35,7 @@ const authService = {
   login,
   profile,
   register,
+  updateProfile,
 };
 
 export default authService;
