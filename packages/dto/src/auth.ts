@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Prisma, User } from "@qw/db";
-import type { Prisma as PrismaType } from "@qw/db";
+import { Prisma as PrismaType } from "@qw/db";
 import type { ValidatorSchema } from "./common";
 
 // LOGIN
@@ -20,6 +20,35 @@ export type LoginResponse = z.infer<typeof loginResponseSchema>;
 
 export const loginSchema: ValidatorSchema = {
   body: loginBodySchema,
+};
+
+// UPDATE
+export const updateProfileBodySchema = z.object({
+  name: z.string().optional(),
+  imageUrl: z.string().url().optional(),
+  licenseUrl: z.string().url().optional(),
+});
+
+export type UpdateProfileBody = z.infer<typeof updateProfileBodySchema>;
+
+export const updateProfileResponseSchema =
+  Prisma.validator<PrismaType.UserArgs>()({
+    select: {
+      id: true,
+      email: true,
+      photoUrl: true,
+      name: true,
+      privilege: true,
+      licenseUrl: true,
+    },
+  });
+
+export type UpdateProfileResponse = PrismaType.UserGetPayload<
+  typeof updateProfileResponseSchema
+>;
+
+export const updateProfileSchema: ValidatorSchema = {
+  body: updateProfileBodySchema,
 };
 
 // REGISTER
@@ -64,7 +93,7 @@ export const refreshTokenSchema: ValidatorSchema = {
 
 // PROFILE
 
-const profileResponse = Prisma.validator<PrismaType.UserArgs>()({
+export const profileResponse = Prisma.validator<PrismaType.UserArgs>()({
   select: {
     id: true,
     email: true,

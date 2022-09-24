@@ -2,5 +2,11 @@
 
 prerequisite: [direnv](https://direnv.net/#getting-started)
 
-bugs:
-- [] 
+TODO:
+- [ ] Update Profile
+- [ ] See user profile in appointment detail (admin)
+- [ ] Update Appointment status
+- [ ] Send Notifications
+- [ ] Send Reviews
+- [ ] Analytics
+- [ ] Report Bugs

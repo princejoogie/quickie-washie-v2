@@ -1,8 +1,8 @@
 import type { RequestHandler } from "express";
 import type { ProfileResponse } from "@qw/dto";
 
-import prisma from "../../lib/prisma";
-import { AppError, handleControllerError } from "../../utils/error";
+import prisma from "../../../lib/prisma";
+import { AppError, handleControllerError } from "../../../utils/error";
 
 const profileController: RequestHandler<any, ProfileResponse> = async (
   req,
