@@ -25,6 +25,8 @@ import { getDocument } from "../../../../utils/helpers";
 import { uploadFile } from "../../../../services/firebase";
 import { ImageIcon } from "../../../../components/icon/image-icon";
 import { DocumentIcon } from "../../../../components/icon/document-icon";
+import { ChangeDate } from "./change-date";
+import { useIsFocused } from "@react-navigation/native";
 
 export const AdminAppointmentDetail = ({
   route,
@@ -53,6 +55,10 @@ export const AdminAppointmentDetail = ({
         name="Messages"
         component={Messages}
       />
+      <AdminAppointmentMessagesStack.Screen
+        name="ChangeDate"
+        component={ChangeDate}
+      />
     </AdminAppointmentMessagesStack.Navigator>
   );
 };
@@ -68,6 +74,12 @@ const Details = ({
   const appointment = useQuery(["appointment", appointmentId], (e) =>
     appointmentService.getById({ appointmentId: e.queryKey[1] })
   );
+
+  const isFocused = useIsFocused();
+
+  if (isFocused && appointment.isStale) {
+    appointment.refetch();
+  }
 
   const profile = useQuery(["profile"], authService.profile);
 
@@ -194,7 +206,10 @@ const Details = ({
 
       <TouchableOpacity
         onPress={() => {
-          setModalVisible(true);
+          navigation.navigate("ChangeDate", {
+            appointmentId: a.id,
+            date: `${a.date}`,
+          });
         }}
         className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 relative py-2 px-3"
       >

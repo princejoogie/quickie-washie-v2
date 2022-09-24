@@ -13,6 +13,7 @@ export const AdminAppointmentsStack =
 export type AdminAppointmentMessagesStackParamList = {
   Details: { appointmentId: string };
   Messages: { appointmentId: string };
+  ChangeDate: { appointmentId: string; date: string };
 };
 
 export const AdminAppointmentMessagesStack =
