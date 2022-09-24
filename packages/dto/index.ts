@@ -1,3 +1,4 @@
+export * from "./src/analytics";
 export * from "./src/appointment";
 export * from "./src/auth";
 export * from "./src/common";
