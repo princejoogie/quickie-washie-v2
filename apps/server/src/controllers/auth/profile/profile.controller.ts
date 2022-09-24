@@ -23,6 +23,7 @@ const profileController: RequestHandler<any, ProfileResponse> = async (
         id: true,
         email: true,
         photoUrl: true,
+        phone: true,
         name: true,
         privilege: true,
         licenseUrl: true,

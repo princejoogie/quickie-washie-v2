@@ -24,9 +24,10 @@ export const loginSchema: ValidatorSchema = {
 
 // UPDATE
 export const updateProfileBodySchema = z.object({
-  name: z.string().optional(),
+  name: z.string().trim().optional(),
   imageUrl: z.string().url().optional(),
   licenseUrl: z.string().url().optional(),
+  phone: z.string().min(13).max(13).trim().optional(),
 });
 
 export type UpdateProfileBody = z.infer<typeof updateProfileBodySchema>;
@@ -37,6 +38,7 @@ export const updateProfileResponseSchema =
       id: true,
       email: true,
       photoUrl: true,
+      phone: true,
       name: true,
       privilege: true,
       licenseUrl: true,
@@ -99,6 +101,7 @@ export const profileResponse = Prisma.validator<PrismaType.UserArgs>()({
     id: true,
     email: true,
     photoUrl: true,
+    phone: true,
     name: true,
     privilege: true,
     licenseUrl: true,

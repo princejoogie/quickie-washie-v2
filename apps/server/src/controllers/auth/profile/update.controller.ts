@@ -17,7 +17,7 @@ const profileController: RequestHandler<
       return next(error);
     }
 
-    const { name, imageUrl, licenseUrl } = req.body;
+    const { name, imageUrl, licenseUrl, phone } = req.body;
 
     const user = await prisma.user.findUnique({
       where: { id: payload.id },
@@ -34,11 +34,13 @@ const profileController: RequestHandler<
         name: name ?? user.name,
         photoUrl: imageUrl ?? user.photoUrl,
         licenseUrl: licenseUrl ?? user.licenseUrl,
+        phone: phone ?? user.phone,
       },
       select: {
         id: true,
         email: true,
         photoUrl: true,
+        phone: true,
         name: true,
         privilege: true,
         licenseUrl: true,

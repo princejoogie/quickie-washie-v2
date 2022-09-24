@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { View, Alert, Image, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  Alert,
+  Image,
+  Text,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { useIsFocused } from "@react-navigation/native";
@@ -20,6 +27,11 @@ const updateSchema = z.object({
   name: z.string().min(1, { message: "Invalid name" }).max(255).trim(),
   imageUrl: z.string().url(),
   licenseUrl: z.string().url(),
+  phone: z
+    .string()
+    .trim()
+    .min(10, { message: "Invalid phone number" })
+    .max(10, { message: "Invalid phone number" }),
 });
 
 type UpdateSchema = z.infer<typeof updateSchema>;
@@ -46,13 +58,14 @@ export const Profile = ({}: BottomTabScreenProps<
       setValue("name", data.name);
       setValue("imageUrl", data.photoUrl);
       setValue("licenseUrl", data.licenseUrl);
+      setValue("phone", data.phone.replace("+63", ""));
     },
   });
 
   const updateProfile = useMutation(authService.updateProfile, {
     onSuccess: async () => {
+      await profile.refetch();
       setIsEditing(false);
-      profile.refetch();
     },
   });
 
@@ -126,6 +139,35 @@ export const Profile = ({}: BottomTabScreenProps<
 
       <Controller
         control={control}
+        name="phone"
+        render={({ field: { onChange, value, ...rest } }) => (
+          <View className="mt-4">
+            <Text className="text-gray-400 text-xs ml-2">Phone *</Text>
+            <View
+              className={`flex flex-row py-3 items-center bg-gray-800 mt-1 rounded-lg border-2 ${
+                isEditing || isUpdating
+                  ? "opacity-100 border-gray-700"
+                  : "opacity-60 border-transparent"
+              }`}
+            >
+              <Text className="text-gray-300 pl-4">+63</Text>
+              <TextInput
+                {...rest}
+                editable={isEditing || isUpdating}
+                maxLength={10}
+                keyboardType="numeric"
+                placeholderTextColor="#71717a"
+                className="flex-1 pl-1 pr-4 text-white"
+                value={value}
+                onChangeText={onChange}
+              />
+            </View>
+          </View>
+        )}
+      />
+
+      <Controller
+        control={control}
         name="licenseUrl"
         render={({ field: { onChange, value } }) => (
           <ImageInput
@@ -150,19 +192,32 @@ export const Profile = ({}: BottomTabScreenProps<
                   await authService.reauthenticate({
                     password: currentPassword,
                   });
-                  await handleSubmit(async ({ imageUrl, licenseUrl, name }) => {
-                    const [licenseDownloadUrl, imageDownloadUrl] =
-                      await Promise.all([
-                        uploadFile(licenseUrl, profile.data.email),
-                        uploadFile(imageUrl, profile.data.email),
-                      ]);
+                  await handleSubmit(
+                    async ({ imageUrl, licenseUrl, name, phone }) => {
+                      let imageDownloadUrl: string | null = null;
+                      if (imageUrl !== profile.data.photoUrl) {
+                        imageDownloadUrl = await uploadFile(
+                          imageUrl,
+                          profile.data.email
+                        );
+                      }
 
-                    await updateProfile.mutateAsync({
-                      name,
-                      licenseUrl: licenseDownloadUrl,
-                      imageUrl: imageDownloadUrl,
-                    });
-                  })();
+                      let licenseDownloadUrl: string | null = null;
+                      if (licenseUrl !== profile.data.licenseUrl) {
+                        licenseDownloadUrl = await uploadFile(
+                          licenseUrl,
+                          profile.data.email
+                        );
+                      }
+
+                      return await updateProfile.mutateAsync({
+                        name,
+                        phone: `+63${phone}`,
+                        licenseUrl: licenseDownloadUrl ?? undefined,
+                        imageUrl: imageDownloadUrl ?? undefined,
+                      });
+                    }
+                  )();
                 } catch {
                   Alert.alert("Invalid password");
                 }
