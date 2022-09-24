@@ -12,7 +12,7 @@ import { AdminAppointmentDetail } from "./appointment-detail";
 
 import { AdminDashboardParamList } from "../types";
 
-import { AppointmentCard, Layout } from "../../../../components";
+import { AppointmentCard, Layout, LoadingText } from "../../../../components";
 import appointmentService from "../../../../services/appointment";
 
 export const Appointments = ({}: BottomTabScreenProps<
@@ -57,7 +57,7 @@ const AllAppointments = ({
   return (
     <Layout nav={{ title: "Appointments" }} onRefresh={appointments.refetch}>
       {appointments.isLoading ? (
-        <Text>Loading...</Text>
+        <LoadingText />
       ) : appointments.data && appointments.data.length > 0 ? (
         appointments.data.map((apt) => (
           <AppointmentCard

@@ -6,6 +6,7 @@ export * from "./customer-tab-bar";
 export * from "./image-input";
 export * from "./layout";
 export * from "./link-button";
+export * from "./loading-text";
 export * from "./messages-page";
 export * from "./service-card";
 export * from "./text-field";

@@ -7,7 +7,7 @@ import {
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 
-import { Layout, ServiceCard } from "../../../../components";
+import { Layout, LoadingText, ServiceCard } from "../../../../components";
 import servicesService from "../../../../services/services";
 
 import { CustomerDashboardParamList } from "../types";
@@ -72,9 +72,9 @@ const Services = ({
         )}
       </View>
 
-      {/* only show 5 most recent services */}
-
-      {services.data && services.data.length > 0 ? (
+      {services.isLoading ? (
+        <LoadingText />
+      ) : services.data && services.data.length > 0 ? (
         services.data.slice(0, 5).map((service) => (
           <ServiceCard
             key={service.id}

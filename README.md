@@ -12,3 +12,4 @@ TODO:
 - [ ] Send Reviews
 - [ ] Analytics
 - [ ] Report Bugs
+- [ ] Splash image and app icon

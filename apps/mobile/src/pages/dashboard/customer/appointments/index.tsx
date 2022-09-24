@@ -11,7 +11,7 @@ import {
 
 import { CustomerDashboardParamList } from "../types";
 
-import { AppointmentCard, Layout } from "../../../../components";
+import { AppointmentCard, Layout, LoadingText } from "../../../../components";
 import appointmentService from "../../../../services/appointment";
 import { AppointmentDetail } from "./appointment-detail";
 
@@ -57,7 +57,7 @@ const AllAppointments = ({
   return (
     <Layout nav={{ title: "Appointments" }} onRefresh={appointments.refetch}>
       {appointments.isLoading ? (
-        <Text>Loading...</Text>
+        <LoadingText />
       ) : appointments.data && appointments.data.length > 0 ? (
         appointments.data.map((apt) => (
           <AppointmentCard

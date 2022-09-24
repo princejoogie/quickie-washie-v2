@@ -10,7 +10,7 @@ import { ServiceDetail } from "./service-detail";
 
 import { AdminDashboardParamList } from "../types";
 
-import { Layout, ServiceCard } from "../../../../components";
+import { Layout, LoadingText, ServiceCard } from "../../../../components";
 import { PlusIcon } from "../../../../components/icon/plus-icon";
 import servicesService from "../../../../services/services";
 
@@ -62,7 +62,9 @@ export const AllServices = ({
         ),
       }}
     >
-      {services.data && services.data.length > 0 ? (
+      {services.isLoading ? (
+        <LoadingText />
+      ) : services.data && services.data.length > 0 ? (
         services.data?.map((service) => (
           <ServiceCard
             key={service.id}
