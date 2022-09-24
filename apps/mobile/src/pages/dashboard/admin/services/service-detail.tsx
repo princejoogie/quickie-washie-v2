@@ -48,6 +48,9 @@ export const ServiceDetail = ({
     (e) => servicesService.getById({ serviceId: e.queryKey[1] }),
     {
       onSuccess: (data) => {
+        setValue("name", data.name);
+        setValue("description", data.description);
+        setValue("basePrice", data.basePrice.toString());
         setValue(
           "additionalPrices",
           data.additionalPrices.map((e) => ({
