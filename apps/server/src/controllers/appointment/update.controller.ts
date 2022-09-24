@@ -33,12 +33,14 @@ const updateAppointmentController: RequestHandler<
       return next(error);
     }
 
-    if (payload.privilege !== "ADMIN") {
-      const error = new AppError(
-        "UnauthorizedException",
-        "You are not authorized to access this appointment"
-      );
-      return next(error);
+    if (appointment.userId !== payload.id) {
+      if (payload.privilege !== "ADMIN") {
+        const error = new AppError(
+          "UnauthorizedException",
+          "You are not authorized to access this appointment"
+        );
+        return next(error);
+      }
     }
 
     const updatedAppointment = await prisma.appointment.update({

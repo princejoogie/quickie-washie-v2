@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-/* import { LineChart } from "react-native-svg-charts"; */
+import { LineChart } from "react-native-svg-charts";
 import {
   isToday,
   isThisWeek,
@@ -126,6 +126,20 @@ export const Analytics = ({}: BottomTabScreenProps<
         ₱{totalSales.toFixed(2)}
       </Text>
 
+      <View className="p-2 rounded-md mt-4">
+        <LineChart
+          style={{ height: 100 }}
+          data={[
+            {
+              data: aggregatedSales.map((e) => e.price),
+              svg: { stroke: "#2563eb", strokeWidth: 3 },
+            },
+          ]}
+          contentInset={{ top: 20, bottom: 20 }}
+          animate
+        />
+      </View>
+
       <Text className="mt-4 text-gray-400">Summary</Text>
       <View className="mt-1">
         {aggregatedSales.map((e, i) => (
@@ -145,20 +159,6 @@ export const Analytics = ({}: BottomTabScreenProps<
           </View>
         ))}
       </View>
-
-      {/* <View className="p-2 rounded-md mt-4"> */}
-      {/*   <LineChart */}
-      {/*     style={{ height: 200 }} */}
-      {/*     data={[ */}
-      {/*       { */}
-      {/*         data: aggregatedSales.map((e) => e.price), */}
-      {/*         svg: { stroke: "#2563eb", strokeWidth: 3 }, */}
-      {/*       }, */}
-      {/*     ]} */}
-      {/*     contentInset={{ top: 20, bottom: 20 }} */}
-      {/*     animate */}
-      {/*   /> */}
-      {/* </View> */}
     </Layout>
   );
 };
