@@ -151,7 +151,7 @@ export const getAppointmentByIdSchema: ValidatorSchema = {
 
 // GET ALL
 
-const getAllAppointmentsResponse =
+export const getAllAppointmentsResponse =
   Prisma.validator<PrismaType.AppointmentArgs>()({
     include: {
       AdditionalPrice: true,

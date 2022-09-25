@@ -48,16 +48,18 @@ const updateAppointmentController: RequestHandler<
     }
 
     if (appointment.Vehicle && appointment.Service && status) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       await prisma.notification.create({
         data: {
           userId: appointment.userId,
-          title: `${appointment.Service.name} appointment [${status}]`,
+          title: `${appointment.Service.name} appointment ${status}`,
           content: `Your appointment on ${appointment.Vehicle?.plateNumber} for ${appointment.Service?.name} is now ${status}`,
         },
       });
     }
 
     if (appointment.Vehicle && appointment.Service && date) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       await prisma.notification.create({
         data: {
           userId: appointment.userId,

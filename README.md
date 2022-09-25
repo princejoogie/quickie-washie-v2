@@ -12,4 +12,4 @@ TODO:
 - [ ] Send Notifications
 - [ ] Send Reviews
 - [ ] Report Bugs
-- [ ] Splash image and app icon
+- [x] Splash image and app icon
