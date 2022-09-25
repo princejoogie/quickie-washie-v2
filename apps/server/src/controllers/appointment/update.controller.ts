@@ -68,7 +68,7 @@ const updateAppointmentController: RequestHandler<
             appointment.Vehicle?.plateNumber
           } for ${appointment.Service?.name} is now on ${new Date(
             date
-          ).toLocaleDateString()} at ${new Date(date).toLocaleTimeString()}`,
+          ).toDateString()} at ${new Date(date).toTimeString()}`,
         },
       });
     }
