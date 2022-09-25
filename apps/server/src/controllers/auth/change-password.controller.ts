@@ -33,8 +33,9 @@ const changePasswordController: RequestHandler<
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
+      console.log("INVALID PASSWORD");
       const error = new AppError(
-        "UnauthorizedException",
+        "ForbiddenException",
         "Invalid password provided"
       );
       return next(error);
