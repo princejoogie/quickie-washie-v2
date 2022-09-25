@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { format } from "date-fns";
@@ -63,6 +63,12 @@ const Details = ({
     onSuccess: async () => {
       await appointment.refetch();
       setDocuments([]);
+    },
+  });
+
+  const updateAppointment = useMutation(appointmentService.update, {
+    onSuccess: async () => {
+      await appointment.refetch();
     },
   });
 
@@ -301,6 +307,35 @@ const Details = ({
           <Text className="text-white">Choose documents</Text>
         </TouchableOpacity>
       </View>
+
+      {a.status === "PENDING" && (
+        <TouchableOpacity
+          onPress={async () => {
+            Alert.alert(
+              "Cancel Appointment",
+              "Are you sure you want to cancel this appointment?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK",
+                  onPress: async () => {
+                    await updateAppointment.mutateAsync({
+                      body: { status: "CANCELLED" },
+                      params: { appointmentId: a.id },
+                    });
+                  },
+                },
+              ]
+            );
+          }}
+          className="mt-2 self-end p-2 rounded"
+        >
+          <Text className="text-red-600">Cancel Appointment</Text>
+        </TouchableOpacity>
+      )}
     </Layout>
   );
 };

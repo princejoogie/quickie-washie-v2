@@ -30,7 +30,7 @@ export const VehicleCard = ({ onClick, vehicle }: VehicleCardProps) => {
       }}
     >
       <View className="flex flex-row items-center p-3">
-        <View className="h-12 w-12 rounded-full bg-pink-600 mr-2" />
+        {/* <View className="h-12 w-12 rounded-full bg-pink-600 mr-2" /> */}
 
         <View className="flex-1">
           <Text

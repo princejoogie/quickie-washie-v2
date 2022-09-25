@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { appointmentRouter } from "./appointment";
 import { authRouter } from "./auth";
+import { analyticsRouter } from "./analytics";
 import { documentRouter } from "./document";
+import { notificationRouter } from "./notification";
 import { vehicleRouter } from "./vehicle";
 import { serviceRouter } from "./service";
 import prisma from "../lib/prisma";
@@ -20,7 +22,9 @@ router.get("/", async (_, res) => {
 
 router.use("/appointment", appointmentRouter);
 router.use("/auth", authRouter);
+router.use("/analytics", analyticsRouter);
 router.use("/document", documentRouter);
+router.use("/notification", notificationRouter);
 router.use("/vehicle", vehicleRouter);
 router.use("/service", serviceRouter);
 

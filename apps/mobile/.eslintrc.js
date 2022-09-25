@@ -29,6 +29,7 @@ module.exports = {
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/promise-function-async": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/restrict-plus-operands": "off",
     "no-extra-boolean-cast": "off",
     "no-empty-pattern": "off",
   },

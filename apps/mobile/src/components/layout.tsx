@@ -16,6 +16,7 @@ interface Props {
   customNav?: React.ReactNode;
   className?: string;
   onRefresh?: () => Promise<any> | any;
+  noPadding?: boolean;
   nav?: {
     title: string;
     canGoBack?: boolean;
@@ -24,7 +25,13 @@ interface Props {
   };
 }
 
-export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
+export const Layout = ({
+  children,
+  nav,
+  onRefresh,
+  className = "",
+  noPadding = false,
+}: Props) => {
   const { top, bottom } = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -81,7 +88,9 @@ export const Layout = ({ children, nav, onRefresh, className = "" }: Props) => {
           data={[1]}
           renderItem={() => (
             <View
-              className={`flex-1 px-4 flex-col ${className}`}
+              className={`flex-1 flex-col ${className} ${
+                noPadding ? "px-0" : "px-4"
+              }`}
               style={{ paddingBottom: bottom + keyboardHeight }}
             >
               {children}
