@@ -13,3 +13,9 @@ TODO:
 - [ ] Send Reviews
 - [ ] Report Bugs
 - [x] Splash image and app icon
+
+---
+
+- [ ] Price of appointment (including additional charges)
+- [ ] Server time offset on Notifications
+
