@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  View,
-  Alert,
-  Image,
-  Text,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { View, Image, Text, TouchableOpacity, TextInput } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { useIsFocused } from "@react-navigation/native";
@@ -22,6 +15,9 @@ import { CustomerDashboardParamList } from "../types";
 import { PencilSquareIcon } from "../../../../components/icon/pencil-square-icon";
 import { getImage } from "../../../../utils/helpers";
 import { uploadFile } from "../../../../services/firebase";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CustomerProfileStack, CustomerProfileStackParamList } from "./types";
+import { ChangePassword } from "./change-password";
 
 const updateSchema = z.object({
   name: z.string().min(1, { message: "Invalid name" }).max(255).trim(),
@@ -40,6 +36,31 @@ export const Profile = ({}: BottomTabScreenProps<
   CustomerDashboardParamList,
   "Profile"
 >) => {
+  return (
+    <CustomerProfileStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: "#111827",
+        },
+      }}
+      initialRouteName="ProfileDetail"
+    >
+      <CustomerProfileStack.Screen
+        name="ProfileDetail"
+        component={ProfileDetails}
+      />
+      <CustomerProfileStack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+      />
+    </CustomerProfileStack.Navigator>
+  );
+};
+
+const ProfileDetails = ({
+  navigation,
+}: NativeStackScreenProps<CustomerProfileStackParamList, "ProfileDetail">) => {
   const { logout } = useAuthContext();
   const [isEditing, setIsEditing] = useState(false);
   const {
@@ -185,44 +206,34 @@ export const Profile = ({}: BottomTabScreenProps<
         <TouchableOpacity
           disabled={isUpdating}
           className="bg-green-600 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
-          onPress={() => {
+          onPress={async () => {
             if (isEditing && profile.data) {
-              Alert.prompt("Verify password", "", async (currentPassword) => {
-                try {
-                  await authService.reauthenticate({
-                    password: currentPassword,
+              await handleSubmit(
+                async ({ imageUrl, licenseUrl, name, phone }) => {
+                  let imageDownloadUrl: string | null = null;
+                  if (imageUrl !== profile.data.photoUrl) {
+                    imageDownloadUrl = await uploadFile(
+                      imageUrl,
+                      profile.data.email
+                    );
+                  }
+
+                  let licenseDownloadUrl: string | null = null;
+                  if (licenseUrl !== profile.data.licenseUrl) {
+                    licenseDownloadUrl = await uploadFile(
+                      licenseUrl,
+                      profile.data.email
+                    );
+                  }
+
+                  return await updateProfile.mutateAsync({
+                    name,
+                    phone: `+63${phone}`,
+                    licenseUrl: licenseDownloadUrl ?? undefined,
+                    imageUrl: imageDownloadUrl ?? undefined,
                   });
-                  await handleSubmit(
-                    async ({ imageUrl, licenseUrl, name, phone }) => {
-                      let imageDownloadUrl: string | null = null;
-                      if (imageUrl !== profile.data.photoUrl) {
-                        imageDownloadUrl = await uploadFile(
-                          imageUrl,
-                          profile.data.email
-                        );
-                      }
-
-                      let licenseDownloadUrl: string | null = null;
-                      if (licenseUrl !== profile.data.licenseUrl) {
-                        licenseDownloadUrl = await uploadFile(
-                          licenseUrl,
-                          profile.data.email
-                        );
-                      }
-
-                      return await updateProfile.mutateAsync({
-                        name,
-                        phone: `+63${phone}`,
-                        licenseUrl: licenseDownloadUrl ?? undefined,
-                        imageUrl: imageDownloadUrl ?? undefined,
-                      });
-                    }
-                  )();
-                } catch {
-                  Alert.alert("Invalid password");
                 }
-                console.log({ currentPassword });
-              });
+              )();
             } else {
               setIsEditing(true);
             }
@@ -248,19 +259,7 @@ export const Profile = ({}: BottomTabScreenProps<
       <TouchableOpacity
         className="mt-4"
         onPress={() => {
-          Alert.prompt("Current password", "", async (currentPassword) => {
-            Alert.prompt("New password", "", async (newPassword) => {
-              try {
-                await authService.changePassword({
-                  password: currentPassword,
-                  newPassword,
-                });
-                Alert.alert("Password changed successfully");
-              } catch {
-                Alert.alert("Invalid password");
-              }
-            });
-          });
+          navigation.navigate("ChangePassword");
         }}
       >
         <Text className="text-blue-600">Change Password</Text>

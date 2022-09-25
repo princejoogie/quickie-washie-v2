@@ -43,7 +43,6 @@ const CustomerHome = ({
   return (
     <Layout nav={{ title: "Home" }}>
       <Services navigation={navigation} />
-      <Reviews />
     </Layout>
   );
 };
@@ -93,22 +92,6 @@ const Services = ({
           No services available.
         </Text>
       )}
-    </View>
-  );
-};
-
-const Reviews = () => {
-  return (
-    <View className="mt-3">
-      <View className="flex px-2 flex-row items-center justify-between">
-        <Text className="text-white text-lg font-bold">Reviews</Text>
-
-        {/* <TouchableOpacity> */}
-        {/*   <Text className="text-blue-600 text-xs">See all</Text> */}
-        {/* </TouchableOpacity> */}
-      </View>
-
-      <Text className="text-gray-400 text-center text-xs">No reviews yet.</Text>
     </View>
   );
 };
