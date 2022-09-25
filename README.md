@@ -9,7 +9,7 @@ TODO:
 - [x] Update Appointment date
 - [x] Sort Appointments by status (customer and admin)
 - [x] Analytics
-- [ ] Send Notifications
+- [x] Send Notifications
 - [ ] Send Reviews
 - [ ] Report Bugs
 - [x] Splash image and app icon
