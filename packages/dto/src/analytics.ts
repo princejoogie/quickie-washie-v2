@@ -19,6 +19,6 @@ export const getSalesResponseSchema =
     },
   });
 
-export type GetSalesResponse = PrismaType.AppointmentGetPayload<
-  typeof getSalesResponseSchema
->[];
+export type GetSalesResponse = Array<
+  PrismaType.AppointmentGetPayload<typeof getSalesResponseSchema>
+>;

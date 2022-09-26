@@ -10,9 +10,10 @@ TODO:
 - [x] Sort Appointments by status (customer and admin)
 - [x] Analytics
 - [x] Send Notifications
+- [x] Splash image and app icon
 - [ ] Send Reviews
 - [ ] Report Bugs
-- [x] Splash image and app icon
+- [ ] Location and Feedback on Home Page
 
 ---
 

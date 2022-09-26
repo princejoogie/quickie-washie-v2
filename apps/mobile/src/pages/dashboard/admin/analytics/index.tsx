@@ -36,7 +36,7 @@ export const Analytics = ({}: BottomTabScreenProps<
       if (e) {
         const date = new Date(e.date);
         const price =
-          Number(e.Service?.basePrice || 0) +
+          Number(e.Service?.basePrice ?? 0) +
           Number(e.AdditionalPrice?.price ?? 0);
 
         if (filter === "1D" && isToday(date)) {

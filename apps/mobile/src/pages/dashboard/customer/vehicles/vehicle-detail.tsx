@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { View, Text, TouchableOpacity, Keyboard } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import * as Linking from "expo-linking";
 
 import { VehiclesStackParamList } from "./types";
 
