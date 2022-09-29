@@ -117,7 +117,7 @@ const ProfileDetails = ({
         render={({ field: { onChange, value } }) => (
           <TouchableOpacity
             disabled={!isEditing || isUpdating}
-            className={`mx-auto h-32 w-32 rounded-full bg-gray-800 border-2 items-center justify-center ${
+            className={`mx-auto h-32 w-32 items-center justify-center rounded-full border-2 bg-gray-800 ${
               isEditing ? "border-gray-700" : "border-transparent"
             }`}
             onPress={async () => {
@@ -163,15 +163,15 @@ const ProfileDetails = ({
         name="phone"
         render={({ field: { onChange, value, ...rest } }) => (
           <View className="mt-4">
-            <Text className="text-gray-400 text-xs ml-2">Phone *</Text>
+            <Text className="ml-2 text-xs text-gray-400">Phone *</Text>
             <View
-              className={`flex flex-row py-3 items-center bg-gray-800 mt-1 rounded-lg border-2 ${
+              className={`mt-1 flex flex-row items-center rounded-lg border-2 bg-gray-800 py-3 ${
                 isEditing || isUpdating
-                  ? "opacity-100 border-gray-700"
-                  : "opacity-60 border-transparent"
+                  ? "border-gray-700 opacity-100"
+                  : "border-transparent opacity-60"
               }`}
             >
-              <Text className="text-gray-300 pl-4">+63</Text>
+              <Text className="pl-4 text-gray-300">+63</Text>
               <TextInput
                 {...rest}
                 editable={isEditing || isUpdating}
@@ -202,10 +202,10 @@ const ProfileDetails = ({
         )}
       />
 
-      <View className="flex flex-row items-center justify-between mt-6">
+      <View className="mt-6 flex flex-row items-center justify-between">
         <TouchableOpacity
           disabled={isUpdating}
-          className="bg-green-600 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
+          className="rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 disabled:opacity-50"
           onPress={async () => {
             if (isEditing && profile.data) {
               await handleSubmit(

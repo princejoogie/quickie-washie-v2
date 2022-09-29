@@ -5,5 +5,5 @@ interface LoadingTextProps {
 }
 
 export const LoadingText = ({ text = "Loading..." }: LoadingTextProps) => {
-  return <Text className="w-full text-center text-gray-400 mt-4">{text}</Text>;
+  return <Text className="mt-4 w-full text-center text-gray-400">{text}</Text>;
 };

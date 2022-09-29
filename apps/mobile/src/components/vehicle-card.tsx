@@ -13,9 +13,9 @@ interface VehicleCardProps {
 export const VehicleCard = ({ onClick, vehicle }: VehicleCardProps) => {
   if (!vehicle?.id) {
     return (
-      <View className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative">
+      <View className="relative mt-3 rounded-lg border-2 border-gray-700 bg-gray-800">
         <View className="flex flex-row items-center p-3">
-          <Text className="text-gray-400 text-xs">Unknown vehicle</Text>
+          <Text className="text-xs text-gray-400">Unknown vehicle</Text>
         </View>
       </View>
     );
@@ -23,7 +23,7 @@ export const VehicleCard = ({ onClick, vehicle }: VehicleCardProps) => {
 
   return (
     <TouchableOpacity
-      className="border-gray-700 bg-gray-800 mt-3 rounded-lg border-2 relative"
+      className="relative mt-3 rounded-lg border-2 border-gray-700 bg-gray-800"
       disabled={!onClick}
       onPress={() => {
         if (onClick) onClick();
@@ -35,7 +35,7 @@ export const VehicleCard = ({ onClick, vehicle }: VehicleCardProps) => {
         <View className="flex-1">
           <Text
             style={{ flex: 1 }}
-            className="text-lg text-gray-200 font-bold"
+            className="text-lg font-bold text-gray-200"
             numberOfLines={1}
             ellipsizeMode="tail"
           >
@@ -44,7 +44,7 @@ export const VehicleCard = ({ onClick, vehicle }: VehicleCardProps) => {
 
           <Text
             style={{ flex: 1 }}
-            className="text-gray-400 text-xs"
+            className="text-xs text-gray-400"
             numberOfLines={1}
             ellipsizeMode="tail"
           >
@@ -53,8 +53,8 @@ export const VehicleCard = ({ onClick, vehicle }: VehicleCardProps) => {
         </View>
       </View>
 
-      <View className="bg-blue-600 border border-blue-500 rounded px-2 absolute top-1 right-1">
-        <Text className="text-white text-xs">{vehicle?.type}</Text>
+      <View className="absolute top-1 right-1 rounded border border-blue-500 bg-blue-600 px-2">
+        <Text className="text-xs text-white">{vehicle?.type}</Text>
       </View>
     </TouchableOpacity>
   );

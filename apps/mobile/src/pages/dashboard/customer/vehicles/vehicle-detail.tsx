@@ -80,7 +80,7 @@ export const VehicleDetail = ({
               }
             }}
           >
-            <Text className="text-blue-600 font-bold">
+            <Text className="font-bold text-blue-600">
               {isEditing ? "Save" : "Edit"}
             </Text>
           </TouchableOpacity>
@@ -107,7 +107,7 @@ export const VehicleDetail = ({
         onChangeText={setModel}
       />
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Vehicle Type</Text>
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Vehicle Type</Text>
       <View
         pointerEvents={isEditing ? "auto" : "none"}
         className={`${isEditing ? "opacity-100" : "opacity-60"}`}
@@ -127,7 +127,7 @@ export const VehicleDetail = ({
         </Picker>
       </View>
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Appointments</Text>
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Appointments</Text>
 
       <View className="w-full">
         {vehicleDetails.data && vehicleDetails.data.appointments.length > 0 ? (
@@ -141,14 +141,14 @@ export const VehicleDetail = ({
             />
           ))
         ) : (
-          <Text className="text-gray-600 text-xs ml-2 mt-2">
+          <Text className="ml-2 mt-2 text-xs text-gray-600">
             No appointments
           </Text>
         )}
       </View>
 
       <TouchableOpacity
-        className="self-end mt-6"
+        className="mt-6 self-end"
         disabled={deleteVehicle.isLoading}
         onPress={() => {
           deleteVehicle.mutateAsync({ vehicleId });

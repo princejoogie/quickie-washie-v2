@@ -61,12 +61,12 @@ const Services = ({
 
   return (
     <View className="mt-3">
-      <View className="flex px-2 flex-row items-center justify-between">
-        <Text className="text-white text-lg font-bold">Services</Text>
+      <View className="flex flex-row items-center justify-between px-2">
+        <Text className="text-lg font-bold text-white">Services</Text>
 
         {services.data && services.data.length > 0 && (
           <TouchableOpacity onPress={() => navigation.navigate("AllServices")}>
-            <Text className="text-blue-600 text-xs">See all</Text>
+            <Text className="text-xs text-blue-600">See all</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -88,7 +88,7 @@ const Services = ({
           />
         ))
       ) : (
-        <Text className="text-gray-400 text-center text-xs">
+        <Text className="text-center text-xs text-gray-400">
           No services available.
         </Text>
       )}

@@ -54,7 +54,7 @@ export const NewVehicle = ({
         onChangeText={setModel}
       />
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Vehicle Type</Text>
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Vehicle Type</Text>
       <Picker
         itemStyle={{ color: "white" }}
         style={{ color: "white" }}
@@ -70,7 +70,7 @@ export const NewVehicle = ({
       </Picker>
 
       <TouchableOpacity
-        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
+        className="mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 disabled:opacity-50"
         disabled={createVehicle.isLoading}
         onPress={() => {
           createVehicle.mutate({ plateNumber, model, type });

@@ -64,7 +64,7 @@ export const Login = ({
         )}
       />
       {errors.email && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.email.message}
         </Text>
       )}
@@ -83,13 +83,13 @@ export const Login = ({
         )}
       />
       {errors.password && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.password.message}
         </Text>
       )}
 
       <TouchableOpacity
-        className={`bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 ${
+        className={`mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 ${
           isLoading ? "opacity-50" : "opacity-100"
         }`}
         disabled={isLoading}
@@ -105,10 +105,10 @@ export const Login = ({
         <Text className="text-white">{isLoading ? "Loading..." : "Login"}</Text>
       </TouchableOpacity>
 
-      <View className="self-end mt-2">
-        <Text className="text-white text-xs">Not registered yet?</Text>
+      <View className="mt-2 self-end">
+        <Text className="text-xs text-white">Not registered yet?</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text className="text-blue-600 text-xs">Create an account</Text>
+          <Text className="text-xs text-blue-600">Create an account</Text>
         </TouchableOpacity>
       </View>
     </Layout>

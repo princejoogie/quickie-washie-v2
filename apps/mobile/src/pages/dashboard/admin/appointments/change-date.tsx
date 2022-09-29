@@ -82,7 +82,7 @@ export const ChangeDate = ({
         onBack: navigation.goBack,
       }}
     >
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Select date</Text>
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Select date</Text>
       <Controller
         name="date"
         control={control}
@@ -108,7 +108,7 @@ export const ChangeDate = ({
           ) : (
             <TouchableOpacity
               onPress={showDatePicker}
-              className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 px-4 py-3"
+              className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3"
             >
               <Text className="text-white">{format(value, "MMM d, yyyy")}</Text>
             </TouchableOpacity>
@@ -116,7 +116,7 @@ export const ChangeDate = ({
         }
       />
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Select time</Text>
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Select time</Text>
       <Controller
         name="date"
         control={control}
@@ -144,7 +144,7 @@ export const ChangeDate = ({
           ) : (
             <TouchableOpacity
               onPress={showTimePicker}
-              className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 px-4 py-3"
+              className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3"
             >
               <Text className="text-white">{format(value, "hh:mm aa")}</Text>
             </TouchableOpacity>
@@ -160,11 +160,11 @@ export const ChangeDate = ({
           });
         })}
         disabled={updateAppointment.isLoading}
-        className={`bg-green-600 w-full mt-6 px-8 py-2 rounded-lg border-2 border-green-500 ${
+        className={`mt-6 w-full rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 ${
           updateAppointment.isLoading ? "opacity-50" : ""
         }`}
       >
-        <Text className="text-white text-center">Update appointment</Text>
+        <Text className="text-center text-white">Update appointment</Text>
       </TouchableOpacity>
     </Layout>
   );

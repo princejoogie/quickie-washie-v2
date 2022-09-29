@@ -4,8 +4,8 @@ module.exports = {
       version: "detect",
     },
   },
-  extends: ["plugin:react/recommended", "custom"],
-  plugins: ["react"],
+  extends: ["plugin:react/recommended", "custom", "prettier"],
+  plugins: ["react", "prettier"],
   parserOptions: {
     project: "./tsconfig.json",
     tsconfigRootDir: __dirname,
@@ -14,6 +14,7 @@ module.exports = {
     },
   },
   rules: {
+    "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
   },
 };

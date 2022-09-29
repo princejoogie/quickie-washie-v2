@@ -103,7 +103,7 @@ export const ServiceDetail = ({
               }
             )}
           >
-            <Text className="text-blue-600 font-bold">Update</Text>
+            <Text className="font-bold text-blue-600">Update</Text>
           </TouchableOpacity>
         ),
       }}
@@ -122,7 +122,7 @@ export const ServiceDetail = ({
         )}
       />
       {errors.name && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.name.message}
         </Text>
       )}
@@ -141,7 +141,7 @@ export const ServiceDetail = ({
         )}
       />
       {errors.description && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.description.message}
         </Text>
       )}
@@ -161,13 +161,13 @@ export const ServiceDetail = ({
         )}
       />
       {errors.basePrice && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.basePrice.message}
         </Text>
       )}
 
-      <View className="flex flex-row items-center justify-between mt-4">
-        <Text className="text-gray-400 text-xs ml-2">Additional prices</Text>
+      <View className="mt-4 flex flex-row items-center justify-between">
+        <Text className="ml-2 text-xs text-gray-400">Additional prices</Text>
         <TouchableOpacity
           onPress={() => {
             append({ price: "", vehicleType: "" });
@@ -179,8 +179,8 @@ export const ServiceDetail = ({
 
       {fields.map((field, idx) => (
         <View key={field.id} className="ml-4">
-          <View className="flex flex-row items-center justify-between mt-3">
-            <Text className="text-gray-400 text-xs ml-2">
+          <View className="mt-3 flex flex-row items-center justify-between">
+            <Text className="ml-2 text-xs text-gray-400">
               Additional {idx + 1}
             </Text>
 
@@ -199,13 +199,13 @@ export const ServiceDetail = ({
               control={control}
               render={({ field: { value } }) => (
                 <TouchableOpacity
-                  className="rounded-lg border-2 px-4 py-3 items-center justify-center border-gray-700 bg-gray-800 mt-1 mr-1 grow-0 w-2/3"
+                  className="mt-1 mr-1 w-2/3 grow-0 items-center justify-center rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3"
                   onPress={() => {
                     setActiveAPIndex(idx);
                     setModalVisible(true);
                   }}
                 >
-                  <Text className="text-gray-400 ml-2 p-0">
+                  <Text className="ml-2 p-0 text-gray-400">
                     {!!value ? value : "Vehicle type"}
                   </Text>
                 </TouchableOpacity>
@@ -228,12 +228,12 @@ export const ServiceDetail = ({
             />
           </View>
           {errors.additionalPrices?.[idx]?.price?.message && (
-            <Text className="text-xs text-red-600 ml-2 mt-1">
+            <Text className="ml-2 mt-1 text-xs text-red-600">
               - {errors.additionalPrices[idx]?.price?.message}
             </Text>
           )}
           {errors.additionalPrices?.[idx]?.vehicleType?.message && (
-            <Text className="text-xs text-red-600 ml-2">
+            <Text className="ml-2 text-xs text-red-600">
               - {errors.additionalPrices[idx]?.vehicleType?.message}
             </Text>
           )}
@@ -256,13 +256,13 @@ export const ServiceDetail = ({
       />
 
       <TouchableOpacity
-        className="self-end mt-6 disabled:opacity-50"
+        className="mt-6 self-end disabled:opacity-50"
         disabled={deleteService.isLoading}
         onPress={() => {
           deleteService.mutate({ serviceId });
         }}
       >
-        <Text className="text-red-600 font-bold">Delete service</Text>
+        <Text className="font-bold text-red-600">Delete service</Text>
       </TouchableOpacity>
     </Layout>
   );

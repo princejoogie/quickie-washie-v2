@@ -159,8 +159,8 @@ const Details = ({
             }}
           >
             {a._count.messages > 0 && (
-              <View className="mr-1 px-2 py-1 rounded-full bg-blue-600 items-center, justify-center">
-                <Text className="text-white text-xs h-4">
+              <View className="items-center, mr-1 justify-center rounded-full bg-blue-600 px-2 py-1">
+                <Text className="h-4 text-xs text-white">
                   {a._count.messages}
                 </Text>
               </View>
@@ -171,24 +171,24 @@ const Details = ({
       }}
       onRefresh={appointment.refetch}
     >
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Details</Text>
-      <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Details</Text>
+      <View className="relative mt-1 rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
         <Text
           className={`font-bold ${
-            a.Service ? "text-lg text-white" : "text-sm text-red-600 italic"
+            a.Service ? "text-lg text-white" : "text-sm italic text-red-600"
           }`}
         >
           {a.Service?.name ?? "Unknown Service"}
         </Text>
-        <Text className="text-gray-400 text-xs">
+        <Text className="text-xs text-gray-400">
           {format(date, "MMM d, yyyy")}
         </Text>
-        <Text className="text-gray-400 text-xs">
+        <Text className="text-xs text-gray-400">
           {format(date, "hh:mm aa")}
         </Text>
 
-        <View className="bg-green-600 border border-green-500 rounded px-2 absolute top-1 right-1">
-          <Text className="text-white text-xs">{a.status}</Text>
+        <View className="absolute top-1 right-1 rounded border border-green-500 bg-green-600 px-2">
+          <Text className="text-xs text-white">{a.status}</Text>
         </View>
 
         <VehicleCard vehicle={a.Vehicle ?? undefined} />
@@ -198,9 +198,9 @@ const Details = ({
         onPress={() => {
           setModalVisible(true);
         }}
-        className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 relative py-2 px-3"
+        className="relative mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 py-2 px-3"
       >
-        <Text className="text-center text-gray-400 font-normal">
+        <Text className="text-center font-normal text-gray-400">
           Change Status
         </Text>
       </TouchableOpacity>
@@ -212,44 +212,44 @@ const Details = ({
             date: `${a.date}`,
           });
         }}
-        className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 relative py-2 px-3"
+        className="relative mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 py-2 px-3"
       >
-        <Text className="text-center text-gray-400 font-normal">
+        <Text className="text-center font-normal text-gray-400">
           Change Date
         </Text>
       </TouchableOpacity>
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Customer</Text>
-      <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Customer</Text>
+      <View className="relative mt-1 rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
         {a.User ? (
           <>
             <View className="flex flex-row items-center">
               <Image
-                className="h-12 w-12 rounded-full bg-gray-700 mr-2"
+                className="mr-2 h-12 w-12 rounded-full bg-gray-700"
                 source={{ uri: a.User.photoUrl }}
               />
 
               <View>
-                <Text className="text-white font-bold">{a.User.name}</Text>
-                <Text className="text-gray-300 text-xs" selectable>
+                <Text className="font-bold text-white">{a.User.name}</Text>
+                <Text className="text-xs text-gray-300" selectable>
                   {a.User.email}
                 </Text>
               </View>
             </View>
 
-            <Text className="text-gray-400 text-xs mt-3">Phone number</Text>
+            <Text className="mt-3 text-xs text-gray-400">Phone number</Text>
             <TouchableOpacity
-              className="px-3 py-2 rounded-md mt-2 border-2 border-gray-700"
+              className="mt-2 rounded-md border-2 border-gray-700 px-3 py-2"
               onPress={() => {
                 if (a.User?.phone) {
                   Linking.openURL(`tel:${a.User.phone}`);
                 }
               }}
             >
-              <Text className="text-gray-300 text-xs">{a.User.phone}</Text>
+              <Text className="text-xs text-gray-300">{a.User.phone}</Text>
             </TouchableOpacity>
 
-            <Text className="text-gray-400 text-xs mt-3">Drivers license</Text>
+            <Text className="mt-3 text-xs text-gray-400">Drivers license</Text>
             <TouchableOpacity
               className="mt-2"
               onPress={() => {
@@ -259,18 +259,18 @@ const Details = ({
               }}
             >
               <Image
-                className="h-32 w-full bg-gray-900 rounded-md border-2 border-gray-700"
+                className="h-32 w-full rounded-md border-2 border-gray-700 bg-gray-900"
                 source={{ uri: a.User.licenseUrl }}
               />
             </TouchableOpacity>
           </>
         ) : (
-          <Text className="text-red-600 italic">Customer not found</Text>
+          <Text className="italic text-red-600">Customer not found</Text>
         )}
       </View>
 
-      <View className="flex flex-row items-center justify-between mt-4">
-        <Text className="text-gray-400 text-xs ml-2">Documents</Text>
+      <View className="mt-4 flex flex-row items-center justify-between">
+        <Text className="ml-2 text-xs text-gray-400">Documents</Text>
 
         {documents.length > 0 && (
           <TouchableOpacity
@@ -296,7 +296,7 @@ const Details = ({
               }
             }}
           >
-            <Text className="text-blue-600 text-xs mr-2">
+            <Text className="mr-2 text-xs text-blue-600">
               {uploadDocuments.isLoading || isLoading
                 ? "Uploading..."
                 : "Update"}
@@ -305,9 +305,9 @@ const Details = ({
         )}
       </View>
 
-      <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
+      <View className="relative mt-1 rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
         {appointment.data.documents.length <= 0 && documents.length <= 0 && (
-          <Text className="text-xs text-white text-center">No documents</Text>
+          <Text className="text-center text-xs text-white">No documents</Text>
         )}
         {appointment.data.documents
           .sort((a, b) => {
@@ -318,13 +318,13 @@ const Details = ({
           .map((doc) => (
             <View
               key={doc.id}
-              className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded-md mt-1"
+              className="mt-1 flex flex-row items-center justify-between rounded-md border-2 border-gray-700 p-2"
             >
               <TouchableOpacity
                 onPress={() => {
                   WebBrowser.openBrowserAsync(doc.downloadUrl);
                 }}
-                className="flex flex-row items-center flex-1"
+                className="flex flex-1 flex-row items-center"
               >
                 {doc.mimeType?.startsWith("image") ? (
                   <ImageIcon filled styleName="w-5 h-5 text-gray-400" />
@@ -333,7 +333,7 @@ const Details = ({
                 )}
 
                 <Text
-                  className="mx-1 flex-1 text-xs text-white text-left"
+                  className="mx-1 flex-1 text-left text-xs text-white"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -357,15 +357,15 @@ const Details = ({
 
         {documents.length > 0 && (
           <>
-            <Text className="text-xs text-white text-center mt-2">
+            <Text className="mt-2 text-center text-xs text-white">
               New documents
             </Text>
             {documents.map((doc) => (
               <View
                 key={doc.uri}
-                className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded-md mt-1"
+                className="mt-1 flex flex-row items-center justify-between rounded-md border-2 border-gray-700 p-2"
               >
-                <View className="flex flex-row items-center flex-1">
+                <View className="flex flex-1 flex-row items-center">
                   {doc.mimeType?.startsWith("image") ? (
                     <ImageIcon filled styleName="w-5 h-5 text-gray-400" />
                   ) : (
@@ -373,7 +373,7 @@ const Details = ({
                   )}
 
                   <Text
-                    className="mx-1 flex-1 text-xs text-white text-left"
+                    className="mx-1 flex-1 text-left text-xs text-white"
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -401,7 +401,7 @@ const Details = ({
             }
             console.log(res);
           }}
-          className="mt-2 self-center bg-gray-600 p-2 rounded-md"
+          className="mt-2 self-center rounded-md bg-gray-600 p-2"
         >
           <Text className="text-white">Choose documents</Text>
         </TouchableOpacity>

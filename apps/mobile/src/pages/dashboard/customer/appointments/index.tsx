@@ -99,7 +99,7 @@ const AllAppointments = ({
           />
         ))
       ) : (
-        <Text className="text-gray-400 text-center text-xs mt-4">
+        <Text className="mt-4 text-center text-xs text-gray-400">
           No appointments available.
         </Text>
       )}
