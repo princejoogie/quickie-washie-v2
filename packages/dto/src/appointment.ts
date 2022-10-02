@@ -141,12 +141,31 @@ export const getAppointmentByIdResponseSchema =
     },
   });
 
-export type GetAppointmentByIdResponse = PrismaType.AppointmentGetPayload<
+export type GetAptByIdResponse = PrismaType.AppointmentGetPayload<
   typeof getAppointmentByIdResponseSchema
+>;
+
+export const getReviewByIdResponseSchema =
+  Prisma.validator<PrismaType.ReviewArgs>()({
+    select: {
+      id: true,
+      content: true,
+      rating: true,
+      createdAt: true,
+    },
+  });
+
+export type GetReviewByIdResponse = PrismaType.ReviewGetPayload<
+  typeof getReviewByIdResponseSchema
 >;
 
 export const getAppointmentByIdSchema: ValidatorSchema = {
   params: getAppointmentByIdParamsSchema,
+};
+
+export type GetAppointmentByIdResponse = {
+  appointment: GetAptByIdResponse;
+  review: GetReviewByIdResponse | null;
 };
 
 // GET ALL

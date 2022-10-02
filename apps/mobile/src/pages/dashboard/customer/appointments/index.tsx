@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { useIsFocused } from "@react-navigation/native";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
@@ -22,6 +22,7 @@ import {
 import { AppointmentDetail } from "./appointment-detail";
 import { FilterType } from "../../../../constants";
 import { FilterIcon } from "../../../../components/icon/filter-icon";
+import { ChevronIcon } from "../../../../components/icon/chevron-icon";
 
 export const Appointments = ({}: BottomTabScreenProps<
   CustomerDashboardParamList,
@@ -55,6 +56,7 @@ const AllAppointments = ({
   CustomerAppointmentsStackParamList,
   "AllAppointments"
 >) => {
+  const [view, setView] = useState<"ALL" | "TO_REVIEW">("ALL");
   const [filter, setFilter] = useState<FilterType>("ALL");
   const [modalVisible, setModalVisible] = useState(false);
   const appointments = useQuery(["appointments"], appointmentService.getAll);
@@ -68,6 +70,10 @@ const AllAppointments = ({
     filter === "ALL"
       ? appointments.data
       : appointments.data?.filter((a) => a.status === filter);
+
+  const finishedAppointments = appointments.data?.filter(
+    (a) => a.status === "FINISHED"
+  );
 
   return (
     <Layout
@@ -84,39 +90,80 @@ const AllAppointments = ({
       }}
       onRefresh={appointments.refetch}
     >
-      {appointments.isLoading ? (
-        <LoadingText />
-      ) : filteredAppointments && filteredAppointments.length > 0 ? (
-        filteredAppointments?.map((apt) => (
-          <AppointmentCard
-            key={apt.id}
-            appointment={apt}
-            onClick={() => {
-              navigation.navigate("AppointmentDetail", {
-                appointmentId: apt.id,
-              });
+      {view === "TO_REVIEW" ? (
+        <View>
+          <TouchableOpacity
+            className="mt-4 flex flex-row items-center"
+            onPress={() => {
+              setView("ALL");
             }}
-          />
-        ))
-      ) : (
-        <Text className="mt-4 text-center text-xs text-gray-400">
-          No appointments available.
-        </Text>
-      )}
+          >
+            <ChevronIcon direction="left" styleName="text-blue-600 h-4 w-4" />
+            <Text className="ml-1 text-blue-600">Back</Text>
+          </TouchableOpacity>
 
-      {modalVisible && (
-        <AppointmentFilterModal
-          key={filter}
-          visible={true}
-          initialValue={filter}
-          onDismiss={(e) => {
-            setFilter(e);
-            setModalVisible(false);
-          }}
-          closeModal={() => {
-            setModalVisible(false);
-          }}
-        />
+          {finishedAppointments?.map((apt) => (
+            <AppointmentCard
+              key={apt.id}
+              appointment={apt}
+              onClick={() => {
+                navigation.navigate("AppointmentDetail", {
+                  appointmentId: apt.id,
+                });
+              }}
+            />
+          ))}
+        </View>
+      ) : (
+        <>
+          {finishedAppointments && finishedAppointments.length > 0 ? (
+            <TouchableOpacity
+              className="mt-4"
+              onPress={() => {
+                setView("TO_REVIEW");
+              }}
+            >
+              <Text className="text-blue-600">
+                To review ({finishedAppointments.length})
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+
+          {appointments.isLoading ? (
+            <LoadingText />
+          ) : filteredAppointments && filteredAppointments.length > 0 ? (
+            filteredAppointments?.map((apt) => (
+              <AppointmentCard
+                key={apt.id}
+                appointment={apt}
+                onClick={() => {
+                  navigation.navigate("AppointmentDetail", {
+                    appointmentId: apt.id,
+                  });
+                }}
+              />
+            ))
+          ) : (
+            <Text className="mt-4 text-center text-xs text-gray-400">
+              No appointments available.
+            </Text>
+          )}
+
+          {modalVisible && (
+            <AppointmentFilterModal
+              key={filter}
+              visible={true}
+              initialValue={filter}
+              onDismiss={(e) => {
+                setFilter(e);
+                setModalVisible(false);
+              }}
+              closeModal={() => {
+                setModalVisible(false);
+              }}
+            />
+          )}
+        </>
       )}
     </Layout>
   );

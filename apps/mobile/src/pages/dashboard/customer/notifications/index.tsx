@@ -123,7 +123,7 @@ export const Notifications = ({}: BottomTabScreenProps<
             )}
 
             <Text
-              className="absolute bottom-2 right-2 text-gray-400"
+              className="absolute bottom-2 right-2 text-gray-500"
               style={{ fontSize: 10 }}
             >
               {formatDistanceToNow(new Date(notif.createdAt), {

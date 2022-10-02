@@ -116,7 +116,7 @@ const Details = ({
     );
   }
 
-  const a = appointment.data;
+  const a = appointment.data.appointment;
   const date = new Date(a.date);
 
   return (
@@ -205,10 +205,10 @@ const Details = ({
       </View>
 
       <View className="relative mt-1 rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
-        {appointment.data.documents.length <= 0 && documents.length <= 0 && (
+        {a.documents.length <= 0 && documents.length <= 0 && (
           <Text className="text-center text-xs text-white">No documents</Text>
         )}
-        {appointment.data.documents
+        {a.documents
           .sort((a, b) => {
             return (
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
