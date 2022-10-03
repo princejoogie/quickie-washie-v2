@@ -9,8 +9,6 @@ import {
   UpdateAppointmentBody,
   UpdateAppointmentParams,
   UpdateAppointmentResponse,
-  CreateReviewParams,
-  CreateReviewBody,
 } from "@qw/dto";
 import { api } from "./api";
 
@@ -55,23 +53,8 @@ const deleteAppointment = async (params: DeleteAppointmentParams) => {
   return response.data;
 };
 
-const createReview = async ({
-  params,
-  body,
-}: {
-  params: CreateReviewParams;
-  body: CreateReviewBody;
-}) => {
-  const response = await api.post(
-    `/appointment/${params.appointmentId}/review`,
-    body
-  );
-  return response.data;
-};
-
 const appointmentService = {
   create,
-  createReview,
   deleteAppointment,
   getAll,
   getById,

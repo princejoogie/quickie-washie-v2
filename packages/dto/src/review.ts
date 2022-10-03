@@ -38,3 +38,36 @@ export const createReviewSchema: ValidatorSchema = {
   body: createReviewBodySchema,
   params: createReviewParamsSchema,
 };
+
+// GET ALL
+
+export const getAllReviewsResponseSchema =
+  Prisma.validator<PrismaType.ReviewArgs>()({
+    select: {
+      id: true,
+      content: true,
+      rating: true,
+      createdAt: true,
+      User: {
+        select: {
+          name: true,
+          photoUrl: true,
+        },
+      },
+      Appointment: {
+        select: {
+          id: true,
+          Service: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+export type GetAllReviewsResponse = Array<
+  PrismaType.ReviewGetPayload<typeof getAllReviewsResponseSchema>
+>;

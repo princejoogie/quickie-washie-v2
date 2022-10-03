@@ -5,7 +5,6 @@ import validator from "../middlewares/validator";
 import {
   createAppointmentSchema,
   createMessageSchema,
-  createReviewSchema,
   deleteAppointmentSchema,
   getAllMessagesSchema,
   getAppointmentByIdSchema,
@@ -18,7 +17,6 @@ import getAppointmentByIdController from "../controllers/appointment/get-by-id.c
 import createAppointmentMessageController from "../controllers/appointment/messages/create.controller";
 import getAppointmentMessagesController from "../controllers/appointment/messages/get-all.controller";
 import updateAppointmentController from "../controllers/appointment/update.controller";
-import createReviewController from "../controllers/review/create.controller";
 
 export const appointmentRouter = Router();
 
@@ -60,10 +58,4 @@ appointmentRouter.post(
   "/:appointmentId/message",
   [checkJwt, validator(createMessageSchema)],
   createAppointmentMessageController
-);
-
-appointmentRouter.post(
-  "/:appointmentId/review",
-  [checkJwt, validator(createReviewSchema)],
-  createReviewController
 );

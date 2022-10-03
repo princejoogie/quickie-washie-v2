@@ -14,6 +14,7 @@ import { Messages } from "./messages";
 
 import appointmentService from "../../../../services/appointment";
 import authService from "../../../../services/auth";
+import reviewService from "../../../../services/reviews";
 import documentService from "../../../../services/document";
 import { ChatIcon } from "../../../../components/icon/chat-icon";
 import { DocumentIcon } from "../../../../components/icon/document-icon";
@@ -366,7 +367,7 @@ const ReviewComponent = ({ appointmentId, review }: ReviewComponentProps) => {
   const [rating, setRating] = useState(review?.rating ?? 1);
   const [content, setContent] = useState(review?.content ?? "");
 
-  const createReview = useMutation(appointmentService.createReview, {
+  const createReview = useMutation(reviewService.create, {
     onSuccess: () => {
       queryClient.invalidateQueries(["appointment", appointmentId]);
       queryClient.invalidateQueries(["appointments"]);

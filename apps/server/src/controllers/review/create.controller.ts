@@ -1,9 +1,9 @@
-import type { RequestHandler } from "express";
 import type {
-  CreateReviewParams,
   CreateReviewBody,
+  CreateReviewParams,
   CreateReviewResponse,
 } from "@qw/dto";
+import type { RequestHandler } from "express";
 
 import prisma from "../../lib/prisma";
 import { AppError, handleControllerError } from "../../utils/error";
