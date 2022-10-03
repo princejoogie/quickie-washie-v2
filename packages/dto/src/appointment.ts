@@ -125,6 +125,7 @@ export const getAppointmentByIdResponseSchema =
       status: true,
       date: true,
       documents: true,
+      Review: true,
       AdditionalPrice: true,
       Service: true,
       Vehicle: true,
@@ -141,31 +142,12 @@ export const getAppointmentByIdResponseSchema =
     },
   });
 
-export type GetAptByIdResponse = PrismaType.AppointmentGetPayload<
+export type GetAppointmentByIdResponse = PrismaType.AppointmentGetPayload<
   typeof getAppointmentByIdResponseSchema
->;
-
-export const getReviewByIdResponseSchema =
-  Prisma.validator<PrismaType.ReviewArgs>()({
-    select: {
-      id: true,
-      content: true,
-      rating: true,
-      createdAt: true,
-    },
-  });
-
-export type GetReviewByIdResponse = PrismaType.ReviewGetPayload<
-  typeof getReviewByIdResponseSchema
 >;
 
 export const getAppointmentByIdSchema: ValidatorSchema = {
   params: getAppointmentByIdParamsSchema,
-};
-
-export type GetAppointmentByIdResponse = {
-  appointment: GetAptByIdResponse;
-  review: GetReviewByIdResponse | null;
 };
 
 // GET ALL
@@ -173,9 +155,7 @@ export type GetAppointmentByIdResponse = {
 export const getAllAppointmentsResponse =
   Prisma.validator<PrismaType.AppointmentArgs>()({
     include: {
-      reviews: {
-        take: 1,
-      },
+      Review: true,
       AdditionalPrice: true,
       Service: true,
       Vehicle: true,

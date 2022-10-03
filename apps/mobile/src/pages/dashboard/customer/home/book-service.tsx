@@ -180,30 +180,39 @@ export const BookService = ({
       <Text className="ml-2 mt-4 text-xs text-gray-400">
         Select your vehicle
       </Text>
-      <Controller
-        name="vehicleId"
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <>
-            {vehicles.data && vehicles.data.length > 0 && (
-              <Picker
-                itemStyle={{ color: "white" }}
-                style={{ color: "white" }}
-                mode="dialog"
-                selectedValue={value}
-                onValueChange={(e) => {
-                  onChange(e);
-                }}
-              >
-                {vehicles.data.map((e) => (
-                  <Picker.Item key={e.id} label={e.plateNumber} value={e.id} />
-                ))}
-              </Picker>
-            )}
-          </>
-        )}
-      />
-
+      {vehicles.data && vehicles.data.length > 0 ? (
+        <Controller
+          name="vehicleId"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <>
+              {vehicles.data && vehicles.data.length > 0 && (
+                <Picker
+                  itemStyle={{ color: "white" }}
+                  style={{ color: "white" }}
+                  mode="dialog"
+                  selectedValue={value}
+                  onValueChange={(e) => {
+                    onChange(e);
+                  }}
+                >
+                  {vehicles.data.map((e) => (
+                    <Picker.Item
+                      key={e.id}
+                      label={e.plateNumber}
+                      value={e.id}
+                    />
+                  ))}
+                </Picker>
+              )}
+            </>
+          )}
+        />
+      ) : (
+        <Text className="ml-2 mt-1 italic text-red-600">
+          No vehicles found. Please add a vehicle first.
+        </Text>
+      )}
       <TextField
         editable={false}
         label="Additional price (auto calculated)"
@@ -289,7 +298,7 @@ export const BookService = ({
         })}
         disabled={isLoading}
         className={`mt-6 w-full rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 ${
-          isLoading ? "opacity-50" : ""
+          isLoading ? "opacity-50" : "opacity-100"
         }`}
       >
         <Text className="text-center text-white">Book Service</Text>

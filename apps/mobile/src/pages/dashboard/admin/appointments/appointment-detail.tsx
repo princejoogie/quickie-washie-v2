@@ -142,7 +142,7 @@ const Details = ({
     );
   }
 
-  const a = appointment.data.appointment;
+  const a = appointment.data;
   const date = new Date(a.date);
 
   return (

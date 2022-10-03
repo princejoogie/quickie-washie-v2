@@ -22,8 +22,6 @@ export const createReviewResponseSchema =
   Prisma.validator<PrismaType.ReviewArgs>()({
     select: {
       id: true,
-      appointmentId: true,
-      userId: true,
       content: true,
       rating: true,
       createdAt: true,

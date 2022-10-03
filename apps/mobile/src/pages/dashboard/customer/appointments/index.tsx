@@ -71,11 +71,9 @@ const AllAppointments = ({
       ? appointments.data
       : appointments.data?.filter((a) => a.status === filter);
 
-  const toReviewAppointments = appointments.data?.filter((a) => {
-    const isFinished = a.status === "FINISHED";
-    const isReviewed = a.reviews.length > 0 && a.reviews[0];
-    return isFinished && !isReviewed;
-  });
+  const toReviewAppointments = appointments.data?.filter(
+    (a) => a.status === "FINISHED" && !a.Review
+  );
 
   return (
     <Layout

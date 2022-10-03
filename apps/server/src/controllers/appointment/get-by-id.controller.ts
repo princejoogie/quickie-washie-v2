@@ -35,6 +35,7 @@ const getAppointmentByIdController: RequestHandler<
         status: true,
         date: true,
         documents: true,
+        Review: true,
         AdditionalPrice: true,
         Service: true,
         Vehicle: true,
@@ -56,20 +57,7 @@ const getAppointmentByIdController: RequestHandler<
       return next(error);
     }
 
-    const review = await prisma.review.findFirst({
-      where: { AND: [{ appointmentId }, { userId: payload.id }] },
-      select: {
-        id: true,
-        content: true,
-        rating: true,
-        createdAt: true,
-      },
-    });
-
-    return res.status(200).json({
-      appointment,
-      review,
-    });
+    return res.status(200).json(appointment);
   } catch (e) {
     handleControllerError(e, next);
   }

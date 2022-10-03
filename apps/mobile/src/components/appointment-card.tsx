@@ -2,7 +2,6 @@ import type { GetAllAppointmentsResponse } from "@qw/dto";
 import { TouchableOpacity, Text, View } from "react-native";
 import { format } from "date-fns";
 import { VehicleCard } from "./vehicle-card";
-import { useAuthContext } from "../contexts/auth-context";
 
 interface AppointmentCardProps {
   onClick: () => void;
@@ -13,13 +12,10 @@ export const AppointmentCard = ({
   appointment,
   onClick,
 }: AppointmentCardProps) => {
-  const { data } = useAuthContext();
   const date = new Date(appointment.date);
   const vehicle = appointment.Vehicle;
 
-  const isReviewed =
-    appointment.status === "FINISHED" &&
-    appointment.reviews.some((e) => e.userId === data?.id);
+  const isReviewed = appointment.status === "FINISHED" && appointment.Review;
 
   return (
     <TouchableOpacity

@@ -28,13 +28,15 @@ const createReviewController: RequestHandler<
       data: {
         content,
         rating,
-        appointmentId,
         userId: payload.id,
+        Appointment: {
+          connect: {
+            id: appointmentId,
+          },
+        },
       },
       select: {
         id: true,
-        appointmentId: true,
-        userId: true,
         content: true,
         rating: true,
         createdAt: true,

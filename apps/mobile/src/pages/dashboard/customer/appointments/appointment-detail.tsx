@@ -126,8 +126,7 @@ const Details = ({
     );
   }
 
-  const a = appointment.data.appointment;
-  const review = appointment.data.review;
+  const a = appointment.data;
   const date = new Date(a.date);
 
   return (
@@ -305,7 +304,7 @@ const Details = ({
           </>
         )}
 
-        {!review && (
+        {!a.Review && (
           <TouchableOpacity
             onPress={async () => {
               const res = await getDocument();
@@ -351,7 +350,7 @@ const Details = ({
       )}
 
       {a.status === "FINISHED" && (
-        <ReviewComponent appointmentId={appointmentId} review={review} />
+        <ReviewComponent appointmentId={appointmentId} review={a.Review} />
       )}
     </Layout>
   );
@@ -359,7 +358,7 @@ const Details = ({
 
 interface ReviewComponentProps {
   appointmentId: string;
-  review: GetAppointmentByIdResponse["review"];
+  review: GetAppointmentByIdResponse["Review"];
 }
 
 const ReviewComponent = ({ appointmentId, review }: ReviewComponentProps) => {
