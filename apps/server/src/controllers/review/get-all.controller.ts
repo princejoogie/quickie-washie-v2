@@ -17,7 +17,7 @@ const getAllReviewsController: RequestHandler<
     }
 
     const reviews = await prisma.review.findMany({
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         content: true,

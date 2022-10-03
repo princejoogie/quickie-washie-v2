@@ -1,4 +1,8 @@
-import { CreateReviewParams, CreateReviewBody } from "@qw/dto";
+import {
+  CreateReviewParams,
+  CreateReviewBody,
+  GetAllReviewsResponse,
+} from "@qw/dto";
 import { api } from "./api";
 
 const create = async ({
@@ -13,7 +17,7 @@ const create = async ({
 };
 
 const getAll = async () => {
-  const response = await api.get(`/review`);
+  const response = await api.get<GetAllReviewsResponse>(`/review`);
   return response.data;
 };
 
