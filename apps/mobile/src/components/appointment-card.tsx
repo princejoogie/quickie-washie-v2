@@ -2,6 +2,7 @@ import type { GetAllAppointmentsResponse } from "@qw/dto";
 import { TouchableOpacity, Text, View } from "react-native";
 import { format } from "date-fns";
 import { VehicleCard } from "./vehicle-card";
+import { useAuthContext } from "../contexts/auth-context";
 
 interface AppointmentCardProps {
   onClick: () => void;
@@ -12,8 +13,13 @@ export const AppointmentCard = ({
   appointment,
   onClick,
 }: AppointmentCardProps) => {
+  const { data } = useAuthContext();
   const date = new Date(appointment.date);
   const vehicle = appointment.Vehicle;
+
+  const isReviewed =
+    appointment.status === "FINISHED" &&
+    appointment.reviews.some((e) => e.userId === data?.id);
 
   return (
     <TouchableOpacity
@@ -35,8 +41,16 @@ export const AppointmentCard = ({
       </Text>
       <Text className="text-xs text-gray-400">{format(date, "hh:mm aa")}</Text>
 
-      <View className="absolute top-1 right-1 rounded border border-green-500 bg-green-600 px-2">
-        <Text className="text-xs text-white">{appointment.status}</Text>
+      <View
+        className={`absolute top-1 right-1 rounded border px-2 ${
+          isReviewed
+            ? "border-gray-600 bg-gray-700"
+            : "border-green-500 bg-green-600"
+        }`}
+      >
+        <Text className="text-xs text-white">
+          {isReviewed ? "REVIEWED" : appointment.status}
+        </Text>
       </View>
 
       <VehicleCard vehicle={vehicle ?? undefined} />

@@ -29,6 +29,7 @@ import { uploadFile } from "../../../../services/firebase";
 import { useAuthContext } from "../../../../contexts/auth-context";
 import { StarIcon } from "../../../../components/icon/star-icon";
 import type { GetAppointmentByIdResponse } from "@qw/dto";
+import { queryClient } from "../../../../services/api";
 
 export const AppointmentDetail = ({
   route,
@@ -362,8 +363,15 @@ interface ReviewComponentProps {
 
 const ReviewComponent = ({ appointmentId, review }: ReviewComponentProps) => {
   const { data } = useAuthContext();
-  const [rating, setRating] = useState(1);
-  const [content, setContent] = useState("");
+  const [rating, setRating] = useState(review?.rating ?? 1);
+  const [content, setContent] = useState(review?.content ?? "");
+
+  const createReview = useMutation(appointmentService.createReview, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["appointment", appointmentId]);
+      queryClient.invalidateQueries(["appointments"]);
+    },
+  });
 
   if (!data) {
     return null;
@@ -371,7 +379,9 @@ const ReviewComponent = ({ appointmentId, review }: ReviewComponentProps) => {
 
   return (
     <View className="mt-4">
-      <Text className="ml-2 text-xs text-gray-400">Submit a review</Text>
+      <Text className="ml-2 text-xs text-gray-400">
+        {!review ? "Submit a review" : "Your review"}
+      </Text>
 
       <View className="mt-4 flex flex-row items-center justify-evenly rounded-full bg-gray-800 px-4 py-3">
         {Array(5)
@@ -379,7 +389,7 @@ const ReviewComponent = ({ appointmentId, review }: ReviewComponentProps) => {
           .map((_, idx) => (
             <TouchableOpacity
               key={`rating-${idx}`}
-              disabled={!review}
+              disabled={!!review}
               onPress={() => {
                 setRating(idx + 1);
               }}
@@ -401,8 +411,19 @@ const ReviewComponent = ({ appointmentId, review }: ReviewComponentProps) => {
       />
 
       {!review && (
-        <TouchableOpacity className="mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2">
-          <Text className="text-white">Submit review</Text>
+        <TouchableOpacity
+          className="mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2"
+          disabled={createReview.isLoading}
+          onPress={() => {
+            createReview.mutate({
+              params: { appointmentId },
+              body: { content, rating },
+            });
+          }}
+        >
+          <Text className="text-white">
+            {createReview.isLoading ? "Submitting..." : "Submit review"}
+          </Text>
         </TouchableOpacity>
       )}
     </View>
