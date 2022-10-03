@@ -18,9 +18,17 @@ import documentService from "../../../../services/document";
 import { ChatIcon } from "../../../../components/icon/chat-icon";
 import { DocumentIcon } from "../../../../components/icon/document-icon";
 import { ImageIcon } from "../../../../components/icon/image-icon";
-import { Layout, LoadingText, VehicleCard } from "../../../../components";
+import {
+  Layout,
+  LoadingText,
+  TextField,
+  VehicleCard,
+} from "../../../../components";
 import { getDocument } from "../../../../utils/helpers";
 import { uploadFile } from "../../../../services/firebase";
+import { useAuthContext } from "../../../../contexts/auth-context";
+import { StarIcon } from "../../../../components/icon/star-icon";
+import type { GetAppointmentByIdResponse } from "@qw/dto";
 
 export const AppointmentDetail = ({
   route,
@@ -117,6 +125,7 @@ const Details = ({
   }
 
   const a = appointment.data.appointment;
+  const review = appointment.data.review;
   const date = new Date(a.date);
 
   return (
@@ -294,18 +303,20 @@ const Details = ({
           </>
         )}
 
-        <TouchableOpacity
-          onPress={async () => {
-            const res = await getDocument();
-            if (res && documents.findIndex((e) => e.uri === res.uri) === -1) {
-              setDocuments([...documents, res]);
-            }
-            console.log(res);
-          }}
-          className="mt-2 self-center rounded bg-gray-600 p-2"
-        >
-          <Text className="text-white">Choose documents</Text>
-        </TouchableOpacity>
+        {!review && (
+          <TouchableOpacity
+            onPress={async () => {
+              const res = await getDocument();
+              if (res && documents.findIndex((e) => e.uri === res.uri) === -1) {
+                setDocuments([...documents, res]);
+              }
+              console.log(res);
+            }}
+            className="mt-2 self-center rounded bg-gray-600 p-2"
+          >
+            <Text className="text-white">Choose documents</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {a.status === "PENDING" && (
@@ -336,6 +347,64 @@ const Details = ({
           <Text className="text-red-600">Cancel Appointment</Text>
         </TouchableOpacity>
       )}
+
+      {a.status === "FINISHED" && (
+        <ReviewComponent appointmentId={appointmentId} review={review} />
+      )}
     </Layout>
+  );
+};
+
+interface ReviewComponentProps {
+  appointmentId: string;
+  review: GetAppointmentByIdResponse["review"];
+}
+
+const ReviewComponent = ({ appointmentId, review }: ReviewComponentProps) => {
+  const { data } = useAuthContext();
+  const [rating, setRating] = useState(1);
+  const [content, setContent] = useState("");
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <View className="mt-4">
+      <Text className="ml-2 text-xs text-gray-400">Submit a review</Text>
+
+      <View className="mt-4 flex flex-row items-center justify-evenly rounded-full bg-gray-800 px-4 py-3">
+        {Array(5)
+          .fill(0)
+          .map((_, idx) => (
+            <TouchableOpacity
+              key={`rating-${idx}`}
+              disabled={!review}
+              onPress={() => {
+                setRating(idx + 1);
+              }}
+            >
+              <StarIcon
+                styleName="text-yellow-600 h-10 w-10"
+                filled={idx < rating}
+              />
+            </TouchableOpacity>
+          ))}
+      </View>
+
+      <TextField
+        multiline
+        editable={!review}
+        value={content}
+        onChangeText={setContent}
+        placeholder="Tell us more about your experience!"
+      />
+
+      {!review && (
+        <TouchableOpacity className="mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2">
+          <Text className="text-white">Submit review</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };

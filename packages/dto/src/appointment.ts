@@ -173,6 +173,9 @@ export type GetAppointmentByIdResponse = {
 export const getAllAppointmentsResponse =
   Prisma.validator<PrismaType.AppointmentArgs>()({
     include: {
+      reviews: {
+        take: 1,
+      },
       AdditionalPrice: true,
       Service: true,
       Vehicle: true,

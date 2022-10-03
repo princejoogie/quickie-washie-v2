@@ -20,6 +20,7 @@ const getAllAppointmentsController: RequestHandler<
       const appointments = await prisma.appointment.findMany({
         orderBy: { date: "asc" },
         include: {
+          reviews: { take: 1 },
           AdditionalPrice: true,
           Service: true,
           Vehicle: true,
@@ -41,6 +42,10 @@ const getAllAppointmentsController: RequestHandler<
         where: { userId: payload.id },
         orderBy: { date: "asc" },
         include: {
+          reviews: {
+            where: { userId: payload.id },
+            take: 1,
+          },
           AdditionalPrice: true,
           Service: true,
           Vehicle: true,

@@ -71,9 +71,11 @@ const AllAppointments = ({
       ? appointments.data
       : appointments.data?.filter((a) => a.status === filter);
 
-  const finishedAppointments = appointments.data?.filter(
-    (a) => a.status === "FINISHED"
-  );
+  const toReviewAppointments = appointments.data?.filter((a) => {
+    const isFinished = a.status === "FINISHED";
+    const isReviewed = a.reviews.length > 0 && a.reviews[0];
+    return isFinished && !isReviewed;
+  });
 
   return (
     <Layout
@@ -102,7 +104,7 @@ const AllAppointments = ({
             <Text className="ml-1 text-blue-600">Back</Text>
           </TouchableOpacity>
 
-          {finishedAppointments?.map((apt) => (
+          {toReviewAppointments?.map((apt) => (
             <AppointmentCard
               key={apt.id}
               appointment={apt}
@@ -116,7 +118,7 @@ const AllAppointments = ({
         </View>
       ) : (
         <>
-          {finishedAppointments && finishedAppointments.length > 0 ? (
+          {toReviewAppointments && toReviewAppointments.length > 0 ? (
             <TouchableOpacity
               className="mt-4"
               onPress={() => {
@@ -124,7 +126,7 @@ const AllAppointments = ({
               }}
             >
               <Text className="text-blue-600">
-                To review ({finishedAppointments.length})
+                To review ({toReviewAppointments.length})
               </Text>
             </TouchableOpacity>
           ) : null}
