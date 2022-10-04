@@ -9,7 +9,12 @@ import { TokenPayload } from "@qw/dto";
 import decode from "jwt-decode";
 
 import authService from "../services/auth";
-import { getRefreshToken, setTokens, unsetTokens } from "../services/api";
+import {
+  getRefreshToken,
+  refreshToken,
+  setTokens,
+  unsetTokens,
+} from "../services/api";
 import { AxiosError } from "axios";
 import { Alert } from "react-native";
 
@@ -18,6 +23,7 @@ interface TAuthContext {
   data: TokenPayload | null;
   logout: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  refresh: () => void;
 }
 
 export const AuthContext = createContext<TAuthContext>({
@@ -25,6 +31,7 @@ export const AuthContext = createContext<TAuthContext>({
   data: null,
   logout: async () => {},
   login: async () => {},
+  refresh: () => {},
 });
 
 interface AuthContextProps {
@@ -55,6 +62,18 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
     setData(null);
   };
 
+  const refresh = async () => {
+    const token = await getRefreshToken();
+
+    if (token) {
+      const res = await refreshToken({ refreshToken: token });
+      const data = decode<TokenPayload>(res.accessToken);
+      setData(data);
+    } else {
+      await logout();
+    }
+  };
+
   const login = async (email: string, password: string) => {
     try {
       const tokens = await authService.login({ email, password });
@@ -73,7 +92,7 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoading, data, logout, login }}>
+    <AuthContext.Provider value={{ isLoading, data, logout, login, refresh }}>
       {children}
     </AuthContext.Provider>
   );

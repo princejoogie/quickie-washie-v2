@@ -3,6 +3,19 @@ import { Prisma, User } from "@qw/db";
 import type { Prisma as PrismaType } from "@qw/db";
 import type { ValidatorSchema } from "./common";
 
+// CREATE VERIFICATION TOKEN
+export const createVerificationTokenBodySchema = z.object({
+  uid: z.string().cuid(),
+});
+
+export type CreateVerificationTokenBody = z.infer<
+  typeof createVerificationTokenBodySchema
+>;
+
+export const CreateVerificationTokenSchema: ValidatorSchema = {
+  body: createVerificationTokenBodySchema,
+};
+
 // LOGIN
 export const loginBodySchema = z.object({
   email: z.string().email().trim(),

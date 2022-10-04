@@ -2593,6 +2593,13 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.7.23.tgz#75c580983846181ebe5f4abc40fe9dfb2d65665f"
   integrity sha512-DWNcCHolDq0ZKGizjx2DZjR/PqsYwAcYUJmfMWqtVU2MBMG5Mo+xFZrhGId5r/O5HOuMPyQEcM6KUBp5lBZZBg==
 
+"@types/nodemailer@^6.4.6":
+  version "6.4.6"
+  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-6.4.6.tgz#ce21b4b474a08f672f182e15982b7945dde1f288"
+  integrity sha512-pD6fL5GQtUKvD2WnPmg5bC2e8kWCAPDwMPmHe/ohQbW+Dy0EcHgZ2oCSuPlWNqk74LS5BVMig1SymQbFMPPK3w==
+  dependencies:
+    "@types/node" "*"
+
 "@types/prop-types@*":
   version "15.7.5"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
@@ -7389,6 +7396,11 @@ node-stream-zip@^1.9.1:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/node-stream-zip/-/node-stream-zip-1.15.0.tgz#158adb88ed8004c6c49a396b50a6a5de3bca33ea"
   integrity sha512-LN4fydt9TqhZhThkZIVQnF9cwjU3qmUH9h78Mx/K7d3VvfRqqwthLwJEUOEL0QPZ0XQmNN7be5Ggit5+4dq3Bw==
+
+nodemailer@^6.8.0:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.8.0.tgz#804bcc5256ee5523bc914506ee59f8de8f0b1cd5"
+  integrity sha512-EjYvSmHzekz6VNkNd12aUqAco+bOkRe3Of5jVhltqKhEsjw/y0PYPJfp83+s9Wzh1dspYAkUW/YNQ350NATbSQ==
 
 normalize-css-color@^1.0.2:
   version "1.0.2"
