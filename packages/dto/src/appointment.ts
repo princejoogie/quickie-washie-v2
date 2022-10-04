@@ -125,6 +125,7 @@ export const getAppointmentByIdResponseSchema =
       status: true,
       date: true,
       documents: true,
+      Review: true,
       AdditionalPrice: true,
       Service: true,
       Vehicle: true,
@@ -154,6 +155,7 @@ export const getAppointmentByIdSchema: ValidatorSchema = {
 export const getAllAppointmentsResponse =
   Prisma.validator<PrismaType.AppointmentArgs>()({
     include: {
+      Review: true,
       AdditionalPrice: true,
       Service: true,
       Vehicle: true,

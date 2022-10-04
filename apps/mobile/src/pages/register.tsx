@@ -80,11 +80,11 @@ export const Register = ({
     <Layout>
       {navigation.canGoBack() && (
         <TouchableOpacity
-          className="mt-4 self-start flex-row items-center w-auto"
+          className="mt-4 w-auto flex-row items-center self-start"
           onPress={() => navigation.goBack()}
         >
           <ChevronIcon direction="left" styleName="h-5 w-5 text-blue-600" />
-          <Text className="text-blue-600 w-min">Back</Text>
+          <Text className="w-min text-blue-600">Back</Text>
         </TouchableOpacity>
       )}
 
@@ -97,15 +97,15 @@ export const Register = ({
         </Text>
       </View>
 
-      <View className="flex items-center mt-8">
-        <View className="bg-gray-800 h-32 w-32 border-2 border-gray-700 rounded-full flex items-center justify-center">
+      <View className="mt-8 flex items-center">
+        <View className="flex h-32 w-32 items-center justify-center rounded-full border-2 border-gray-700 bg-gray-800">
           <Controller
             control={control}
             name="imageUrl"
             render={({ field: { onChange, value, onBlur } }) => (
               <TouchableOpacity
                 onBlur={onBlur}
-                className="w-full h-full flex items-center justify-center"
+                className="flex h-full w-full items-center justify-center"
                 onPress={async () => {
                   const res = await getImage({ aspect: [1, 1] });
                   if (res) onChange(res.uri);
@@ -125,7 +125,7 @@ export const Register = ({
         </View>
       </View>
       {errors.imageUrl && (
-        <Text className="text-xs text-center text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-center text-xs text-red-600">
           {errors.imageUrl.message}
         </Text>
       )}
@@ -144,7 +144,7 @@ export const Register = ({
         )}
       />
       {errors.name && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.name.message}
         </Text>
       )}
@@ -163,7 +163,7 @@ export const Register = ({
         )}
       />
       {errors.email && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.email.message}
         </Text>
       )}
@@ -173,9 +173,9 @@ export const Register = ({
         name="phone"
         render={({ field: { onChange, value, ...rest } }) => (
           <View className="mt-4">
-            <Text className="text-gray-400 text-xs ml-2">Phone *</Text>
-            <View className="flex flex-row py-3 items-center border-gray-700 bg-gray-800 mt-1 rounded-lg border-2">
-              <Text className="text-gray-300 pl-4">+63</Text>
+            <Text className="ml-2 text-xs text-gray-400">Phone *</Text>
+            <View className="mt-1 flex flex-row items-center rounded-lg border-2 border-gray-700 bg-gray-800 py-3">
+              <Text className="pl-4 text-gray-300">+63</Text>
               <TextInput
                 {...rest}
                 maxLength={10}
@@ -190,7 +190,7 @@ export const Register = ({
         )}
       />
       {errors.phone && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.phone.message}
         </Text>
       )}
@@ -209,7 +209,7 @@ export const Register = ({
         )}
       />
       {errors.password && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.password.message}
         </Text>
       )}
@@ -228,7 +228,7 @@ export const Register = ({
         )}
       />
       {errors.confirmPassword && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.confirmPassword.message}
         </Text>
       )}
@@ -247,13 +247,13 @@ export const Register = ({
         )}
       />
       {errors.licenseUrl && (
-        <Text className="text-xs text-red-600 ml-2 mt-1">
+        <Text className="ml-2 mt-1 text-xs text-red-600">
           {errors.licenseUrl.message}
         </Text>
       )}
 
       <TouchableOpacity
-        className="bg-green-600 self-end mt-6 px-8 py-2 rounded-lg border-2 border-green-500 disabled:opacity-50"
+        className="mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 disabled:opacity-50"
         disabled={isLoading}
         onPress={handleSubmit(
           async ({ licenseUrl, imageUrl, confirmPassword, phone, ...rest }) => {

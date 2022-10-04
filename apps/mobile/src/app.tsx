@@ -51,7 +51,7 @@ const App = () => {
         <StatusBar style="light" />
 
         {isLoading ? (
-          <View className="bg-gray-900 flex flex-1 items-center justify-center">
+          <View className="flex flex-1 items-center justify-center bg-gray-900">
             <Text className="text-white">Loading...</Text>
           </View>
         ) : (

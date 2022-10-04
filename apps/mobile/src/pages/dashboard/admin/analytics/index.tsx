@@ -36,7 +36,7 @@ export const Analytics = ({}: BottomTabScreenProps<
       if (e) {
         const date = new Date(e.date);
         const price =
-          Number(e.Service?.basePrice || 0) +
+          Number(e.Service?.basePrice ?? 0) +
           Number(e.AdditionalPrice?.price ?? 0);
 
         if (filter === "1D" && isToday(date)) {
@@ -64,69 +64,69 @@ export const Analytics = ({}: BottomTabScreenProps<
 
   return (
     <Layout nav={{ title: "Analytics" }} onRefresh={sales.refetch}>
-      <View className="flex flex-row items-center justify-evenly mt-4">
+      <View className="mt-4 flex flex-row items-center justify-evenly">
         <TouchableOpacity
           onPress={() => {
             setFilter("1D");
           }}
-          className={`rounded flex-1 ${
+          className={`flex-1 rounded ${
             filter === "1D" ? "bg-gray-800" : "bg-transparent"
           }`}
         >
-          <Text className="text-white text-lg text-center">1D</Text>
+          <Text className="text-center text-lg text-white">1D</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
             setFilter("1W");
           }}
-          className={`rounded flex-1 ${
+          className={`flex-1 rounded ${
             filter === "1W" ? "bg-gray-800" : "bg-transparent"
           }`}
         >
-          <Text className="text-white text-lg text-center">1W</Text>
+          <Text className="text-center text-lg text-white">1W</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
             setFilter("1M");
           }}
-          className={`rounded flex-1 ${
+          className={`flex-1 rounded ${
             filter === "1M" ? "bg-gray-800" : "bg-transparent"
           }`}
         >
-          <Text className="text-white text-lg text-center">1M</Text>
+          <Text className="text-center text-lg text-white">1M</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
             setFilter("3M");
           }}
-          className={`rounded flex-1 ${
+          className={`flex-1 rounded ${
             filter === "3M" ? "bg-gray-800" : "bg-transparent"
           }`}
         >
-          <Text className="text-white text-lg text-center">3M</Text>
+          <Text className="text-center text-lg text-white">3M</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
             setFilter("1Y");
           }}
-          className={`rounded flex-1 ${
+          className={`flex-1 rounded ${
             filter === "1Y" ? "bg-gray-800" : "bg-transparent"
           }`}
         >
-          <Text className="text-white text-lg text-center">1Y</Text>
+          <Text className="text-center text-lg text-white">1Y</Text>
         </TouchableOpacity>
       </View>
 
       <Text className="mt-4 text-gray-400">Total Sales</Text>
-      <Text className="mt-1 text-gray-300 text-4xl font-bold">
+      <Text className="mt-1 text-4xl font-bold text-gray-300">
         ₱{totalSales.toFixed(2)}
       </Text>
 
-      <View className="p-2 rounded-md mt-4">
+      <View className="mt-4 rounded-md p-2">
         <LineChart
           style={{ height: 100 }}
           data={[
@@ -145,15 +145,15 @@ export const Analytics = ({}: BottomTabScreenProps<
         {aggregatedSales.map((e, i) => (
           <View
             key={e.id}
-            className={`flex flex-row items-center justify-between mt-1 rounded p-1 ${
+            className={`mt-1 flex flex-row items-center justify-between rounded p-1 ${
               i % 2 === 0 ? "bg-gray-800" : "bg-transparent"
             }`}
           >
-            <Text className="text-gray-400 text-xs">
+            <Text className="text-xs text-gray-400">
               {format(e.date, "MMM d")} - {format(e.date, "hh:mm aa")}
             </Text>
 
-            <Text className="text-xs text-white font-bold">
+            <Text className="text-xs font-bold text-white">
               {e.price.toFixed(2)}
             </Text>
           </View>

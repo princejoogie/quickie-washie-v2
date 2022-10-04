@@ -35,6 +35,7 @@ const getAppointmentByIdController: RequestHandler<
         status: true,
         date: true,
         documents: true,
+        Review: true,
         AdditionalPrice: true,
         Service: true,
         Vehicle: true,

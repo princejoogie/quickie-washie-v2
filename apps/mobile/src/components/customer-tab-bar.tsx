@@ -64,7 +64,7 @@ export const CustomerTabBar = ({
 }: BottomTabBarProps) => {
   return (
     <View
-      className="bg-gray-800 flex flex-row rounded-t-3xl items-center justify-evenly"
+      className="flex flex-row items-center justify-evenly rounded-t-3xl bg-gray-800"
       style={{
         paddingBottom: Platform.OS === "android" ? 25 : insets.bottom,
       }}

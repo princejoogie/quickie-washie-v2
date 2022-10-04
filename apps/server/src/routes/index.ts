@@ -1,12 +1,13 @@
 import { Router } from "express";
+import prisma from "../lib/prisma";
+import { analyticsRouter } from "./analytics";
 import { appointmentRouter } from "./appointment";
 import { authRouter } from "./auth";
-import { analyticsRouter } from "./analytics";
 import { documentRouter } from "./document";
 import { notificationRouter } from "./notification";
-import { vehicleRouter } from "./vehicle";
+import { reviewRouter } from "./review";
 import { serviceRouter } from "./service";
-import prisma from "../lib/prisma";
+import { vehicleRouter } from "./vehicle";
 
 const router = Router();
 
@@ -20,12 +21,13 @@ router.get("/", async (_, res) => {
   }
 });
 
+router.use("/analytics", analyticsRouter);
 router.use("/appointment", appointmentRouter);
 router.use("/auth", authRouter);
-router.use("/analytics", analyticsRouter);
 router.use("/document", documentRouter);
 router.use("/notification", notificationRouter);
-router.use("/vehicle", vehicleRouter);
+router.use("/review", reviewRouter);
 router.use("/service", serviceRouter);
+router.use("/vehicle", vehicleRouter);
 
 export default router;

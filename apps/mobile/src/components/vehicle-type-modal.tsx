@@ -28,9 +28,9 @@ export const VehicleTypeModal = ({
         <TouchableOpacity
           activeOpacity={90}
           onPress={closeModal}
-          className="flex flex-col flex-1 items-center justify-center bg-black/70"
+          className="flex flex-1 flex-col items-center justify-center bg-black/70"
         >
-          <View className="bg-gray-900 w-10/12 rounded-lg border-2 border-gray-800 p-3">
+          <View className="w-10/12 rounded-lg border-2 border-gray-800 bg-gray-900 p-3">
             {Object.entries(VehicleTypeNames).map(([key, value]) => (
               <TouchableOpacity
                 className={
@@ -43,24 +43,24 @@ export const VehicleTypeModal = ({
                 }}
               >
                 <View
-                  className={`w-full p-3 rounded-md ${
+                  className={`w-full rounded-md p-3 ${
                     key === type
-                      ? "bg-gray-800 border-2 border-gray-700"
-                      : "bg-transparent border-2 border-transparent"
+                      ? "border-2 border-gray-700 bg-gray-800"
+                      : "border-2 border-transparent bg-transparent"
                   }`}
                 >
-                  <Text className="text-white text-center">{value}</Text>
+                  <Text className="text-center text-white">{value}</Text>
                 </View>
               </TouchableOpacity>
             ))}
 
             <TouchableOpacity
-              className="bg-green-600 border-2 border-green-500 py-2 w-1/2 rounded-md self-center mt-6"
+              className="mt-6 w-1/2 self-center rounded-md border-2 border-green-500 bg-green-600 py-2"
               onPress={() => {
                 onDismiss(type);
               }}
             >
-              <Text className="text-white text-center font-bold">OK</Text>
+              <Text className="text-center font-bold text-white">OK</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>

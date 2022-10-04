@@ -59,7 +59,7 @@ export const MessagesPage = ({
             : "bg-gray-600 self-start rounded-r-lg rounded-tl-lg";
 
           return (
-            <View key={msg.id} className={`mt-2 p-2 max-w-[80%] ${classes}`}>
+            <View key={msg.id} className={`mt-2 max-w-[80%] p-2 ${classes}`}>
               <Text className="text-white">{msg.content}</Text>
             </View>
           );
@@ -69,7 +69,7 @@ export const MessagesPage = ({
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "position" : "padding"}
       >
-        <View className="flex items-center flex-row absolute bottom-0 left-0 right-0 px-4 pb-2">
+        <View className="absolute bottom-0 left-0 right-0 flex flex-row items-center px-4 pb-2">
           <TextField
             containerClassname="flex-1"
             value={content}
@@ -77,7 +77,7 @@ export const MessagesPage = ({
           />
 
           <TouchableOpacity
-            className="bg-green-600 border-2 border-green-500 rounded-lg ml-2 p-2"
+            className="ml-2 rounded-lg border-2 border-green-500 bg-green-600 p-2"
             onPress={async () => {
               setContent("");
               await send.mutateAsync({

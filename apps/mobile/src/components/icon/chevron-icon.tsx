@@ -21,7 +21,7 @@ export const ChevronIcon = ({
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className={`w-6 h-6 ${styleName}`}
+          className={`h-6 w-6 ${styleName}`}
         >
           <Path
             strokeLinecap="round"
@@ -37,7 +37,7 @@ export const ChevronIcon = ({
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className={`w-6 h-6 ${styleName}`}
+          className={`h-6 w-6 ${styleName}`}
         >
           <Path
             strokeLinecap="round"
@@ -53,7 +53,7 @@ export const ChevronIcon = ({
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className={`w-6 h-6 ${styleName}`}
+          className={`h-6 w-6 ${styleName}`}
         >
           <Path
             strokeLinecap="round"
@@ -69,7 +69,7 @@ export const ChevronIcon = ({
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className={`w-6 h-6 ${styleName}`}
+          className={`h-6 w-6 ${styleName}`}
         >
           <Path
             strokeLinecap="round"
@@ -85,7 +85,7 @@ export const ChevronIcon = ({
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className={`w-6 h-6 ${styleName}`}
+          className={`h-6 w-6 ${styleName}`}
         >
           <Path
             strokeLinecap="round"

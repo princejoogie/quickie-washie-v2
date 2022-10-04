@@ -8,11 +8,35 @@ TODO:
 - [x] Sort Appointments by status (customer and admin)
 - [x] Analytics
 - [x] Send Notifications
-- [ ] Send Reviews
+- [x] Splash image and app icon
+- [x] Send Reviews
 - [ ] Report Bugs
 - [x] Splash image and app icon
 - [ ] Price of appointment (including additional charges)
 - [ ] Server time offset on Notifications
+
+REVISIONS: additional charges
+
+SIR SERGE
+- [ ] add the name of the client in the application.
+- [ ] if client is 24h open, selection of date is irrelevant. otherwise, make sure the time after midnight is disabled (or can't be selected)
+- [ ] notifications must be pushed, even if the app is closed (?)
+- [ ] if a service is finished, it should be put in a some sort of history of booking
+
+SIR YONG
+- [ ] limiting the number of bookings per day should be considered.
+- [ ] dapat ma-alam si client na kung ilang beses na nag-book yung isang user.
+- [ ] what if the user didn't show up? and if ever the user set the specific time
+
+SIR STAN
+- [ ] clarify what has been added from the iteration from softdes.
+- [ ] proof of testing is needed.
+- [ ] cpedes1 should be improved further from the softdes one.
+
+SIR LUIGI
+- [ ] admin and user side should be separated. (NO)
+- [ ] transaction trail -- meaning whoever books the first, will be the ones to come, also checks whoever often cancels appointments.
+- [ ] what kind of email verification? which has an expiration time, consider.
 
 ## Prerequisites
 

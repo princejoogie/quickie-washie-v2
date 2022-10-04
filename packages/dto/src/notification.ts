@@ -16,9 +16,9 @@ export const getAllNotificationsResponse =
     },
   });
 
-export type GetAllNotificationsResponse = PrismaType.NotificationGetPayload<
-  typeof getAllNotificationsResponse
->[];
+export type GetAllNotificationsResponse = Array<
+  PrismaType.NotificationGetPayload<typeof getAllNotificationsResponse>
+>;
 
 // MARK SEEN
 

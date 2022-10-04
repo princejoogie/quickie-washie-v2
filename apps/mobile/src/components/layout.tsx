@@ -63,11 +63,11 @@ export const Layout = ({
         <View style={{ height: top }} />
 
         {nav && (
-          <View className="p-4 border-b-2 border-gray-800 flex flex-row items-center justify-between">
+          <View className="flex flex-row items-center justify-between border-b-2 border-gray-800 p-4">
             <View className="flex flex-row items-center">
               {nav.canGoBack && (
                 <TouchableOpacity
-                  className="self-start flex-row items-center w-auto mr-2"
+                  className="mr-2 w-auto flex-row items-center self-start"
                   onPress={nav.onBack}
                 >
                   <ChevronIcon
@@ -77,7 +77,7 @@ export const Layout = ({
                   />
                 </TouchableOpacity>
               )}
-              <Text className="text-white font-bold text-lg">{nav.title}</Text>
+              <Text className="text-lg font-bold text-white">{nav.title}</Text>
             </View>
 
             {nav.actions && nav.actions}

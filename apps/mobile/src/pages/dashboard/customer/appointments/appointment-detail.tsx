@@ -14,13 +14,23 @@ import { Messages } from "./messages";
 
 import appointmentService from "../../../../services/appointment";
 import authService from "../../../../services/auth";
+import reviewService from "../../../../services/reviews";
 import documentService from "../../../../services/document";
 import { ChatIcon } from "../../../../components/icon/chat-icon";
 import { DocumentIcon } from "../../../../components/icon/document-icon";
 import { ImageIcon } from "../../../../components/icon/image-icon";
-import { Layout, LoadingText, VehicleCard } from "../../../../components";
+import {
+  Layout,
+  LoadingText,
+  TextField,
+  VehicleCard,
+} from "../../../../components";
 import { getDocument } from "../../../../utils/helpers";
 import { uploadFile } from "../../../../services/firebase";
+import { useAuthContext } from "../../../../contexts/auth-context";
+import { StarIcon } from "../../../../components/icon/star-icon";
+import type { GetAppointmentByIdResponse } from "@qw/dto";
+import { queryClient } from "../../../../services/api";
 
 export const AppointmentDetail = ({
   route,
@@ -133,8 +143,8 @@ const Details = ({
             }}
           >
             {a._count.messages > 0 && (
-              <View className="mr-1 px-2 py-1 rounded-full bg-blue-600 items-center, justify-center">
-                <Text className="text-white text-xs h-4">
+              <View className="items-center, mr-1 justify-center rounded-full bg-blue-600 px-2 py-1">
+                <Text className="h-4 text-xs text-white">
                   {a._count.messages}
                 </Text>
               </View>
@@ -145,31 +155,31 @@ const Details = ({
       }}
       onRefresh={appointment.refetch}
     >
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Details</Text>
-      <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Details</Text>
+      <View className="relative mt-1 rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
         <Text
           className={`font-bold ${
-            a.Service ? "text-lg text-white" : "text-sm text-red-600 italic"
+            a.Service ? "text-lg text-white" : "text-sm italic text-red-600"
           }`}
         >
           {a.Service?.name ?? "Unknown Service"}
         </Text>
-        <Text className="text-gray-400 text-xs">
+        <Text className="text-xs text-gray-400">
           {format(date, "MMM d, yyyy")}
         </Text>
-        <Text className="text-gray-400 text-xs">
+        <Text className="text-xs text-gray-400">
           {format(date, "hh:mm aa")}
         </Text>
 
-        <View className="bg-green-600 border border-green-500 rounded px-2 absolute top-1 right-1">
-          <Text className="text-white text-xs">{a.status}</Text>
+        <View className="absolute top-1 right-1 rounded border border-green-500 bg-green-600 px-2">
+          <Text className="text-xs text-white">{a.status}</Text>
         </View>
 
         <VehicleCard vehicle={a.Vehicle ?? undefined} />
       </View>
 
-      <View className="flex flex-row items-center justify-between mt-4">
-        <Text className="text-gray-400 text-xs ml-2">Documents</Text>
+      <View className="mt-4 flex flex-row items-center justify-between">
+        <Text className="ml-2 text-xs text-gray-400">Documents</Text>
 
         {documents.length > 0 && (
           <TouchableOpacity
@@ -195,7 +205,7 @@ const Details = ({
               }
             }}
           >
-            <Text className="text-blue-600 text-xs mr-2">
+            <Text className="mr-2 text-xs text-blue-600">
               {uploadDocuments.isLoading || isLoading
                 ? "Uploading..."
                 : "Update"}
@@ -204,11 +214,11 @@ const Details = ({
         )}
       </View>
 
-      <View className="border-gray-700 bg-gray-800 mt-1 rounded-xl border-2 relative p-3">
-        {appointment.data.documents.length <= 0 && documents.length <= 0 && (
-          <Text className="text-xs text-white text-center">No documents</Text>
+      <View className="relative mt-1 rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
+        {a.documents.length <= 0 && documents.length <= 0 && (
+          <Text className="text-center text-xs text-white">No documents</Text>
         )}
-        {appointment.data.documents
+        {a.documents
           .sort((a, b) => {
             return (
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -217,13 +227,13 @@ const Details = ({
           .map((doc) => (
             <View
               key={doc.id}
-              className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded mt-1"
+              className="mt-1 flex flex-row items-center justify-between rounded border-2 border-gray-700 p-2"
             >
               <TouchableOpacity
                 onPress={() => {
                   WebBrowser.openBrowserAsync(doc.downloadUrl);
                 }}
-                className="flex flex-row items-center flex-1"
+                className="flex flex-1 flex-row items-center"
               >
                 {doc.mimeType?.startsWith("image") ? (
                   <ImageIcon filled styleName="w-5 h-5 text-gray-400" />
@@ -232,7 +242,7 @@ const Details = ({
                 )}
 
                 <Text
-                  className="mx-1 flex-1 text-xs text-white text-left"
+                  className="mx-1 flex-1 text-left text-xs text-white"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -258,15 +268,15 @@ const Details = ({
 
         {documents.length > 0 && (
           <>
-            <Text className="text-xs text-white text-center mt-2">
+            <Text className="mt-2 text-center text-xs text-white">
               New documents
             </Text>
             {documents.map((doc) => (
               <View
                 key={doc.uri}
-                className="flex flex-row items-center justify-between border-2 border-gray-700 p-2 rounded mt-1"
+                className="mt-1 flex flex-row items-center justify-between rounded border-2 border-gray-700 p-2"
               >
-                <View className="flex flex-row items-center flex-1">
+                <View className="flex flex-1 flex-row items-center">
                   {doc.mimeType?.startsWith("image") ? (
                     <ImageIcon filled styleName="w-5 h-5 text-gray-400" />
                   ) : (
@@ -274,7 +284,7 @@ const Details = ({
                   )}
 
                   <Text
-                    className="mx-1 flex-1 text-xs text-white text-left"
+                    className="mx-1 flex-1 text-left text-xs text-white"
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -294,18 +304,20 @@ const Details = ({
           </>
         )}
 
-        <TouchableOpacity
-          onPress={async () => {
-            const res = await getDocument();
-            if (res && documents.findIndex((e) => e.uri === res.uri) === -1) {
-              setDocuments([...documents, res]);
-            }
-            console.log(res);
-          }}
-          className="mt-2 self-center bg-gray-600 p-2 rounded"
-        >
-          <Text className="text-white">Choose documents</Text>
-        </TouchableOpacity>
+        {!a.Review && (
+          <TouchableOpacity
+            onPress={async () => {
+              const res = await getDocument();
+              if (res && documents.findIndex((e) => e.uri === res.uri) === -1) {
+                setDocuments([...documents, res]);
+              }
+              console.log(res);
+            }}
+            className="mt-2 self-center rounded bg-gray-600 p-2"
+          >
+            <Text className="text-white">Choose documents</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {a.status === "PENDING" && (
@@ -331,11 +343,89 @@ const Details = ({
               ]
             );
           }}
-          className="mt-2 self-end p-2 rounded"
+          className="mt-2 self-end rounded p-2"
         >
           <Text className="text-red-600">Cancel Appointment</Text>
         </TouchableOpacity>
       )}
+
+      {a.status === "FINISHED" && (
+        <ReviewComponent appointmentId={appointmentId} review={a.Review} />
+      )}
     </Layout>
+  );
+};
+
+interface ReviewComponentProps {
+  appointmentId: string;
+  review: GetAppointmentByIdResponse["Review"];
+}
+
+const ReviewComponent = ({ appointmentId, review }: ReviewComponentProps) => {
+  const { data } = useAuthContext();
+  const [rating, setRating] = useState(review?.rating ?? 1);
+  const [content, setContent] = useState(review?.content ?? "");
+
+  const createReview = useMutation(reviewService.create, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["appointment", appointmentId]);
+      queryClient.invalidateQueries(["appointments"]);
+    },
+  });
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <View className="mt-4">
+      <Text className="ml-2 text-xs text-gray-400">
+        {!review ? "Submit a review" : "Your review"}
+      </Text>
+
+      <View className="mt-4 flex flex-row items-center justify-evenly rounded-full bg-gray-800 px-4 py-3">
+        {Array(5)
+          .fill(0)
+          .map((_, idx) => (
+            <TouchableOpacity
+              key={`rating-${idx}`}
+              disabled={!!review}
+              onPress={() => {
+                setRating(idx + 1);
+              }}
+            >
+              <StarIcon
+                styleName="text-yellow-600 h-10 w-10"
+                filled={idx < rating}
+              />
+            </TouchableOpacity>
+          ))}
+      </View>
+
+      <TextField
+        multiline
+        editable={!review}
+        value={content}
+        onChangeText={setContent}
+        placeholder="Tell us more about your experience!"
+      />
+
+      {!review && (
+        <TouchableOpacity
+          className="mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2"
+          disabled={createReview.isLoading}
+          onPress={() => {
+            createReview.mutate({
+              params: { appointmentId },
+              body: { content, rating },
+            });
+          }}
+        >
+          <Text className="text-white">
+            {createReview.isLoading ? "Submitting..." : "Submit review"}
+          </Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };

@@ -36,13 +36,13 @@ const NotificationModal = ({
         <TouchableOpacity
           activeOpacity={90}
           onPress={closeModal}
-          className="flex flex-col flex-1 items-center justify-center bg-black/70"
+          className="flex flex-1 flex-col items-center justify-center bg-black/70"
         >
-          <View className="bg-gray-900 w-10/12 rounded-lg border-2 border-gray-800 p-4">
-            <Text className="text-white text-lg font-bold w-full">
+          <View className="w-10/12 rounded-lg border-2 border-gray-800 bg-gray-900 p-4">
+            <Text className="w-full text-lg font-bold text-white">
               {notification.title}
             </Text>
-            <Text className="text-gray-300 mt-1">{notification.content}</Text>
+            <Text className="mt-1 text-gray-300">{notification.content}</Text>
 
             <Text
               className="mt-2 self-end text-gray-400"
@@ -93,7 +93,7 @@ export const Notifications = ({}: BottomTabScreenProps<
               });
             }}
           >
-            <Text className="text-blue-600 text-xs">Mark all read</Text>
+            <Text className="text-xs text-blue-600">Mark all read</Text>
           </TouchableOpacity>
         ),
       }}
@@ -119,11 +119,11 @@ export const Notifications = ({}: BottomTabScreenProps<
             } ${notif.seen ? "" : "bg-gray-800"}`}
           >
             {!notif.seen && (
-              <View className="absolute top-3 right-3 w-2 h-2 bg-green-500 rounded-full" />
+              <View className="absolute top-3 right-3 h-2 w-2 rounded-full bg-green-500" />
             )}
 
             <Text
-              className="absolute bottom-2 right-2 text-gray-400"
+              className="absolute bottom-2 right-2 text-gray-500"
               style={{ fontSize: 10 }}
             >
               {formatDistanceToNow(new Date(notif.createdAt), {
@@ -132,7 +132,7 @@ export const Notifications = ({}: BottomTabScreenProps<
             </Text>
 
             <Text
-              className="text-white font-bold w-full"
+              className="w-full font-bold text-white"
               numberOfLines={2}
               ellipsizeMode="tail"
             >
@@ -140,7 +140,7 @@ export const Notifications = ({}: BottomTabScreenProps<
             </Text>
 
             <Text
-              className="text-gray-300 text-xs mt-2 w-full mb-4"
+              className="mt-2 mb-4 w-full text-xs text-gray-300"
               numberOfLines={4}
               ellipsizeMode="tail"
             >
@@ -149,7 +149,7 @@ export const Notifications = ({}: BottomTabScreenProps<
           </TouchableOpacity>
         ))
       ) : (
-        <Text className="text-gray-400 text-center text-xs mt-4">
+        <Text className="mt-4 text-center text-xs text-gray-400">
           No notifications available.
         </Text>
       )}

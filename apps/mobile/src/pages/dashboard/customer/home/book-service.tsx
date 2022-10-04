@@ -177,40 +177,49 @@ export const BookService = ({
         value={`₱ ${serviceDetails.data?.basePrice.toString() ?? "0.00"}`}
       />
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">
+      <Text className="ml-2 mt-4 text-xs text-gray-400">
         Select your vehicle
       </Text>
-      <Controller
-        name="vehicleId"
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <>
-            {vehicles.data && vehicles.data.length > 0 && (
-              <Picker
-                itemStyle={{ color: "white" }}
-                style={{ color: "white" }}
-                mode="dialog"
-                selectedValue={value}
-                onValueChange={(e) => {
-                  onChange(e);
-                }}
-              >
-                {vehicles.data.map((e) => (
-                  <Picker.Item key={e.id} label={e.plateNumber} value={e.id} />
-                ))}
-              </Picker>
-            )}
-          </>
-        )}
-      />
-
+      {vehicles.data && vehicles.data.length > 0 ? (
+        <Controller
+          name="vehicleId"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <>
+              {vehicles.data && vehicles.data.length > 0 && (
+                <Picker
+                  itemStyle={{ color: "white" }}
+                  style={{ color: "white" }}
+                  mode="dialog"
+                  selectedValue={value}
+                  onValueChange={(e) => {
+                    onChange(e);
+                  }}
+                >
+                  {vehicles.data.map((e) => (
+                    <Picker.Item
+                      key={e.id}
+                      label={e.plateNumber}
+                      value={e.id}
+                    />
+                  ))}
+                </Picker>
+              )}
+            </>
+          )}
+        />
+      ) : (
+        <Text className="ml-2 mt-1 italic text-red-600">
+          No vehicles found. Please add a vehicle first.
+        </Text>
+      )}
       <TextField
         editable={false}
         label="Additional price (auto calculated)"
         value={`₱ ${getAdditionalPrice().value}`}
       />
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Select date</Text>
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Select date</Text>
       <Controller
         name="date"
         control={control}
@@ -236,7 +245,7 @@ export const BookService = ({
           ) : (
             <TouchableOpacity
               onPress={showDatePicker}
-              className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 px-4 py-3"
+              className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3"
             >
               <Text className="text-white">{format(value, "MMM d, yyyy")}</Text>
             </TouchableOpacity>
@@ -244,7 +253,7 @@ export const BookService = ({
         }
       />
 
-      <Text className="text-gray-400 text-xs ml-2 mt-4">Select time</Text>
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Select time</Text>
       <Controller
         name="date"
         control={control}
@@ -272,7 +281,7 @@ export const BookService = ({
           ) : (
             <TouchableOpacity
               onPress={showTimePicker}
-              className="border-gray-700 bg-gray-800 mt-1 rounded-lg border-2 px-4 py-3"
+              className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3"
             >
               <Text className="text-white">{format(value, "hh:mm aa")}</Text>
             </TouchableOpacity>
@@ -288,11 +297,11 @@ export const BookService = ({
           });
         })}
         disabled={isLoading}
-        className={`bg-green-600 w-full mt-6 px-8 py-2 rounded-lg border-2 border-green-500 ${
-          isLoading ? "opacity-50" : ""
+        className={`mt-6 w-full rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 ${
+          isLoading ? "opacity-50" : "opacity-100"
         }`}
       >
-        <Text className="text-white text-center">Book Service</Text>
+        <Text className="text-center text-white">Book Service</Text>
       </TouchableOpacity>
     </Layout>
   );

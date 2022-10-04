@@ -48,11 +48,11 @@ export const ChangePassword = ({
             newPassword,
           });
         }}
-        className={`mt-6 bg-green-600 self-end px-8 py-2 rounded-lg border-2 border-green-500 ${
+        className={`mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 ${
           changePassword.isLoading ? "opacity-50" : "opacity-100"
         }`}
       >
-        <Text className="text-white text-center">
+        <Text className="text-center text-white">
           {changePassword.isLoading ? "Loading..." : "Change password"}
         </Text>
       </TouchableOpacity>
