@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import routes from "./routes/index";
 import errorHandler from "./middlewares/error-handler";
 import { verifyVerifyAccountToken } from "./utils/jwt-helper";
+import { JsonWebTokenError } from "jsonwebtoken";
 
 const PORT = process.env["PORT"] ?? 4000;
 
@@ -34,7 +35,14 @@ const main = async () => {
         console.log({ user });
         return res.send("Account verified. You can now close this tab.");
       } catch (err) {
-        return res.send("Link expired. Please request a new one.");
+        if (err instanceof JsonWebTokenError) {
+          if (err.message.includes("expired")) {
+            return res.send("Token expired. Please request a new one.");
+          }
+
+          return res.send("Invalid token. Please request a new one.");
+        }
+        throw err;
       }
     } catch (error) {
       console.log(error);
