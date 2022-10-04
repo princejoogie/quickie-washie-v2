@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Login: undefined;
   CustomerDashboard: undefined;
   AdminDashboard: undefined;
+  Unverified: undefined;
 };
 
 export const RootStack = createNativeStackNavigator<RootStackParamList>();

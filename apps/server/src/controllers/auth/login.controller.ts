@@ -36,6 +36,7 @@ const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
     const { accessToken, refreshToken } = createTokens({
       id: user.id,
       privilege: user.privilege,
+      isVerified: user.isVerified,
     });
 
     return res.status(200).json({ accessToken, refreshToken });

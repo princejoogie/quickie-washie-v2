@@ -39,6 +39,7 @@ const registerController: RequestHandler<
     const { accessToken, refreshToken } = createTokens({
       id: newUser.id,
       privilege: newUser.privilege,
+      isVerified: newUser.isVerified,
     });
 
     return res.status(200).json({ accessToken, refreshToken, user: newUser });

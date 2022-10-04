@@ -3,6 +3,7 @@ import type { RefreshTokenResponse, RefreshTokenBody } from "@qw/dto";
 import { createTokens, verifyRefreshToken } from "../../utils/jwt-helper";
 
 import { AppError, SuccessType } from "../../utils/error";
+import prisma from "../../lib/prisma";
 
 const refreshTokenController: RequestHandler<
   any,
@@ -20,10 +21,24 @@ const refreshTokenController: RequestHandler<
       return next(error);
     }
 
-    const { id, privilege } = verifyRefreshToken(refreshToken);
+    const { id } = verifyRefreshToken(refreshToken);
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      const error = new AppError(
+        "UnauthorizedException",
+        "User does not exist"
+      );
+      return next(error);
+    }
+
     const { accessToken, refreshToken: newRefreshToken } = createTokens({
       id,
-      privilege,
+      privilege: user.privilege,
+      isVerified: user.isVerified,
     });
 
     return res

@@ -1,5 +1,5 @@
 import * as Linking from "expo-linking";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
@@ -69,6 +69,8 @@ const App = () => {
                 <RootStack.Screen name="Login" component={Login} />
                 <RootStack.Screen name="Register" component={Register} />
               </>
+            ) : !data.isVerified ? (
+              <RootStack.Screen name="Unverified" component={Unverified} />
             ) : data.privilege === "ADMIN" ? (
               <RootStack.Screen
                 name="AdminDashboard"
@@ -84,6 +86,28 @@ const App = () => {
         )}
       </NavigationContainer>
     </SafeAreaProvider>
+  );
+};
+
+const Unverified = () => {
+  const { logout, refresh } = useAuthContext();
+
+  return (
+    <View className="flex flex-1 items-center justify-center bg-gray-900">
+      <Text className="text-white">Unverified</Text>
+
+      <TouchableOpacity>
+        <Text className="text-white" onPress={logout}>
+          Logout
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity className="mt-4">
+        <Text className="text-white" onPress={refresh}>
+          Refresh
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 

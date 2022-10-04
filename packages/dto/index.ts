@@ -11,5 +11,6 @@ export * from "./src/vehicle";
 
 export interface TokenPayload {
   id: string;
+  isVerified: boolean;
   privilege: "ADMIN" | "CUSTOMER";
 }
