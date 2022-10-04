@@ -21,10 +21,10 @@
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.8.0",
     "zod": "^3.19.0"
   },
   "devDependencies": {
-    "eslint-config-custom": "*",
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.12",
@@ -32,7 +32,9 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.7.18",
+    "@types/nodemailer": "^6.4.6",
     "eslint": "^8.24.0",
+    "eslint-config-custom": "*",
     "rimraf": "^3.0.2",
     "tsx": "^3.9.0",
     "typescript": "^4.8.4"
