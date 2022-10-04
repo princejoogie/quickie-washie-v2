@@ -3,7 +3,11 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import { QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 
 import { RootStack } from "./pages/types";
 import { Login, Register } from "./pages";
@@ -11,6 +15,10 @@ import { CustomerDashboard } from "./pages/dashboard/customer";
 import { AdminDashboard } from "./pages/dashboard/admin";
 import { AuthProvider, useAuthContext } from "./contexts/auth-context";
 import { queryClient } from "./services/api";
+import { EmailSentSvg } from "./components/icon/email-sent-icon";
+import { Layout } from "./components";
+import authService from "./services/auth";
+import { useEffect } from "react";
 
 const prefix = Linking.createURL("/");
 
@@ -90,24 +98,76 @@ const App = () => {
 };
 
 const Unverified = () => {
-  const { logout, refresh } = useAuthContext();
+  const { logout, refresh, data } = useAuthContext();
+
+  const profile = useQuery(["profile"], authService.profile);
+  const sendVerification = useMutation(authService.sendVerificationEmail);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refresh();
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <View className="flex flex-1 items-center justify-center bg-gray-900">
-      <Text className="text-white">Unverified</Text>
+    <Layout>
+      <View className="flex-1 items-center justify-between">
+        <Text className="mt-4 text-lg text-gray-400">Account Unverified</Text>
 
-      <TouchableOpacity>
-        <Text className="text-white" onPress={logout}>
-          Logout
-        </Text>
-      </TouchableOpacity>
+        <EmailSentSvg styleName="mx-auto my-8" />
 
-      <TouchableOpacity className="mt-4">
-        <Text className="text-white" onPress={refresh}>
-          Refresh
+        <Text className="text-2xl font-bold text-white">Check your email</Text>
+        <Text className="text-xs text-gray-400">
+          Make sure to check your{" "}
+          <Text className="font-bold text-white">spam </Text>
+          folder.
         </Text>
-      </TouchableOpacity>
-    </View>
+
+        {profile.data && (
+          <View className="my-4">
+            <Text className="text-center text-gray-300">
+              We sent a verification link to
+            </Text>
+            <Text className="text-center font-bold text-gray-300">
+              {profile.data.email}
+            </Text>
+          </View>
+        )}
+
+        <View className="mt-32" />
+
+        <Text className="text-xs text-gray-400">
+          Want to use a different account?
+        </Text>
+        <TouchableOpacity>
+          <Text className="text-blue-600" onPress={logout}>
+            Return to login
+          </Text>
+        </TouchableOpacity>
+
+        <Text className="mt-4 text-xs text-gray-400">
+          Didn&apos;t receive the email?
+        </Text>
+        <TouchableOpacity disabled={sendVerification.isLoading}>
+          <Text
+            className={`text-blue-600 ${
+              sendVerification.isLoading ? "opacity-50" : "opacity-100"
+            }`}
+            onPress={() => {
+              if (data?.id) sendVerification.mutate({ uid: data.id });
+            }}
+          >
+            {sendVerification.isLoading
+              ? "Sending..."
+              : "Resend verification link"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </Layout>
   );
 };
 

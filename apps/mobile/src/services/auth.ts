@@ -8,6 +8,7 @@ import type {
   UpdateProfileBody,
   ReauthenticateBody,
   ChangePasswordBody,
+  CreateVerificationTokenBody,
 } from "@qw/dto";
 import { api, setTokens } from "./api";
 
@@ -43,6 +44,11 @@ const changePassword = async (body: ChangePasswordBody) => {
   return response.data;
 };
 
+const sendVerificationEmail = async (body: CreateVerificationTokenBody) => {
+  const response = await api.post("/auth/create-verification-token", body);
+  return response.data;
+};
+
 const authService = {
   changePassword,
   login,
@@ -50,6 +56,7 @@ const authService = {
   reauthenticate,
   register,
   updateProfile,
+  sendVerificationEmail,
 };
 
 export default authService;
