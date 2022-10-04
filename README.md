@@ -36,7 +36,7 @@ SIR STAN
 SIR LUIGI
 - [ ] admin and user side should be separated. (NO)
 - [ ] transaction trail -- meaning whoever books the first, will be the ones to come, also checks whoever often cancels appointments.
-- [ ] what kind of email verification? which has an expiration time, consider.
+- [x] what kind of email verification? which has an expiration time, consider.
 
 ## Prerequisites
 
