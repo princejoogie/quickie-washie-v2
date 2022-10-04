@@ -3,6 +3,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "server",
   "compilerOptions": {
+    "baseUrl": "./src",
     "outDir": "dist"
   },
   "include": ["./**/*.ts"]
