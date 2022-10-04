@@ -8,10 +8,7 @@ const main = async () => {
     pass: process.env["SMTP_PASS"],
   });
 
-  const token = createVerifyAccountToken({
-    id: "123",
-    privilege: "CUSTOMER",
-  });
+  const token = createVerifyAccountToken({ uid: "123" });
 
   await sendMail(
     "softdes23@gmail.com",

@@ -38,16 +38,22 @@ export const createTokens = (payload: TokenPayload) => {
   return { accessToken, refreshToken };
 };
 
-export const createVerifyAccountToken = (payload: TokenPayload) => {
+type VerificationTokenPayload = {
+  uid: string;
+};
+
+export const createVerifyAccountToken = (payload: VerificationTokenPayload) => {
   return jwt.sign(payload, process.env["VERIFY_ACCOUNT_TOKEN_SECRET"]!, {
     expiresIn: "1d",
     algorithm: "HS256",
   });
 };
 
-export const verifyVerifyAccountToken = (token: string): TokenPayload => {
+export const verifyVerifyAccountToken = (
+  token: string
+): VerificationTokenPayload => {
   return jwt.verify(
     token,
     process.env["VERIFY_ACCOUNT_TOKEN_SECRET"]!
-  ) as TokenPayload;
+  ) as VerificationTokenPayload;
 };

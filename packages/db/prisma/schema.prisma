@@ -16,6 +16,7 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   privilege     Privilege      @default(CUSTOMER)
+  isVerified    Boolean        @default(false)
   email         String         @unique
   password      String
   licenseUrl    String
@@ -28,6 +29,13 @@ model User {
   notifications Notification[]
   documents     Document[]
   reviews       Review[]
+}
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  used      Boolean  @default(false)
+  token     String   @unique
 }
 
 model Vehicle {

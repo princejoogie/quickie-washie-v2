@@ -8,6 +8,7 @@ import {
   updateProfileSchema,
   reauthenticateSchema,
   changePasswordSchema,
+  CreateVerificationTokenSchema,
 } from "@qw/dto";
 import loginController from "../controllers/auth/login.controller";
 import registerController from "../controllers/auth/register.controller";
@@ -16,6 +17,7 @@ import updateProfileController from "../controllers/auth/profile/update.controll
 import refreshTokenController from "../controllers/auth/refresh-token.controller";
 import reauthenticateController from "../controllers/auth/reauthenticate.controller";
 import changePasswordController from "../controllers/auth/change-password.controller";
+import createVerificationTokenController from "../controllers/auth/create-verification-token.controller";
 
 export const authRouter = Router();
 
@@ -44,4 +46,9 @@ authRouter.post(
   "/change-password",
   [checkJwt, validator(changePasswordSchema)],
   changePasswordController
+);
+authRouter.post(
+  "/create-verification-token",
+  validator(CreateVerificationTokenSchema),
+  createVerificationTokenController
 );

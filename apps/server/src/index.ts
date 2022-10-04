@@ -4,6 +4,7 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
+import prisma from "./lib/prisma";
 import routes from "./routes/index";
 import errorHandler from "./middlewares/error-handler";
 import { verifyVerifyAccountToken } from "./utils/jwt-helper";
@@ -21,7 +22,7 @@ const main = async () => {
   app.use(morgan("combined"));
 
   app.use("/api", routes);
-  app.use("/verify-account", (req, res) => {
+  app.use("/verify-account", async (req, res) => {
     try {
       const { token } = req.query;
 
@@ -30,9 +31,36 @@ const main = async () => {
       }
 
       try {
+        // check if token is used
+        const verificationToken = await prisma.verificationToken.findUnique({
+          where: { token },
+        });
+
+        // check if token exists
+        if (!verificationToken) {
+          return res.send("Invalid token. Please request a new one.");
+        }
+
+        // check if token is used
+        if (verificationToken.used) {
+          return res.send("Account already verified.");
+        }
+
+        // verify token
         const user = verifyVerifyAccountToken(token);
-        // TODO: mark user as verified
-        console.log({ user });
+
+        // mark token used and user verified
+        await prisma.$transaction([
+          prisma.verificationToken.update({
+            where: { token },
+            data: { used: true },
+          }),
+          prisma.user.update({
+            where: { id: user.uid },
+            data: { isVerified: true },
+          }),
+        ]);
+
         return res.send("Account verified. You can now close this tab.");
       } catch (err) {
         if (err instanceof JsonWebTokenError) {
