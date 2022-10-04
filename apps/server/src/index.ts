@@ -38,12 +38,17 @@ const main = async () => {
 
         // check if token exists
         if (!verificationToken) {
-          return res.send("Invalid token. Please request a new one.");
+          /* return res.redirect("Invalid token. Please request a new one."); */
+          return res.sendFile("verification/invalid.html", {
+            root: "public",
+          });
         }
 
         // check if token is used
         if (verificationToken.used) {
-          return res.send("Account already verified.");
+          return res.sendFile("verification/already-verified.html", {
+            root: "public",
+          });
         }
 
         // verify token
@@ -61,20 +66,28 @@ const main = async () => {
           }),
         ]);
 
-        return res.send("Account verified. You can now close this tab.");
+        return res.sendFile("verification/success.html", {
+          root: "public",
+        });
       } catch (err) {
         if (err instanceof JsonWebTokenError) {
           if (err.message.includes("expired")) {
-            return res.send("Token expired. Please request a new one.");
+            return res.sendFile("verification/expired.html", {
+              root: "public",
+            });
           }
 
-          return res.send("Invalid token. Please request a new one.");
+          return res.sendFile("verification/invalid.html", {
+            root: "public",
+          });
         }
         throw err;
       }
     } catch (error) {
       console.log(error);
-      return res.send("Could not verify account.");
+      return res.sendFile("verification/error.html", {
+        root: "public",
+      });
     }
   });
   app.use(errorHandler);
