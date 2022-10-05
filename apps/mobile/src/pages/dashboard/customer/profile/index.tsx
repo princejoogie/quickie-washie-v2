@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { View, Image, Text, TouchableOpacity, TextInput } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+} from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { useIsFocused } from "@react-navigation/native";
@@ -63,6 +70,7 @@ const ProfileDetails = ({
 }: NativeStackScreenProps<CustomerProfileStackParamList, "ProfileDetail">) => {
   const { logout } = useAuthContext();
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const {
     control,
     handleSubmit,
@@ -104,8 +112,20 @@ const ProfileDetails = ({
       nav={{
         title: "Profile",
         actions: (
-          <TouchableOpacity onPress={logout}>
-            <Text className="text-red-600">Logout</Text>
+          <TouchableOpacity
+            onPress={async () => {
+              setIsLoggingOut(true);
+              try {
+                await logout();
+              } catch {
+                Alert.alert("Error", "Something went wrong");
+              }
+              setIsLoggingOut(false);
+            }}
+          >
+            <Text className="text-red-600">
+              {isLoggingOut ? "Loading..." : "Logout"}
+            </Text>
           </TouchableOpacity>
         ),
       }}

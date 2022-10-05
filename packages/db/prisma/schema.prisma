@@ -11,24 +11,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model PushNotificationToken {
+  token  String @unique
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model User {
-  id            String         @id @default(cuid())
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  privilege     Privilege      @default(CUSTOMER)
-  isVerified    Boolean        @default(false)
-  email         String         @unique
-  password      String
-  licenseUrl    String
-  phone         String         @db.VarChar(13)
-  name          String
-  photoUrl      String
-  vehicles      Vehicle[]
-  appointments  Appointment[]
-  messages      Message[]
-  notifications Notification[]
-  documents     Document[]
-  reviews       Review[]
+  id                     String                  @id @default(cuid())
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  privilege              Privilege               @default(CUSTOMER)
+  isVerified             Boolean                 @default(false)
+  email                  String                  @unique
+  password               String
+  licenseUrl             String
+  phone                  String                  @db.VarChar(13)
+  name                   String
+  photoUrl               String
+  vehicles               Vehicle[]
+  appointments           Appointment[]
+  messages               Message[]
+  notifications          Notification[]
+  documents              Document[]
+  reviews                Review[]
+  pushNotificationTokens PushNotificationToken[]
 }
 
 model VerificationToken {

@@ -2,6 +2,10 @@ import {
   GetAllNotificationsResponse,
   MarkNotificationSeenBody,
   MarkNotificationSeenResponse,
+  RegisterTokenBody,
+  RegisterTokenResponse,
+  UnregisterTokenBody,
+  UnregisterTokenResponse,
 } from "@qw/dto";
 import { api } from "./api";
 
@@ -18,9 +22,27 @@ const mark = async (body: MarkNotificationSeenBody) => {
   return response.data;
 };
 
+const registerPushToken = async (body: RegisterTokenBody) => {
+  const response = await api.post<RegisterTokenResponse>(
+    "/notification/token/register",
+    body
+  );
+  return response.data;
+};
+
+const unregisterPushToken = async (body: UnregisterTokenBody) => {
+  const response = await api.post<UnregisterTokenResponse>(
+    "/notification/token/unregister",
+    body
+  );
+  return response.data;
+};
+
 const notificationService = {
   getAll,
   mark,
+  registerPushToken,
+  unregisterPushToken,
 };
 
 export default notificationService;
