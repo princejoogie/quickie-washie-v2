@@ -3,6 +3,8 @@ import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
   auth: {
     user: process.env["SMTP_USER"],
     pass: process.env["SMTP_PASS"],
@@ -13,7 +15,7 @@ export const verifyAccountHtml = (token: string) => {
   const BASE_URL =
     process.env["NODE_ENV"] === "production"
       ? "https://qwashie.up.railway.app"
-      : `http://localhost:${process.env["PORT"]}`;
+      : `http://192.168.1.7:${process.env["PORT"]}`;
   return `
   <div>
     <h4>Verify your Quickie Washie account</h1>
