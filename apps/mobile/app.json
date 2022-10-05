@@ -16,13 +16,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "useNextNotificationsApi": true,
+      "permissions": ["RECIEVE_BOOT_COMPLETED"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#111827"
@@ -30,12 +30,25 @@
       "package": "com.qwashie.quickiewashie"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.ico"
     },
     "extra": {
       "eas": {
         "projectId": "7a6cb8b3-41fe-4725-b3da-02f62a932b4b"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#111827",
+          "sounds": [],
+          "androidMode": "default",
+          "androidCollapsedTitle": "Quickie Washie",
+          "iosDisplayInForeground": true
+        }
+      ]
+    ]
   }
 }

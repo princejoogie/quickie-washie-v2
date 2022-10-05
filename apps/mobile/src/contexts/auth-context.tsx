@@ -17,6 +17,7 @@ import {
 } from "../services/api";
 import { AxiosError } from "axios";
 import { Alert } from "react-native";
+import { getPushNotificationToken } from "../lib/push-notifications";
 
 interface TAuthContext {
   isLoading: boolean;
@@ -54,6 +55,10 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
       }
 
       setIsLoading(false);
+    });
+
+    getPushNotificationToken().then((token) => {
+      console.log({ token });
     });
   }, [_c]);
 
