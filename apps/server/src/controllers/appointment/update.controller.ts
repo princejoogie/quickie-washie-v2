@@ -7,6 +7,8 @@ import type {
 
 import prisma from "../../lib/prisma";
 import { AppError, handleControllerError } from "../../utils/error";
+import { sendPushNotification } from "../../lib/push-notifications";
+import { format } from "date-fns";
 
 const updateAppointmentController: RequestHandler<
   UpdateAppointmentParams,
@@ -47,29 +49,55 @@ const updateAppointmentController: RequestHandler<
       }
     }
 
+    const pushNotificationTokens = await prisma.pushNotificationToken.findMany({
+      where: { userId: appointment.userId ?? "" },
+    });
+
     if (appointment.Vehicle && appointment.Service && status) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      const notif = {
+        title: `${appointment.Service.name} appointment ${status}`,
+        content: `Your appointment on ${appointment.Vehicle?.plateNumber} for ${appointment.Service?.name} is now ${status}`,
+      };
+
       await prisma.notification.create({
         data: {
           userId: appointment.userId,
-          title: `${appointment.Service.name} appointment ${status}`,
-          content: `Your appointment on ${appointment.Vehicle?.plateNumber} for ${appointment.Service?.name} is now ${status}`,
+          title: notif.title,
+          content: notif.content,
         },
+      });
+
+      sendPushNotification({
+        tokens: pushNotificationTokens.map((t) => t.token),
+        title: notif.title,
+        message: notif.content,
       });
     }
 
     if (appointment.Vehicle && appointment.Service && date) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      const _date = new Date(date);
+      const notif = {
+        title: `${appointment.Service.name} appointment date changed`,
+        content: `Your appointment on ${appointment.Vehicle?.plateNumber} for ${
+          appointment.Service?.name
+        } is now on ${format(_date, "MMM d, yyyy")} at ${format(
+          _date,
+          "hh:mm aa"
+        )}`,
+      };
+
       await prisma.notification.create({
         data: {
           userId: appointment.userId,
-          title: `${appointment.Service.name} appointment date changed`,
-          content: `Your appointment on ${
-            appointment.Vehicle?.plateNumber
-          } for ${appointment.Service?.name} is now on ${new Date(
-            date
-          ).toDateString()} at ${new Date(date).toTimeString()}`,
+          title: notif.title,
+          content: notif.content,
         },
+      });
+
+      sendPushNotification({
+        tokens: pushNotificationTokens.map((t) => t.token),
+        title: notif.title,
+        message: notif.content,
       });
     }
 
