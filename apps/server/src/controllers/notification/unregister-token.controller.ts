@@ -19,9 +19,15 @@ const unregisterPushNotificationTokenController: RequestHandler<
 
     const { notificationToken } = req.body;
 
-    await prisma.pushNotificationToken.delete({
+    const token = await prisma.pushNotificationToken.findUnique({
       where: { token: notificationToken },
     });
+
+    if (token) {
+      await prisma.pushNotificationToken.delete({
+        where: { token: token.token },
+      });
+    }
 
     return res.status(200).json(true);
   } catch (e) {

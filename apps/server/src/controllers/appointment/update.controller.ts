@@ -59,13 +59,15 @@ const updateAppointmentController: RequestHandler<
         content: `Your appointment on ${appointment.Vehicle?.plateNumber} for ${appointment.Service?.name} is now ${status}`,
       };
 
-      await prisma.notification.create({
-        data: {
-          userId: appointment.userId,
-          title: notif.title,
-          content: notif.content,
-        },
-      });
+      prisma.notification
+        .create({
+          data: {
+            userId: appointment.userId,
+            title: notif.title,
+            content: notif.content,
+          },
+        })
+        .then();
 
       sendPushNotification({
         tokens: pushNotificationTokens.map((t) => t.token),
@@ -86,13 +88,15 @@ const updateAppointmentController: RequestHandler<
         )}`,
       };
 
-      await prisma.notification.create({
-        data: {
-          userId: appointment.userId,
-          title: notif.title,
-          content: notif.content,
-        },
-      });
+      prisma.notification
+        .create({
+          data: {
+            userId: appointment.userId,
+            title: notif.title,
+            content: notif.content,
+          },
+        })
+        .then();
 
       sendPushNotification({
         tokens: pushNotificationTokens.map((t) => t.token),
