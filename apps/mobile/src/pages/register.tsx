@@ -73,8 +73,13 @@ export const Register = ({
   });
 
   const register = useMutation(authService.register);
+  const sendVerification = useMutation(authService.sendVerificationEmail);
 
-  const isLoading = isSubmitting || isValidating || register.isLoading;
+  const isLoading =
+    isSubmitting ||
+    isValidating ||
+    register.isLoading ||
+    sendVerification.isLoading;
 
   return (
     <Layout>
@@ -262,12 +267,14 @@ export const Register = ({
               uploadFile(imageUrl, rest.email),
             ]);
 
-            await register.mutateAsync({
+            const user = await register.mutateAsync({
               ...rest,
               licenseUrl: licenseDownloadUrl,
               imageUrl: imageDownloadUrl,
               phone: `+63${phone}`,
             });
+
+            await sendVerification.mutateAsync({ uid: user.user.id });
 
             await login(rest.email, rest.password);
           }

@@ -1,24 +1,25 @@
-import * as Linking from "expo-linking";
-import { View, Text, TouchableOpacity } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClientProvider,
   useMutation,
   useQuery,
 } from "@tanstack/react-query";
-
-import { RootStack } from "./pages/types";
-import { Login, Register } from "./pages";
-import { CustomerDashboard } from "./pages/dashboard/customer";
-import { AdminDashboard } from "./pages/dashboard/admin";
-import { AuthProvider, useAuthContext } from "./contexts/auth-context";
-import { queryClient } from "./services/api";
-import { EmailSentSvg } from "./components/icon/email-sent-icon";
-import { Layout } from "./components";
-import authService from "./services/auth";
+import * as Linking from "expo-linking";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+import { Layout } from "./components";
+import { EmailSentSvg } from "./components/icon/email-sent-icon";
+import { AuthProvider, useAuthContext } from "./contexts/auth-context";
+import { useNotifications } from "./lib/background-tasks/use-notifications";
+import { Login, Register } from "./pages";
+import { AdminDashboard } from "./pages/dashboard/admin";
+import { CustomerDashboard } from "./pages/dashboard/customer";
+import { RootStack } from "./pages/types";
+import { queryClient } from "./services/api";
+import authService from "./services/auth";
 
 const prefix = Linking.createURL("/");
 
@@ -172,6 +173,7 @@ const Unverified = () => {
 };
 
 const AuthWrapper = () => {
+  useNotifications();
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>

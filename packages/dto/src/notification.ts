@@ -35,3 +35,31 @@ export type MarkNotificationSeenResponse = boolean;
 export const markNotificationSeenSchema: ValidatorSchema = {
   body: markNotificationSeenBodySchema,
 };
+
+// REGISTER TOKEN
+
+export const registerTokenBodySchema = z.object({
+  notificationToken: z.string().min(1),
+});
+
+export type RegisterTokenBody = z.infer<typeof registerTokenBodySchema>;
+
+export type RegisterTokenResponse = boolean;
+
+export const registerTokenSchema: ValidatorSchema = {
+  body: registerTokenBodySchema,
+};
+
+// UNREGISTER TOKEN
+
+export const unregisterTokenBodySchema = z.object({
+  notificationToken: z.string().min(1),
+});
+
+export type UnregisterTokenBody = z.infer<typeof unregisterTokenBodySchema>;
+
+export type UnregisterTokenResponse = boolean;
+
+export const unregisterTokenSchema: ValidatorSchema = {
+  body: unregisterTokenBodySchema,
+};
