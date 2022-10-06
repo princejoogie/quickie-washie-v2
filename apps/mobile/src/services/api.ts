@@ -6,7 +6,7 @@ import { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY } from "../constants";
 import { handleError } from "../utils/helpers";
 import { Alert } from "react-native";
 
-export const API_BASE_URL = process.env.API_BASE_URL;
+export const API_BASE_URL = `${process.env.API_BASE_URL}/api`;
 export const queryCache = new QueryCache();
 export const queryClient = new QueryClient({
   queryCache,
