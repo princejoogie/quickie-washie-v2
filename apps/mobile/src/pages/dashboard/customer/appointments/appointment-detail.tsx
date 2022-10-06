@@ -311,7 +311,6 @@ const Details = ({
               if (res && documents.findIndex((e) => e.uri === res.uri) === -1) {
                 setDocuments([...documents, res]);
               }
-              console.log(res);
             }}
             className="mt-2 self-center rounded bg-gray-600 p-2"
           >

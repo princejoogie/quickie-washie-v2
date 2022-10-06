@@ -13,11 +13,8 @@ Notifications.setNotificationHandler({
 export const useNotifications = () => {
   useEffect(() => {
     // listener triggered whenever a notification is received while the app is in the foreground
-    console.log("useNotifications");
     const fgNotificationSubscriber =
-      Notifications.addNotificationReceivedListener((notification) => {
-        console.log(JSON.stringify(notification, null, 2));
-      });
+      Notifications.addNotificationReceivedListener(() => {});
 
     return () => {
       // cleanup the listener and task registry
