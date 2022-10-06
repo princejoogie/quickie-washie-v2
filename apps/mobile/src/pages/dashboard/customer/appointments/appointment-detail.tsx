@@ -194,37 +194,23 @@ const Details = ({
       </View>
 
       <View className="mt-4 flex flex-col rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
-        <Text style={{ fontFamily: "Mono" }} className="text-white">
-          Invoice:
-        </Text>
+        <Text className="font-roboto text-white">Invoice:</Text>
 
         <View className="ml-2 mt-1 flex flex-col">
           <View className="flex w-full flex-row">
-            <Text
-              style={{ fontFamily: "Mono" }}
-              className="text-xs text-gray-400"
-            >
+            <Text className="font-roboto text-xs text-gray-400">
               Service Fee:
             </Text>
-            <Text
-              style={{ fontFamily: "Mono" }}
-              className="flex-1 text-right text-xs text-gray-200"
-            >
+            <Text className="font-roboto flex-1 text-right text-xs text-gray-200">
               ₱ {totalPrice().serviceFee.toFixed(2)}
             </Text>
           </View>
 
           <View className="flex w-full flex-row">
-            <Text
-              style={{ fontFamily: "Mono" }}
-              className="text-xs text-gray-400"
-            >
+            <Text className="font-roboto text-xs text-gray-400">
               Additional Fee:
             </Text>
-            <Text
-              style={{ fontFamily: "Mono" }}
-              className="flex-1 text-right text-xs text-gray-200"
-            >
+            <Text className="font-roboto flex-1 text-right text-xs text-gray-200">
               ₱ {totalPrice().additionalFee.toFixed(2)}
             </Text>
           </View>
@@ -232,13 +218,8 @@ const Details = ({
           <View className="my-2 h-px w-full bg-gray-400" />
 
           <View className="flex w-full flex-row">
-            <Text style={{ fontFamily: "Mono" }} className="text-xs text-white">
-              Total:
-            </Text>
-            <Text
-              style={{ fontFamily: "Mono" }}
-              className="flex-1 text-right text-xs text-white"
-            >
+            <Text className="font-roboto text-xs text-white">Total:</Text>
+            <Text className="font-roboto flex-1 text-right text-xs text-white">
               ₱ {totalPrice().total.toFixed(2)}
             </Text>
           </View>
