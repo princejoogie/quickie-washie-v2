@@ -15,7 +15,7 @@ export const verifyAccountHtml = (token: string) => {
   const BASE_URL =
     process.env["NODE_ENV"] === "production"
       ? "https://qwashie.up.railway.app"
-      : `http://192.168.1.7:${process.env["PORT"]}`;
+      : `http://localhost:${process.env["PORT"]}`;
   return `
   <div>
     <h4>Verify your Quickie Washie account</h1>
