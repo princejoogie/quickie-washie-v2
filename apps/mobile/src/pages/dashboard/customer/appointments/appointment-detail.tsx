@@ -129,6 +129,21 @@ const Details = ({
   const a = appointment.data;
   const date = new Date(a.date);
 
+  const totalPrice = () => {
+    const price = {
+      serviceFee: 0,
+      additionalFee: 0,
+    };
+
+    if (a.Service) price.serviceFee = Number(a.Service.basePrice);
+    if (a.AdditionalPrice)
+      price.additionalFee = Number(a.AdditionalPrice.price);
+    return {
+      ...price,
+      total: price.serviceFee + price.additionalFee,
+    };
+  };
+
   return (
     <Layout
       nav={{
@@ -176,6 +191,58 @@ const Details = ({
         </View>
 
         <VehicleCard vehicle={a.Vehicle ?? undefined} />
+      </View>
+
+      <View className="mt-4 flex flex-col rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
+        <Text style={{ fontFamily: "Mono" }} className="text-white">
+          Invoice:
+        </Text>
+
+        <View className="ml-2 mt-1 flex flex-col">
+          <View className="flex w-full flex-row">
+            <Text
+              style={{ fontFamily: "Mono" }}
+              className="text-xs text-gray-400"
+            >
+              Service Fee:
+            </Text>
+            <Text
+              style={{ fontFamily: "Mono" }}
+              className="flex-1 text-right text-xs text-gray-200"
+            >
+              ₱ {totalPrice().serviceFee.toFixed(2)}
+            </Text>
+          </View>
+
+          <View className="flex w-full flex-row">
+            <Text
+              style={{ fontFamily: "Mono" }}
+              className="text-xs text-gray-400"
+            >
+              Additional Fee:
+            </Text>
+            <Text
+              style={{ fontFamily: "Mono" }}
+              className="flex-1 text-right text-xs text-gray-200"
+            >
+              ₱ {totalPrice().additionalFee.toFixed(2)}
+            </Text>
+          </View>
+
+          <View className="my-2 h-px w-full bg-gray-400" />
+
+          <View className="flex w-full flex-row">
+            <Text style={{ fontFamily: "Mono" }} className="text-xs text-white">
+              Total:
+            </Text>
+            <Text
+              style={{ fontFamily: "Mono" }}
+              className="flex-1 text-right text-xs text-white"
+            >
+              ₱ {totalPrice().total.toFixed(2)}
+            </Text>
+          </View>
+        </View>
       </View>
 
       <View className="mt-4 flex flex-row items-center justify-between">

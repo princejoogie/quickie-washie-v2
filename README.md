@@ -12,7 +12,7 @@ TODO:
 - [x] Send Reviews
 - [ ] Report Bugs
 - [x] Splash image and app icon
-- [ ] Price of appointment (including additional charges)
+- [x] Price of appointment (including additional charges)
 - [x] Server time offset on Notifications
 
 REVISIONS: additional charges

@@ -90,6 +90,8 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
       await setTokens(tokens.accessToken, tokens.refreshToken);
       const pushToken = await getPushNotificationToken();
 
+      console.log({ pushToken });
+
       if (pushToken) {
         await notificationService.registerPushToken({
           notificationToken: pushToken,
