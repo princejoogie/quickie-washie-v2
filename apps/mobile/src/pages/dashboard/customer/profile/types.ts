@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 export type CustomerProfileStackParamList = {
   ProfileDetail: undefined;
   ChangePassword: undefined;
+  ReportBug: undefined;
 };
 
 export const CustomerProfileStack =

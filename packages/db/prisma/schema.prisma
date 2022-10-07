@@ -18,24 +18,26 @@ model PushNotificationToken {
 }
 
 model User {
-  id                     String                  @id @default(cuid())
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime                @updatedAt
-  privilege              Privilege               @default(CUSTOMER)
-  isVerified             Boolean                 @default(false)
-  email                  String                  @unique
-  password               String
-  licenseUrl             String
-  phone                  String                  @db.VarChar(13)
-  name                   String
-  photoUrl               String
-  vehicles               Vehicle[]
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  privilege  Privilege @default(CUSTOMER)
+  isVerified Boolean   @default(false)
+  email      String    @unique
+  password   String
+  licenseUrl String
+  phone      String    @db.VarChar(13)
+  name       String
+  photoUrl   String
+
   appointments           Appointment[]
+  bugs                   Bug[]
+  documents              Document[]
   messages               Message[]
   notifications          Notification[]
-  documents              Document[]
-  reviews                Review[]
   pushNotificationTokens PushNotificationToken[]
+  reviews                Review[]
+  vehicles               Vehicle[]
 }
 
 model VerificationToken {
@@ -132,8 +134,8 @@ model Document {
   downloadUrl   String
   name          String
   mimeType      String   @db.VarChar(128)
-  userId        String?
   appointmentId String?
+  userId        String?
 
   Appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
   User        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -149,6 +151,18 @@ model Review {
 
   User        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
   Appointment Appointment?
+}
+
+model Bug {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  title          String
+  body           String
+  reporterId     String
+  screenshotUrls String[]
+
+  Reporter User @relation(fields: [reporterId], references: [id])
 }
 
 enum AppointmentStatus {

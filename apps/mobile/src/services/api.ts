@@ -7,6 +7,8 @@ import { handleError } from "../utils/helpers";
 import { Alert } from "react-native";
 
 export const API_BASE_URL = `${process.env.API_BASE_URL}/api`;
+console.log({ API_BASE_URL });
+
 export const queryCache = new QueryCache();
 export const queryClient = new QueryClient({
   queryCache,
@@ -66,6 +68,12 @@ api.interceptors.response.use(
         return await api(originalRequest);
       }
     }
+
+    console.log(
+      "[<< ERROR]",
+      originalRequest.config.url,
+      error.response ? "\nRESPONSE:" : ""
+    );
 
     return await Promise.reject(error);
   }
