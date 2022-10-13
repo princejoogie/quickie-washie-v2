@@ -125,6 +125,7 @@ export const getAppointmentByIdResponseSchema =
       status: true,
       date: true,
       documents: true,
+      track: true,
       Review: true,
       AdditionalPrice: true,
       Service: true,

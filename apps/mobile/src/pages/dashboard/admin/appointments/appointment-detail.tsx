@@ -406,6 +406,10 @@ const Details = ({
         </TouchableOpacity>
       </View>
 
+      <View>
+        <Text className="ml-2 text-xs text-gray-400">Transaction Trail</Text>
+      </View>
+
       {modalVisible && (
         <AppointmentStatusModal
           key={a.status}
