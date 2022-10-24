@@ -1,15 +1,18 @@
-import { useState } from "react";
-import { TouchableOpacity, Text, View, Image } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import { z } from "zod";
 
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Layout, TextField } from "../../../../components";
-import { useAuthContext } from "../../../../contexts/auth-context";
-import { CustomerProfileStackParamList } from "./types";
 import { PlusIcon } from "../../../../components/icon/plus-icon";
+import authService from "../../../../services/auth";
+import { uploadFile } from "../../../../services/firebase";
+import reportService from "../../../../services/report";
 import { getImage } from "../../../../utils/helpers";
+import { CustomerProfileStackParamList } from "./types";
 
 const reportBugSchema = z.object({
   title: z
@@ -27,7 +30,6 @@ type RegisterSchema = z.infer<typeof reportBugSchema>;
 export const ReportBug = ({
   navigation,
 }: NativeStackScreenProps<CustomerProfileStackParamList, "ReportBug">) => {
-  const {} = useAuthContext();
   const {
     control,
     handleSubmit,
@@ -41,9 +43,9 @@ export const ReportBug = ({
     },
   });
 
+  const createReport = useMutation(reportService.create);
+  const profile = useQuery(["profile"], authService.profile);
   const [images, setImages] = useState<string[]>([]);
-  console.log({ images });
-
   const isLoading = isSubmitting || isValidating;
 
   return (
@@ -139,7 +141,22 @@ export const ReportBug = ({
         }`}
         disabled={isLoading}
         onPress={handleSubmit(async ({ body, title }) => {
-          console.log({ body, title });
+          let screenshotUrls: string[] = [];
+
+          if (images.length > 0 && profile.data?.email) {
+            screenshotUrls = await Promise.all(
+              images.map((uri) => uploadFile(uri, profile.data.email))
+            );
+          }
+
+          await createReport.mutateAsync({
+            body,
+            title,
+            screenshotUrls,
+          });
+
+          Alert.alert("Success", "Report has been sent");
+          navigation.goBack();
         })}
       >
         <Text className="text-white">
