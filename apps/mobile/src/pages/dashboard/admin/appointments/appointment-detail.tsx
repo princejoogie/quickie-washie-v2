@@ -406,9 +406,65 @@ const Details = ({
         </TouchableOpacity>
       </View>
 
-      <View>
-        <Text className="ml-2 text-xs text-gray-400">Transaction Trail</Text>
-      </View>
+      {a.track.length > 0 && (
+        <>
+          <Text className="mt-4 ml-2 text-xs text-gray-400">
+            Transaction Trail
+          </Text>
+          <View className="mt-1 rounded-xl border-2 border-gray-700 bg-gray-800 px-3 pt-1 pb-3">
+            {a.track.map((t, idx) => {
+              const _date = new Date(t.createdAt);
+              const isLast = idx === a.track.length - 1;
+
+              return (
+                <View key={t.id} className="mt-2 flex flex-row">
+                  <View>
+                    <View className="mt-1 flex flex-col items-end">
+                      <Text
+                        style={{ fontSize: 10 }}
+                        className={`${
+                          idx === 0 ? "text-gray-300" : "text-gray-500"
+                        }`}
+                      >
+                        {format(_date, "d, MMM")}
+                      </Text>
+                      <Text
+                        style={{ fontSize: 10 }}
+                        className={`${
+                          idx === 0 ? "text-gray-300" : "text-gray-500"
+                        }`}
+                      >
+                        {format(_date, "HH:mm")}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View className="relative mx-3">
+                    <View className="z-10 mt-1 h-2 w-2 rounded-full bg-gray-500" />
+                    <View
+                      className={`absolute left-0 right-0 top-2 flex items-center justify-center ${
+                        isLast ? "bottom-0" : "-bottom-3"
+                      }`}
+                    >
+                      <View className="w-px flex-1 bg-gray-700" />
+                    </View>
+                  </View>
+
+                  <View className="flex-1">
+                    <Text
+                      className={`text-sm ${
+                        idx === 0 ? "text-gray-300" : "text-gray-500"
+                      }`}
+                    >
+                      {t.text}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        </>
+      )}
 
       {modalVisible && (
         <AppointmentStatusModal
