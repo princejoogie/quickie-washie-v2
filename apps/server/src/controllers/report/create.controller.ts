@@ -26,19 +26,7 @@ const createBugReportController: RequestHandler<
         screenshotUrls: screenshotUrls ?? [],
         reporterId: payload.id,
       },
-      select: {
-        body: true,
-        id: true,
-        screenshotUrls: true,
-        Reporter: {
-          select: {
-            id: true,
-            name: true,
-            photoUrl: true,
-            phone: true,
-          },
-        },
-      },
+      select: { id: true },
     });
 
     return res.status(200).json(report);

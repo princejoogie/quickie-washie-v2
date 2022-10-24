@@ -14,9 +14,24 @@ export const createBugReportBodySchema = z.object({
 export type CreateBugReportBody = z.infer<typeof createBugReportBodySchema>;
 
 export const createVehicleReponse = Prisma.validator<PrismaType.BugArgs>()({
+  select: { id: true },
+});
+
+export type CreateBugReportResponse = PrismaType.BugGetPayload<
+  typeof createVehicleReponse
+>;
+
+export const createBugReportSchema: ValidatorSchema = {
+  body: createBugReportBodySchema,
+};
+
+// GET ALL
+
+export const getAllBugReportsResponse = Prisma.validator<PrismaType.BugArgs>()({
   select: {
-    body: true,
     id: true,
+    body: true,
+    createdAt: true,
     screenshotUrls: true,
     Reporter: {
       select: {
@@ -29,10 +44,6 @@ export const createVehicleReponse = Prisma.validator<PrismaType.BugArgs>()({
   },
 });
 
-export type CreateBugReportResponse = PrismaType.BugGetPayload<
-  typeof createVehicleReponse
+export type GetAllBugReportsResponse = Array<
+  PrismaType.BugGetPayload<typeof getAllBugReportsResponse>
 >;
-
-export const createBugReportSchema: ValidatorSchema = {
-  body: createBugReportBodySchema,
-};
