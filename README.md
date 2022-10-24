@@ -12,18 +12,18 @@ TODO:
 - [x] Send Reviews
 - [ ] Report Bugs
 - [x] Splash image and app icon
-- [ ] Price of appointment (including additional charges)
+- [x] Price of appointment (including additional charges)
 - [x] Server time offset on Notifications
 
 REVISIONS: additional charges
 
 - [ ] Max 5 booking per service per day
 - [ ] Operating hrs: 9am-11am 3pm-8pm
-- [ ] Add the name of the client in the application.
+- [x] Add the name of the client in the application.
 - [x] What kind of email verification? which has an expiration time, consider.
 - [ ] Field schemas
-- [ ] PENDING: notifications must be pushed, even if the app is closed (?)
-- [ ] PENDING: admin and user side should be separated. (NO)
+- [x] PENDING: notifications must be pushed, even if the app is closed (?)
+- [x] PENDING: admin and user side should be separated. (NO)
 
 ## Prerequisites
 

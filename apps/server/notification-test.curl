@@ -1,5 +1,5 @@
 curl -H "Content-Type: application/json" -X POST "https://exp.host/--/api/v2/push/send" -d '{
-  "to": "ExponentPushToken[yKowi8BX9TeKtLB8u4cqN-]",
+  "to": "ExponentPushToken[A6cX8hNqL0zg8gqNX3sCuB]",
   "sound": "default",
   "title":"Full Car Wash appointment",
   "body": "Your appointment on ABC-1234 for Full Car Wash is now Confirmed.",
@@ -10,7 +10,7 @@ curl -H "Content-Type: application/json" -X POST "https://exp.host/--/api/v2/pus
 }'
 
 curl -H "Content-Type: application/json" -X POST "https://exp.host/--/api/v2/push/send" -d '{
-  "to": "ExponentPushToken[kJlcnEBglkUXv0bfHooxCB]",
+  "to": "ExponentPushToken[A6cX8hNqL0zg8gqNX3sCuB]",
   "sound": "default",
   "title":"Full Car Wash appointment",
   "body": "Your appointment on ABC-1234 for Full Car Wash is now Confirmed.",

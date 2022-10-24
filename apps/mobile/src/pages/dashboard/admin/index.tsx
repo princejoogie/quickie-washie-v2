@@ -7,7 +7,7 @@ import { AdminBottomTab } from "./types";
 import { Services } from "./services";
 import { Appointments } from "./appointments";
 import { Analytics } from "./analytics";
-import { Notifications } from "./notifications";
+import { BugReports } from "./bug-reports";
 import { Profile } from "./profile";
 
 export const AdminDashboard = ({}: NativeStackScreenProps<
@@ -23,7 +23,7 @@ export const AdminDashboard = ({}: NativeStackScreenProps<
       <AdminBottomTab.Screen name="Appointments" component={Appointments} />
       <AdminBottomTab.Screen name="Services" component={Services} />
       <AdminBottomTab.Screen name="Analytics" component={Analytics} />
-      <AdminBottomTab.Screen name="Notifications" component={Notifications} />
+      <AdminBottomTab.Screen name="BugReports" component={BugReports} />
       <AdminBottomTab.Screen name="Profile" component={Profile} />
     </AdminBottomTab.Navigator>
   );

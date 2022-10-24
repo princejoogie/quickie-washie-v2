@@ -35,6 +35,9 @@ const getAppointmentByIdController: RequestHandler<
         status: true,
         date: true,
         documents: true,
+        track: {
+          orderBy: { createdAt: "desc" },
+        },
         Review: true,
         AdditionalPrice: true,
         Service: true,

@@ -60,8 +60,6 @@ export const Analytics = ({}: BottomTabScreenProps<
     return aggregatedSales?.reduce((acc, e) => acc + e.price, 0);
   }, [aggregatedSales]);
 
-  console.log({ aggregatedSales: aggregatedSales.map((e) => e.price) });
-
   return (
     <Layout nav={{ title: "Analytics" }} onRefresh={sales.refetch}>
       <View className="mt-4 flex flex-row items-center justify-evenly">

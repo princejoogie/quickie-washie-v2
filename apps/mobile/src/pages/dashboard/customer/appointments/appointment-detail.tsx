@@ -129,6 +129,21 @@ const Details = ({
   const a = appointment.data;
   const date = new Date(a.date);
 
+  const totalPrice = () => {
+    const price = {
+      serviceFee: 0,
+      additionalFee: 0,
+    };
+
+    if (a.Service) price.serviceFee = Number(a.Service.basePrice);
+    if (a.AdditionalPrice)
+      price.additionalFee = Number(a.AdditionalPrice.price);
+    return {
+      ...price,
+      total: price.serviceFee + price.additionalFee,
+    };
+  };
+
   return (
     <Layout
       nav={{
@@ -176,6 +191,39 @@ const Details = ({
         </View>
 
         <VehicleCard vehicle={a.Vehicle ?? undefined} />
+      </View>
+
+      <View className="mt-4 flex flex-col rounded-xl border-2 border-gray-700 bg-gray-800 p-3">
+        <Text className="font-roboto text-white">Invoice:</Text>
+
+        <View className="ml-2 mt-1 flex flex-col">
+          <View className="flex w-full flex-row">
+            <Text className="font-roboto text-xs text-gray-400">
+              Service Fee:
+            </Text>
+            <Text className="font-roboto flex-1 text-right text-xs text-gray-200">
+              ₱ {totalPrice().serviceFee.toFixed(2)}
+            </Text>
+          </View>
+
+          <View className="flex w-full flex-row">
+            <Text className="font-roboto text-xs text-gray-400">
+              Additional Fee:
+            </Text>
+            <Text className="font-roboto flex-1 text-right text-xs text-gray-200">
+              ₱ {totalPrice().additionalFee.toFixed(2)}
+            </Text>
+          </View>
+
+          <View className="my-2 h-px w-full bg-gray-400" />
+
+          <View className="flex w-full flex-row">
+            <Text className="font-roboto text-xs text-white">Total:</Text>
+            <Text className="font-roboto flex-1 text-right text-xs text-white">
+              ₱ {totalPrice().total.toFixed(2)}
+            </Text>
+          </View>
+        </View>
       </View>
 
       <View className="mt-4 flex flex-row items-center justify-between">
@@ -311,7 +359,6 @@ const Details = ({
               if (res && documents.findIndex((e) => e.uri === res.uri) === -1) {
                 setDocuments([...documents, res]);
               }
-              console.log(res);
             }}
             className="mt-2 self-center rounded bg-gray-600 p-2"
           >
@@ -319,6 +366,66 @@ const Details = ({
           </TouchableOpacity>
         )}
       </View>
+
+      {a.track.length > 0 && (
+        <>
+          <Text className="mt-4 ml-2 text-xs text-gray-400">
+            Transaction Trail
+          </Text>
+          <View className="mt-1 rounded-xl border-2 border-gray-700 bg-gray-800 px-3 pt-1 pb-3">
+            {a.track.map((t, idx) => {
+              const _date = new Date(t.createdAt);
+              const isLast = idx === a.track.length - 1;
+
+              return (
+                <View key={t.id} className="mt-2 flex flex-row">
+                  <View>
+                    <View className="mt-1 flex flex-col items-end">
+                      <Text
+                        style={{ fontSize: 10 }}
+                        className={`${
+                          idx === 0 ? "text-gray-300" : "text-gray-500"
+                        }`}
+                      >
+                        {format(_date, "d, MMM")}
+                      </Text>
+                      <Text
+                        style={{ fontSize: 10 }}
+                        className={`${
+                          idx === 0 ? "text-gray-300" : "text-gray-500"
+                        }`}
+                      >
+                        {format(_date, "HH:mm")}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View className="relative mx-3">
+                    <View className="z-10 mt-1 h-2 w-2 rounded-full bg-gray-500" />
+                    <View
+                      className={`absolute left-0 right-0 top-2 flex items-center justify-center ${
+                        isLast ? "bottom-0" : "-bottom-3"
+                      }`}
+                    >
+                      <View className="w-px flex-1 bg-gray-700" />
+                    </View>
+                  </View>
+
+                  <View className="flex-1">
+                    <Text
+                      className={`text-sm ${
+                        idx === 0 ? "text-gray-300" : "text-gray-500"
+                      }`}
+                    >
+                      {t.text}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        </>
+      )}
 
       {a.status === "PENDING" && (
         <TouchableOpacity

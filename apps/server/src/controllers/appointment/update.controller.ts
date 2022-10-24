@@ -67,7 +67,18 @@ const updateAppointmentController: RequestHandler<
             content: notif.content,
           },
         })
-        .then();
+        .then()
+        .catch();
+
+      prisma.appointmentTrack
+        .create({
+          data: {
+            appointmentId: appointment.id,
+            text: `Appointment is now ${status}`,
+          },
+        })
+        .then()
+        .catch();
 
       sendPushNotification({
         tokens: pushNotificationTokens.map((t) => t.token),
@@ -96,7 +107,8 @@ const updateAppointmentController: RequestHandler<
             content: notif.content,
           },
         })
-        .then();
+        .then()
+        .catch();
 
       sendPushNotification({
         tokens: pushNotificationTokens.map((t) => t.token),

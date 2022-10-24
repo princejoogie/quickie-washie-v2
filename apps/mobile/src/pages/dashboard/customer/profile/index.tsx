@@ -25,6 +25,8 @@ import { uploadFile } from "../../../../services/firebase";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CustomerProfileStack, CustomerProfileStackParamList } from "./types";
 import { ChangePassword } from "./change-password";
+import { MegaphoneIcon } from "../../../../components/icon/megaphone-icon";
+import { ReportBug } from "./report-bug";
 
 const updateSchema = z.object({
   name: z.string().min(1, { message: "Invalid name" }).max(255).trim(),
@@ -61,6 +63,7 @@ export const Profile = ({}: BottomTabScreenProps<
         name="ChangePassword"
         component={ChangePassword}
       />
+      <CustomerProfileStack.Screen name="ReportBug" component={ReportBug} />
     </CustomerProfileStack.Navigator>
   );
 };
@@ -283,6 +286,18 @@ const ProfileDetails = ({
         }}
       >
         <Text className="text-blue-600">Change Password</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        className="mt-4"
+        onPress={() => {
+          navigation.navigate("ReportBug");
+        }}
+      >
+        <View className="flex flex-row items-center">
+          <MegaphoneIcon styleName="text-green-600 mr-1 h-4 w-4" filled />
+          <Text className="text-green-600">Report a Bug</Text>
+        </View>
       </TouchableOpacity>
     </Layout>
   );

@@ -18,24 +18,26 @@ model PushNotificationToken {
 }
 
 model User {
-  id                     String                  @id @default(cuid())
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime                @updatedAt
-  privilege              Privilege               @default(CUSTOMER)
-  isVerified             Boolean                 @default(false)
-  email                  String                  @unique
-  password               String
-  licenseUrl             String
-  phone                  String                  @db.VarChar(13)
-  name                   String
-  photoUrl               String
-  vehicles               Vehicle[]
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  privilege  Privilege @default(CUSTOMER)
+  isVerified Boolean   @default(false)
+  email      String    @unique
+  password   String
+  licenseUrl String
+  phone      String    @db.VarChar(13)
+  name       String
+  photoUrl   String
+
   appointments           Appointment[]
+  bugs                   Bug[]
+  documents              Document[]
   messages               Message[]
   notifications          Notification[]
-  documents              Document[]
-  reviews                Review[]
   pushNotificationTokens PushNotificationToken[]
+  reviews                Review[]
+  vehicles               Vehicle[]
 }
 
 model VerificationToken {
@@ -80,24 +82,35 @@ model Service {
 }
 
 model Appointment {
-  id                String            @id @default(cuid())
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  date              DateTime          @default(now())
-  status            AppointmentStatus @default(PENDING)
+  id                String             @id @default(cuid())
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  date              DateTime           @default(now())
+  status            AppointmentStatus  @default(PENDING)
   userId            String?
   vehicleId         String?
   serviceId         String?
   additionalPriceId String?
   messages          Message[]
   documents         Document[]
-  reviewId          String?           @unique
+  track             AppointmentTrack[]
+  reviewId          String?            @unique
 
   Review          Review?          @relation(fields: [reviewId], references: [id], onDelete: Cascade)
   Vehicle         Vehicle?         @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
   User            User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
   Service         Service?         @relation(fields: [serviceId], references: [id], onDelete: SetNull)
   AdditionalPrice AdditionalPrice? @relation(fields: [additionalPriceId], references: [id], onDelete: SetNull)
+}
+
+model AppointmentTrack {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  text          String
+  appointmentId String
+
+  Appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
 }
 
 model Message {
@@ -132,8 +145,8 @@ model Document {
   downloadUrl   String
   name          String
   mimeType      String   @db.VarChar(128)
-  userId        String?
   appointmentId String?
+  userId        String?
 
   Appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
   User        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -149,6 +162,18 @@ model Review {
 
   User        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
   Appointment Appointment?
+}
+
+model Bug {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  title          String
+  body           String
+  reporterId     String
+  screenshotUrls String[]
+
+  Reporter User @relation(fields: [reporterId], references: [id])
 }
 
 enum AppointmentStatus {

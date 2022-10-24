@@ -5,8 +5,10 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import * as Linking from "expo-linking";
+import * as SplashScreen from "expo-splash-screen";
+import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -48,9 +50,29 @@ const config: any = {
 
 const App = () => {
   const { data, isLoading } = useAuthContext();
+  const [fontsLoaded] = useFonts({
+    Mono: require("./assets/RobotoMono-Regular.ttf"),
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider onLayout={onLayoutRootView}>
       <NavigationContainer
         linking={{
           prefixes: [prefix],

@@ -1,0 +1,13 @@
+{
+  "maxBookings": 5,
+  "operatingHours": {
+    "am": {
+      "open": 9,
+      "close": 11
+    },
+    "pm": {
+      "open": 15,
+      "close": 20
+    }
+  }
+}
