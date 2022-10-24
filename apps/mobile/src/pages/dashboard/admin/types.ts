@@ -5,7 +5,7 @@ export type AdminDashboardParamList = {
   Appointments: undefined;
   Services: undefined;
   Analytics: undefined;
-  Notifications: undefined;
+  BugReports: undefined;
   Profile: undefined;
 };
 
@@ -13,7 +13,7 @@ export enum AdminDashboardParamKeys {
   Appointments = "Appointments",
   Services = "Services",
   Analytics = "Analytics",
-  Notifications = "Notifications",
+  BugReports = "BugReports",
   Profile = "Profile",
 }
 

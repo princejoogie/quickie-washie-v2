@@ -1,12 +1,12 @@
-import { View, TouchableOpacity } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { Platform } from "expo-modules-core";
+import { TouchableOpacity, View } from "react-native";
 import { AdminDashboardParamKeys } from "../pages/dashboard/admin/types";
 import { CalendarIcon } from "./icon/calendar-icon";
-import { NotificationIcon } from "./icon/notification-icon";
-import { UserIcon } from "./icon/user-icon";
-import { Platform } from "expo-modules-core";
-import { ToolIcon } from "./icon/tool-icon";
+import { MegaphoneIcon } from "./icon/megaphone-icon";
 import { PieChartIcon } from "./icon/pie-chart-icon";
+import { ToolIcon } from "./icon/tool-icon";
+import { UserIcon } from "./icon/user-icon";
 
 const GetIcon = ({
   name,
@@ -37,9 +37,9 @@ const GetIcon = ({
           styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
       );
-    case AdminDashboardParamKeys.Notifications:
+    case AdminDashboardParamKeys.BugReports:
       return (
-        <NotificationIcon
+        <MegaphoneIcon
           filled={active}
           styleName={`${active ? "text-green-500" : "text-gray-400"}`}
         />
