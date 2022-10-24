@@ -4,7 +4,7 @@ import validator from "../middlewares/validator";
 
 import { createBugReportSchema } from "@qw/dto";
 import createBugReportController from "../controllers/report/create.controller";
-import getAllBugReportsController from "controllers/report/get-all.controller";
+import getAllBugReportsController from "../controllers/report/get-all.controller";
 
 export const reportRouter = Router();
 
