@@ -97,14 +97,17 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
       }
 
       setC(_c + 1);
-    } catch (e) {
+    } catch (e: any) {
       if (e instanceof AxiosError) {
         Alert.alert(
           "Error",
-          e.response?.data.message ?? "Something went wrong"
+          e.response?.data.message ?? JSON.stringify(e, null, 2)
         );
       } else {
-        Alert.alert("Error", "Something went wrong");
+        Alert.alert(
+          "Error",
+          e.message ? e.message : JSON.stringify(e, null, 2)
+        );
       }
     }
   };

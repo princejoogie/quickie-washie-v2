@@ -117,9 +117,12 @@ const ProfileDetails = ({
               setIsLoggingOut(true);
               try {
                 await logout();
-              } catch (e) {
+              } catch (e: any) {
                 console.log(e);
-                Alert.alert("Error", "Something went wrong");
+                Alert.alert(
+                  "Error",
+                  e.message ? e.message : JSON.stringify(e, null, 2)
+                );
               }
               setIsLoggingOut(false);
             }}
