@@ -10,6 +10,7 @@ import { RootStackParamList } from "./types";
 import { handleError } from "../utils/helpers";
 import { useAuthContext } from "../contexts/auth-context";
 import { LoginCar } from "../components/icon/login-car";
+import { API_BASE_URL } from "../services/api";
 
 const loginSchema = z.object({
   email: z.string().email().trim(),
@@ -47,6 +48,11 @@ export const Login = ({
           Login to Quickie Washie
         </Text>
         <Text className="mt-1 text-gray-400">Hello, welcome back!</Text>
+      </View>
+
+      <View className="mt-2">
+        <Text className="text-xs text-white">DEBUG:</Text>
+        <Text className="text-xs text-red-600">API_URL: {API_BASE_URL}</Text>
       </View>
 
       <LoginCar styleName="mx-auto my-14" />
