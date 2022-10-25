@@ -22,10 +22,12 @@ const getAllBugReportsController: RequestHandler<
     }
 
     const reports = await prisma.bug.findMany({
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         title: true,
         body: true,
+        seen: true,
         createdAt: true,
         screenshotUrls: true,
         Reporter: {

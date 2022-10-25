@@ -32,6 +32,7 @@ export const getAllBugReportsResponse = Prisma.validator<PrismaType.BugArgs>()({
     id: true,
     title: true,
     body: true,
+    seen: true,
     createdAt: true,
     screenshotUrls: true,
     Reporter: {
