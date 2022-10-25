@@ -43,15 +43,12 @@ export const uploadFile = async (
 
         switch (snapshot.state) {
           case "paused":
-            console.log("Upload is paused");
             break;
           case "running":
-            console.log("Upload is running");
             break;
         }
       },
       (err) => {
-        console.log("uploadFileError:", err);
         reject(err.message);
       },
       async () => {
