@@ -30,6 +30,7 @@ export const createBugReportSchema: ValidatorSchema = {
 export const getAllBugReportsResponse = Prisma.validator<PrismaType.BugArgs>()({
   select: {
     id: true,
+    title: true,
     body: true,
     createdAt: true,
     screenshotUrls: true,

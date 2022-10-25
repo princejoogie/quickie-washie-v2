@@ -34,24 +34,11 @@ api.interceptors.request.use(async (config) => {
       Authorization: `Bearer ${accessToken}`,
     };
   }
-  console.log(
-    "[OUTGOING >>]",
-    config.method?.toUpperCase(),
-    config.url,
-    config.data ? "\nDATA:" : "",
-    config.data ? JSON.stringify(config.data, null, 2) : ""
-  );
   return config;
 });
 
 api.interceptors.response.use(
   (response) => {
-    console.log(
-      "[<< INCOMING]",
-      response.config.url,
-      response.data ? "\nDATA:" : "",
-      response.data ? JSON.stringify(response.data, null, 2) : ""
-    );
     return response;
   },
   async (error) => {
@@ -68,12 +55,6 @@ api.interceptors.response.use(
         return await api(originalRequest);
       }
     }
-
-    console.log(
-      "[<< ERROR]",
-      originalRequest.config.url,
-      error.response ? "\nRESPONSE:" : ""
-    );
 
     return await Promise.reject(error);
   }
@@ -93,7 +74,6 @@ export const setTokens = async (accessToken: string, refreshToken: string) => {
     [ACCESS_TOKEN_KEY, accessToken],
     [REFRESH_TOKEN_KEY, refreshToken],
   ]);
-  console.log("[TOKENS SET]");
 };
 
 export const getRefreshToken = async () => {
@@ -104,5 +84,4 @@ export const getRefreshToken = async () => {
 export const unsetTokens = async () => {
   await AsyncStorage.clear();
   queryClient.resetQueries();
-  console.log("[TOKENS UNSET]");
 };

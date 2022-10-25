@@ -24,6 +24,7 @@ const getAllBugReportsController: RequestHandler<
     const reports = await prisma.bug.findMany({
       select: {
         id: true,
+        title: true,
         body: true,
         createdAt: true,
         screenshotUrls: true,
