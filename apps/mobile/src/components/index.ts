@@ -4,6 +4,7 @@ export * from "./appointment-filter-modal";
 export * from "./appointment-status-modal";
 export * from "./avatar";
 export * from "./customer-tab-bar";
+export * from "./date-picker";
 export * from "./image-input";
 export * from "./layout";
 export * from "./link-button";
