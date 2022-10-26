@@ -171,10 +171,10 @@ model Bug {
   title          String
   seen           Boolean  @default(false)
   body           String
-  reporterId     String
+  reporterId     String?
   screenshotUrls String[]
 
-  Reporter User @relation(fields: [reporterId], references: [id])
+  Reporter User? @relation(fields: [reporterId], references: [id], onDelete: SetNull)
 }
 
 enum AppointmentStatus {

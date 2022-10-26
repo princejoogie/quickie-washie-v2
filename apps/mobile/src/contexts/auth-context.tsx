@@ -19,6 +19,7 @@ import { AxiosError } from "axios";
 import { Alert } from "react-native";
 import { getPushNotificationToken } from "../lib/push-notifications";
 import notificationService from "../services/notification";
+import Logger from "../lib/logger";
 
 interface TAuthContext {
   isLoading: boolean;
@@ -57,15 +58,36 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
 
       setIsLoading(false);
     });
+
+    const interval = setInterval(() => {
+      getRefreshToken().then((token) => {
+        if (token) {
+          const data = decode<TokenPayload>(token);
+          setData(data);
+        } else {
+          setData(null);
+        }
+
+        setIsLoading(false);
+      });
+    }, 1000 * 60);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [_c]);
 
   const logout = async () => {
     const pushToken = await getPushNotificationToken();
 
     if (pushToken) {
-      await notificationService.unregisterPushToken({
-        notificationToken: pushToken,
-      });
+      try {
+        await notificationService.unregisterPushToken({
+          notificationToken: pushToken,
+        });
+      } catch (e) {
+        Logger.log(e);
+      }
     }
 
     await unsetTokens();

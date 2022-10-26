@@ -79,7 +79,7 @@ export const DatePicker = ({ onChange, value, serviceId }: DatePickerProps) => {
           {months.map((month, idx) => {
             const now = new Date();
             now.setMonth(now.getMonth() - 1);
-            const isPast = isBefore(new Date(year, idx, day), now);
+            const isPast = isBefore(new Date(year, idx, day + 1), now);
             return (
               <Picker.Item
                 style={{ color: !isPast ? "#000000" : "#d1d5db" }}
@@ -121,7 +121,7 @@ export const DatePicker = ({ onChange, value, serviceId }: DatePickerProps) => {
               });
 
               const isPast = isBefore(
-                new Date(year, month, idx + 1),
+                new Date(year, month, idx + 2),
                 new Date()
               );
 
