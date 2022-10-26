@@ -1,16 +1,15 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Controller, useForm } from "react-hook-form";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { z } from "zod";
 
 import { Layout, TextField } from "../components";
 
-import { RootStackParamList } from "./types";
-import { handleError } from "../utils/helpers";
-import { useAuthContext } from "../contexts/auth-context";
 import { LoginCar } from "../components/icon/login-car";
-import { API_BASE_URL } from "../services/api";
+import { useAuthContext } from "../contexts/auth-context";
+import { handleError } from "../utils/helpers";
+import { RootStackParamList } from "./types";
 
 const loginSchema = z.object({
   email: z.string().email().trim(),
@@ -48,11 +47,6 @@ export const Login = ({
           Login to Quickie Washie
         </Text>
         <Text className="mt-1 text-gray-400">Hello, welcome back!</Text>
-      </View>
-
-      <View className="mt-2">
-        <Text className="text-xs text-white">DEBUG:</Text>
-        <Text className="text-xs text-red-600">API_URL: {API_BASE_URL}</Text>
       </View>
 
       <LoginCar styleName="mx-auto my-14" />

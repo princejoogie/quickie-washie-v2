@@ -21,6 +21,7 @@ import { getImage } from "../utils/helpers";
 import { RootStackParamList } from "./types";
 import { uploadFile } from "../services/firebase";
 import { useAuthContext } from "../contexts/auth-context";
+import Logger from "../lib/logger";
 
 const registerSchema = z
   .object({
@@ -308,9 +309,9 @@ export const Register = ({
 
                 await login(rest.email, rest.password);
               }
-            );
+            )();
           } catch (err: any) {
-            console.log(err);
+            Logger.log(err);
             Alert.alert(
               "Register Error",
               err.message ? err.message : JSON.stringify(err, null, 2)

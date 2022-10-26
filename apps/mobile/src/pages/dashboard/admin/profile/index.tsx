@@ -25,6 +25,7 @@ import { uploadFile } from "../../../../services/firebase";
 import { AdminProfileStack, AdminProfileStackParamList } from "./types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ChangePassword } from "./change-password";
+import Logger from "../../../../lib/logger";
 
 const updateSchema = z.object({
   name: z.string().min(1, { message: "Invalid name" }).max(255).trim(),
@@ -118,7 +119,7 @@ const ProfileDetails = ({
               try {
                 await logout();
               } catch (e: any) {
-                console.log(e);
+                Logger.log(e);
                 Alert.alert(
                   "Error",
                   e.message ? e.message : JSON.stringify(e, null, 2)
