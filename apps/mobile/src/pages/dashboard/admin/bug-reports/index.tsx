@@ -1,7 +1,7 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { View, Text, TouchableOpacity } from "react-native";
 
@@ -37,6 +37,7 @@ export const BugReports = ({}: BottomTabScreenProps<
 const AllBugReports = ({
   navigation,
 }: NativeStackScreenProps<BugReportStackParamList, "AllBugReports">) => {
+  const mark = useMutation(reportService.mark);
   const reports = useQuery(["bug-reports"], reportService.getAll);
   const isFocused = useIsFocused();
 
@@ -60,6 +61,7 @@ const AllBugReports = ({
               idx > 0 ? "border-t border-gray-700" : ""
             } ${bug.seen ? "" : "bg-gray-800"}`}
             onPress={() => {
+              mark.mutate({ reportIds: [bug.id] });
               navigation.navigate("BugReportDetail", { bugReportId: bug.id });
             }}
           >

@@ -77,3 +77,17 @@ export type GetBugReportByIdResponse = PrismaType.BugGetPayload<
 export const getBugReportByIdSchema: ValidatorSchema = {
   params: getBugReportByIdParamsSchema,
 };
+
+// MARK SEEN
+
+export const markReportSeenBodySchema = z.object({
+  reportIds: z.array(z.string().cuid()),
+});
+
+export type MarkReportSeenBody = z.infer<typeof markReportSeenBodySchema>;
+
+export type MarkReportSeenResponse = boolean;
+
+export const markReportSeenSchema: ValidatorSchema = {
+  body: markReportSeenBodySchema,
+};

@@ -4,6 +4,8 @@ import {
   GetAllBugReportsResponse,
   GetBugReportByIdParams,
   GetBugReportByIdResponse,
+  MarkReportSeenBody,
+  MarkReportSeenResponse,
 } from "@qw/dto";
 import { api } from "./api";
 
@@ -24,10 +26,16 @@ const create = async (body: CreateBugReportBody) => {
   return response.data;
 };
 
+const mark = async (body: MarkReportSeenBody) => {
+  const response = await api.put<MarkReportSeenResponse>("/report", body);
+  return response.data;
+};
+
 const reportService = {
   create,
   getAll,
   getById,
+  mark,
 };
 
 export default reportService;
