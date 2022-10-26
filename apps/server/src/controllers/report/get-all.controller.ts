@@ -29,15 +29,6 @@ const getAllBugReportsController: RequestHandler<
         body: true,
         seen: true,
         createdAt: true,
-        screenshotUrls: true,
-        Reporter: {
-          select: {
-            id: true,
-            name: true,
-            photoUrl: true,
-            phone: true,
-          },
-        },
       },
     });
 

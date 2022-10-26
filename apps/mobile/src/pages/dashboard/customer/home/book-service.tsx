@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { format } from "date-fns";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -12,13 +13,17 @@ import DateTimePicker, {
   AndroidNativeProps,
 } from "@react-native-community/datetimepicker";
 
-import { Layout, TextField } from "../../../../components";
+import {
+  DatePicker,
+  Layout,
+  TextField,
+  TimePicker,
+} from "../../../../components";
 import servicesService from "../../../../services/services";
 
 import { HomeStackParamList } from "./types";
 import vehiclesService from "../../../../services/vehicles";
 import { useAuthContext } from "../../../../contexts/auth-context";
-import { useEffect } from "react";
 import appointmentService from "../../../../services/appointment";
 import { CustomerDashboardParamList } from "../types";
 
@@ -36,6 +41,7 @@ export const BookService = ({
   route,
   navigation,
 }: NativeStackScreenProps<HomeStackParamList, "BookService">) => {
+  const [isValidDate, setIsValidDate] = useState(false);
   const { data } = useAuthContext();
   const { serviceId } = route.params;
   const {
@@ -116,9 +122,9 @@ export const BookService = ({
     });
   };
 
-  const showDatePicker = () => {
-    showMode("date");
-  };
+  /* const showDatePicker = () => { */
+  /*   showMode("date"); */
+  /* }; */
 
   const showTimePicker = () => {
     showMode("time");
@@ -177,7 +183,7 @@ export const BookService = ({
         value={`₱ ${serviceDetails.data?.basePrice.toString() ?? "0.00"}`}
       />
 
-      <Text className="ml-2 mt-4 text-xs text-gray-400">
+      <Text className="ml-2 mb-2 mt-4 text-xs text-gray-400">
         Select your vehicle
       </Text>
       {vehicles.data && vehicles.data.length > 0 ? (
@@ -189,7 +195,11 @@ export const BookService = ({
               {vehicles.data && vehicles.data.length > 0 && (
                 <Picker
                   itemStyle={{ color: "white" }}
-                  style={{ color: "white" }}
+                  style={{
+                    color: "white",
+                    backgroundColor: "#1f2937",
+                    borderRadius: 10,
+                  }}
                   mode="dialog"
                   selectedValue={value}
                   onValueChange={(e) => {
@@ -219,83 +229,130 @@ export const BookService = ({
         value={`₱ ${getAdditionalPrice().value}`}
       />
 
-      <Text className="ml-2 mt-4 text-xs text-gray-400">Select date</Text>
+      <Text className="ml-2 mb-2 mt-4 text-xs text-gray-400">Select date</Text>
+
       <Controller
         name="date"
         control={control}
-        render={({ field: { onChange, value } }) =>
-          Platform.OS === "ios" ? (
-            <DateTimePicker
-              minimumDate={new Date()}
-              mode="date"
-              display="inline"
-              textColor="white"
-              themeVariant="dark"
-              value={value}
-              onChange={(_, date) => {
-                if (date) {
-                  const copy = new Date(date);
-                  copy.setHours(value.getHours());
-                  copy.setMinutes(value.getMinutes());
-                  copy.setSeconds(0);
-                  onChange(copy);
-                } else onChange(value);
-              }}
-            />
-          ) : (
-            <TouchableOpacity
-              onPress={showDatePicker}
-              className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3"
-            >
-              <Text className="text-white">{format(value, "MMM d, yyyy")}</Text>
-            </TouchableOpacity>
-          )
-        }
+        render={({ field: { onChange, value } }) => (
+          <DatePicker
+            serviceId={serviceId}
+            onChange={(date, isAllowed) => {
+              const copy = new Date(date);
+              copy.setHours(value.getHours());
+              copy.setMinutes(value.getMinutes());
+              copy.setSeconds(0);
+              onChange(copy);
+              setIsValidDate(isAllowed);
+            }}
+            value={value}
+          />
+        )}
       />
 
       <Text className="ml-2 mt-4 text-xs text-gray-400">Select time</Text>
+
       <Controller
         name="date"
         control={control}
-        render={({ field: { onChange, value } }) =>
-          Platform.OS === "ios" ? (
-            <DateTimePicker
-              minimumDate={new Date()}
-              minuteInterval={10}
-              mode="time"
-              display="spinner"
-              textColor="white"
-              themeVariant="dark"
-              value={value}
-              onChange={(_, date) => {
-                if (date) {
-                  const copy = new Date(date);
-                  copy.setFullYear(value.getFullYear());
-                  copy.setMonth(value.getMonth());
-                  copy.setDate(value.getDate());
-                  copy.setSeconds(0);
-                  onChange(copy);
-                } else onChange(value);
-              }}
-            />
-          ) : (
-            <TouchableOpacity
-              onPress={showTimePicker}
-              className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3"
-            >
-              <Text className="text-white">{format(value, "hh:mm aa")}</Text>
-            </TouchableOpacity>
-          )
-        }
+        render={({ field: { onChange, value } }) => (
+          <TimePicker
+            onChange={(date) => {
+              const copy = new Date(date);
+              copy.setFullYear(value.getFullYear());
+              copy.setMonth(value.getMonth());
+              copy.setDate(value.getDate());
+              copy.setSeconds(0);
+              onChange(copy);
+            }}
+            value={value}
+          />
+        )}
       />
 
+      <Text className="text-white">
+        {format(watch("date"), "yyyy-MM-dd HH:mm:SS")}
+      </Text>
+
+      {/* <Controller */}
+      {/*   name="date" */}
+      {/*   control={control} */}
+      {/*   render={({ field: { onChange, value } }) => */}
+      {/*     Platform.OS === "ios" ? ( */}
+      {/*       <DateTimePicker */}
+      {/*         minimumDate={new Date()} */}
+      {/*         mode="date" */}
+      {/*         display="inline" */}
+      {/*         textColor="white" */}
+      {/*         themeVariant="dark" */}
+      {/*         value={value} */}
+      {/*         onChange={(_, date) => { */}
+      {/*           if (date) { */}
+      {/*             const copy = new Date(date); */}
+      {/*             copy.setHours(value.getHours()); */}
+      {/*             copy.setMinutes(value.getMinutes()); */}
+      {/*             copy.setSeconds(0); */}
+      {/*             onChange(copy); */}
+      {/*           } else onChange(value); */}
+      {/*         }} */}
+      {/*       /> */}
+      {/*     ) : ( */}
+      {/*       <TouchableOpacity */}
+      {/*         onPress={showDatePicker} */}
+      {/*         className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3" */}
+      {/*       > */}
+      {/*         <Text className="text-white">{format(value, "MMM d, yyyy")}</Text> */}
+      {/*       </TouchableOpacity> */}
+      {/*     ) */}
+      {/*   } */}
+      {/* /> */}
+
+      {/* <Controller */}
+      {/*   name="date" */}
+      {/*   control={control} */}
+      {/*   render={({ field: { onChange, value } }) => */}
+      {/*     Platform.OS === "ios" ? ( */}
+      {/*       <DateTimePicker */}
+      {/*         minimumDate={new Date()} */}
+      {/*         minuteInterval={10} */}
+      {/*         mode="time" */}
+      {/*         display="spinner" */}
+      {/*         textColor="white" */}
+      {/*         themeVariant="dark" */}
+      {/*         value={value} */}
+      {/*         onChange={(_, date) => { */}
+      {/*           if (date) { */}
+      {/*             const copy = new Date(date); */}
+      {/*             copy.setFullYear(value.getFullYear()); */}
+      {/*             copy.setMonth(value.getMonth()); */}
+      {/*             copy.setDate(value.getDate()); */}
+      {/*             copy.setSeconds(0); */}
+      {/*             onChange(copy); */}
+      {/*           } else onChange(value); */}
+      {/*         }} */}
+      {/*       /> */}
+      {/*     ) : ( */}
+      {/*       <TouchableOpacity */}
+      {/*         onPress={showTimePicker} */}
+      {/*         className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3" */}
+      {/*       > */}
+      {/*         <Text className="text-white">{format(value, "hh:mm aa")}</Text> */}
+      {/*       </TouchableOpacity> */}
+      {/*     ) */}
+      {/*   } */}
+      {/* /> */}
+
       <TouchableOpacity
-        onPress={handleSubmit(({ date, ...rest }) => {
-          createAppointment.mutate({
-            ...rest,
-            date: date.toISOString(),
-          });
-        })}
+        onPress={() => {
+          if (isValidDate) {
+            handleSubmit(({ date, ...rest }) => {
+              createAppointment.mutate({
+                ...rest,
+                date: date.toISOString(),
+              });
+            })();
+          }
+        }}
         disabled={isLoading}
         className={`mt-6 w-full rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 ${
           isLoading ? "opacity-50" : "opacity-100"

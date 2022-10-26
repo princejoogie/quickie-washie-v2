@@ -71,8 +71,6 @@ api.interceptors.response.use(
         api.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
         return await api(originalRequest);
       }
-    } else {
-      unsetTokens();
     }
 
     return await Promise.reject(error);
