@@ -40,8 +40,11 @@ api.interceptors.request.use(async (config) => {
     config.method?.toUpperCase(),
     config.url,
     config.data ? "\nDATA:" : "",
-    config.data ? JSON.stringify(config.data, null, 2) : ""
+    config.data ? JSON.stringify(config.data, null, 2) : "",
+    config.headers ? "\nHEADERS:" : "",
+    config.headers ? JSON.stringify(config.headers, null, 2) : ""
   );
+
   return config;
 });
 
