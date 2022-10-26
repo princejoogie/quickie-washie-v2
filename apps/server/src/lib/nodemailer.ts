@@ -18,7 +18,7 @@ export const verifyAccountHtml = (token: string) => {
       : `http://localhost:${process.env["PORT"]}`;
   return `
   <div>
-    <h4>Verify your Quickie Washie account</h1>
+    <h4>Verify your Quickie Washie account</h4>
     <a href="${BASE_URL}/verify-account?token=${token}">Click here to verify your account</a>
   </div>
 
