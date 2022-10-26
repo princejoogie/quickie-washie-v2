@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { View, Text, TouchableOpacity } from "react-native";
 
-import { Layout } from "../../../../components";
+import { Layout, LoadingText } from "../../../../components";
 import reportService from "../../../../services/report";
 import { AdminDashboardParamList } from "../types";
 import { BugReportDetail } from "./bug-report-detail";
@@ -51,43 +51,51 @@ const AllBugReports = ({}: NativeStackScreenProps<
       nav={{ title: "Bug Reports" }}
       onRefresh={reports.refetch}
     >
-      {reports.data?.map((bug, idx) => (
-        <TouchableOpacity
-          key={bug.id}
-          className={`relative p-4 ${
-            idx > 0 ? "border-t border-gray-700" : ""
-          } ${bug.seen ? "" : "bg-gray-800"}`}
-        >
-          {!bug.seen && (
-            <View className="absolute top-3 right-3 h-2 w-2 rounded-full bg-green-500" />
-          )}
-
-          <Text
-            className="absolute bottom-2 right-2 text-gray-500"
-            style={{ fontSize: 10 }}
+      {reports.isLoading ? (
+        <LoadingText />
+      ) : reports.data && reports.data.length > 0 ? (
+        reports.data?.map((bug, idx) => (
+          <TouchableOpacity
+            key={bug.id}
+            className={`relative p-4 ${
+              idx > 0 ? "border-t border-gray-700" : ""
+            } ${bug.seen ? "" : "bg-gray-800"}`}
           >
-            {formatDistanceToNow(new Date(bug.createdAt), {
-              addSuffix: true,
-            })}
-          </Text>
+            {!bug.seen && (
+              <View className="absolute top-3 right-3 h-2 w-2 rounded-full bg-green-500" />
+            )}
 
-          <Text
-            className="w-full font-bold text-white"
-            numberOfLines={2}
-            ellipsizeMode="tail"
-          >
-            {bug.title}{" "}
-          </Text>
+            <Text
+              className="absolute bottom-2 right-2 text-gray-500"
+              style={{ fontSize: 10 }}
+            >
+              {formatDistanceToNow(new Date(bug.createdAt), {
+                addSuffix: true,
+              })}
+            </Text>
 
-          <Text
-            className="mt-2 mb-4 w-full text-xs text-gray-300"
-            numberOfLines={4}
-            ellipsizeMode="tail"
-          >
-            {bug.body}{" "}
-          </Text>
-        </TouchableOpacity>
-      ))}
+            <Text
+              className="w-full font-bold text-white"
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {bug.title}{" "}
+            </Text>
+
+            <Text
+              className="mt-2 mb-4 w-full text-xs text-gray-300"
+              numberOfLines={4}
+              ellipsizeMode="tail"
+            >
+              {bug.body}{" "}
+            </Text>
+          </TouchableOpacity>
+        ))
+      ) : (
+        <Text className="mt-4 text-center text-xs text-gray-400">
+          No reports available.
+        </Text>
+      )}
     </Layout>
   );
 };
