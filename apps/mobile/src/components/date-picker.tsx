@@ -1,6 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import { useQuery } from "@tanstack/react-query";
-import { getDaysInMonth } from "date-fns";
+import { getDaysInMonth, isBefore } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
@@ -76,9 +76,20 @@ export const DatePicker = ({ onChange, value, serviceId }: DatePickerProps) => {
             setDay(1);
           }}
         >
-          {months.map((month, idx) => (
-            <Picker.Item key={month} label={month} value={idx} />
-          ))}
+          {months.map((month, idx) => {
+            const now = new Date();
+            now.setMonth(now.getMonth() - 1);
+            const isPast = isBefore(new Date(year, idx, day), now);
+            return (
+              <Picker.Item
+                style={{ color: !isPast ? "#000000" : "#d1d5db" }}
+                enabled={!isPast}
+                key={month}
+                label={month}
+                value={idx}
+              />
+            );
+          })}
         </Picker>
         <Text className="mt-1 ml-2 text-xs text-gray-400">Month</Text>
       </View>
@@ -108,10 +119,18 @@ export const DatePicker = ({ onChange, value, serviceId }: DatePickerProps) => {
                 apts: appointments.data ?? [],
                 maxBookingsPerDay: serverConstants.data?.maxBookings ?? 5,
               });
+
+              const isPast = isBefore(
+                new Date(year, month, idx + 1),
+                new Date()
+              );
+
+              const isDisabled = !allowed.isAllowed || isPast;
+
               return (
                 <Picker.Item
-                  style={{ color: allowed.isAllowed ? "#000000" : "#d1d5db" }}
-                  enabled={allowed.isAllowed}
+                  style={{ color: !isDisabled ? "#000000" : "#d1d5db" }}
+                  enabled={!isDisabled}
                   key={`day-${idx}`}
                   label={`${idx + 1} ${
                     allowed.numberOfBookings > 0

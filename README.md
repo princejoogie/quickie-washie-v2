@@ -17,8 +17,8 @@ TODO:
 
 REVISIONS: additional charges
 
-- [ ] Max 5 booking per service per day
-- [ ] Operating hrs: 9am-11am 3pm-8pm
+- [x] Max 5 booking per service per day
+- [x] Operating hrs: 9am-11am 3pm-8pm
 - [x] Add the name of the client in the application.
 - [x] What kind of email verification? which has an expiration time, consider.
 - [ ] Field schemas

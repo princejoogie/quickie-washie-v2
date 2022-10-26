@@ -13,7 +13,12 @@ import DateTimePicker, {
   AndroidNativeProps,
 } from "@react-native-community/datetimepicker";
 
-import { DatePicker, Layout, TextField } from "../../../../components";
+import {
+  DatePicker,
+  Layout,
+  TextField,
+  TimePicker,
+} from "../../../../components";
 import servicesService from "../../../../services/services";
 
 import { HomeStackParamList } from "./types";
@@ -245,6 +250,30 @@ export const BookService = ({
         )}
       />
 
+      <Text className="ml-2 mt-4 text-xs text-gray-400">Select time</Text>
+
+      <Controller
+        name="date"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <TimePicker
+            onChange={(date) => {
+              const copy = new Date(date);
+              copy.setFullYear(value.getFullYear());
+              copy.setMonth(value.getMonth());
+              copy.setDate(value.getDate());
+              copy.setSeconds(0);
+              onChange(copy);
+            }}
+            value={value}
+          />
+        )}
+      />
+
+      <Text className="text-white">
+        {format(watch("date"), "yyyy-MM-dd HH:mm:SS")}
+      </Text>
+
       {/* <Controller */}
       {/*   name="date" */}
       {/*   control={control} */}
@@ -278,41 +307,40 @@ export const BookService = ({
       {/*   } */}
       {/* /> */}
 
-      <Text className="ml-2 mt-4 text-xs text-gray-400">Select time</Text>
-      <Controller
-        name="date"
-        control={control}
-        render={({ field: { onChange, value } }) =>
-          Platform.OS === "ios" ? (
-            <DateTimePicker
-              minimumDate={new Date()}
-              minuteInterval={10}
-              mode="time"
-              display="spinner"
-              textColor="white"
-              themeVariant="dark"
-              value={value}
-              onChange={(_, date) => {
-                if (date) {
-                  const copy = new Date(date);
-                  copy.setFullYear(value.getFullYear());
-                  copy.setMonth(value.getMonth());
-                  copy.setDate(value.getDate());
-                  copy.setSeconds(0);
-                  onChange(copy);
-                } else onChange(value);
-              }}
-            />
-          ) : (
-            <TouchableOpacity
-              onPress={showTimePicker}
-              className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3"
-            >
-              <Text className="text-white">{format(value, "hh:mm aa")}</Text>
-            </TouchableOpacity>
-          )
-        }
-      />
+      {/* <Controller */}
+      {/*   name="date" */}
+      {/*   control={control} */}
+      {/*   render={({ field: { onChange, value } }) => */}
+      {/*     Platform.OS === "ios" ? ( */}
+      {/*       <DateTimePicker */}
+      {/*         minimumDate={new Date()} */}
+      {/*         minuteInterval={10} */}
+      {/*         mode="time" */}
+      {/*         display="spinner" */}
+      {/*         textColor="white" */}
+      {/*         themeVariant="dark" */}
+      {/*         value={value} */}
+      {/*         onChange={(_, date) => { */}
+      {/*           if (date) { */}
+      {/*             const copy = new Date(date); */}
+      {/*             copy.setFullYear(value.getFullYear()); */}
+      {/*             copy.setMonth(value.getMonth()); */}
+      {/*             copy.setDate(value.getDate()); */}
+      {/*             copy.setSeconds(0); */}
+      {/*             onChange(copy); */}
+      {/*           } else onChange(value); */}
+      {/*         }} */}
+      {/*       /> */}
+      {/*     ) : ( */}
+      {/*       <TouchableOpacity */}
+      {/*         onPress={showTimePicker} */}
+      {/*         className="mt-1 rounded-lg border-2 border-gray-700 bg-gray-800 px-4 py-3" */}
+      {/*       > */}
+      {/*         <Text className="text-white">{format(value, "hh:mm aa")}</Text> */}
+      {/*       </TouchableOpacity> */}
+      {/*     ) */}
+      {/*   } */}
+      {/* /> */}
 
       <TouchableOpacity
         onPress={() => {

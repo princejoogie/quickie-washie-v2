@@ -3,7 +3,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import { GetAllAppointmentsResponse } from "@qw/dto";
-import { format, endOfDay, startOfDay } from "date-fns";
+import { endOfDay, startOfDay } from "date-fns";
 
 export const getDocument = async () => {
   const result = await DocumentPicker.getDocumentAsync({
@@ -92,14 +92,7 @@ export const isAllowedForBooking = ({
     .filter((e) => e.serviceId === serviceId)
     .filter((apt) => {
       const aptDate = new Date(apt.date);
-
-      if (aptDate >= start && aptDate <= end) {
-        console.log(format(aptDate, "yyyy-MM-dd"), true);
-        return true;
-      }
-
-      console.log(format(aptDate, "yyyy-MM-dd"), false);
-      return false;
+      return aptDate >= start && aptDate <= end;
     });
 
   return {

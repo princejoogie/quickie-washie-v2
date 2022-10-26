@@ -12,5 +12,6 @@ export * from "./loading-text";
 export * from "./messages-page";
 export * from "./service-card";
 export * from "./text-field";
+export * from "./time-picker";
 export * from "./vehicle-card";
 export * from "./vehicle-type-modal";
