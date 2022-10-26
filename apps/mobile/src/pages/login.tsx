@@ -8,7 +8,6 @@ import { Layout, TextField } from "../components";
 
 import { LoginCar } from "../components/icon/login-car";
 import { useAuthContext } from "../contexts/auth-context";
-import { unsetTokens } from "../services/api";
 import { handleError } from "../utils/helpers";
 import { RootStackParamList } from "./types";
 
@@ -112,15 +111,6 @@ export const Login = ({
           <Text className="text-xs text-blue-600">Create an account</Text>
         </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        className="mt-4 self-end"
-        onPress={() => {
-          unsetTokens();
-        }}
-      >
-        <Text className="text-red-600">DEBUG: clear tokens</Text>
-      </TouchableOpacity>
     </Layout>
   );
 };
