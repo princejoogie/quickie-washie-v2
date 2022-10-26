@@ -2,6 +2,8 @@ import { AxiosError } from "axios";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
+import { GetAllAppointmentsResponse } from "@qw/dto";
+import { format, endOfDay, startOfDay } from "date-fns";
 
 export const getDocument = async () => {
   const result = await DocumentPicker.getDocumentAsync({
@@ -67,5 +69,41 @@ export const handleError = (error: unknown): ErrorReponse => {
   return {
     statusCode: 500,
     message: "Something went wrong",
+  };
+};
+
+export interface IsAllowedForBookingProps {
+  date: Date;
+  apts: GetAllAppointmentsResponse;
+  maxBookingsPerDay: number;
+  serviceId: string;
+}
+
+export const isAllowedForBooking = ({
+  date,
+  apts,
+  serviceId,
+  maxBookingsPerDay,
+}: IsAllowedForBookingProps) => {
+  const start = startOfDay(date);
+  const end = endOfDay(date);
+
+  const filtered = apts
+    .filter((e) => e.serviceId === serviceId)
+    .filter((apt) => {
+      const aptDate = new Date(apt.date);
+
+      if (aptDate >= start && aptDate <= end) {
+        console.log(format(aptDate, "yyyy-MM-dd"), true);
+        return true;
+      }
+
+      console.log(format(aptDate, "yyyy-MM-dd"), false);
+      return false;
+    });
+
+  return {
+    numberOfBookings: filtered.length,
+    isAllowed: filtered.length < maxBookingsPerDay,
   };
 };

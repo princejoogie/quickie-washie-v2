@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { format } from "date-fns";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -36,6 +36,7 @@ export const BookService = ({
   route,
   navigation,
 }: NativeStackScreenProps<HomeStackParamList, "BookService">) => {
+  const [isValidDate, setIsValidDate] = useState(false);
   const { data } = useAuthContext();
   const { serviceId } = route.params;
   const {
@@ -116,9 +117,9 @@ export const BookService = ({
     });
   };
 
-  const showDatePicker = () => {
-    showMode("date");
-  };
+  /* const showDatePicker = () => { */
+  /*   showMode("date"); */
+  /* }; */
 
   const showTimePicker = () => {
     showMode("time");
@@ -231,12 +232,13 @@ export const BookService = ({
         render={({ field: { onChange, value } }) => (
           <DatePicker
             serviceId={serviceId}
-            onChange={(date) => {
+            onChange={(date, isAllowed) => {
               const copy = new Date(date);
               copy.setHours(value.getHours());
               copy.setMinutes(value.getMinutes());
               copy.setSeconds(0);
               onChange(copy);
+              setIsValidDate(isAllowed);
             }}
             value={value}
           />
@@ -313,12 +315,16 @@ export const BookService = ({
       />
 
       <TouchableOpacity
-        onPress={handleSubmit(({ date, ...rest }) => {
-          createAppointment.mutate({
-            ...rest,
-            date: date.toISOString(),
-          });
-        })}
+        onPress={() => {
+          if (isValidDate) {
+            handleSubmit(({ date, ...rest }) => {
+              createAppointment.mutate({
+                ...rest,
+                date: date.toISOString(),
+              });
+            })();
+          }
+        }}
         disabled={isLoading}
         className={`mt-6 w-full rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 ${
           isLoading ? "opacity-50" : "opacity-100"

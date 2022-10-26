@@ -1,12 +1,12 @@
-import { GetAllAppointmentsResponse } from "@qw/dto";
 import { Picker } from "@react-native-picker/picker";
 import { useQuery } from "@tanstack/react-query";
-import { format, endOfDay, getDaysInMonth, startOfDay } from "date-fns";
+import { getDaysInMonth } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
 import appointmentService from "../services/appointment";
 import { getServerConstants } from "../utils/constants";
+import { isAllowedForBooking } from "../utils/helpers";
 
 const months = [
   "Jan",
@@ -24,52 +24,16 @@ const months = [
 ];
 
 export interface DatePickerProps {
-  onChange?: (date: Date) => void;
+  onChange?: (date: Date, isAllowed: boolean) => void;
   value: Date;
   serviceId: string;
 }
-
-interface IsAllowedForBookingProps {
-  date: Date;
-  apts: GetAllAppointmentsResponse;
-  maxBookingsPerDay: number;
-  serviceId: string;
-}
-
-const isAllowedForBooking = ({
-  date,
-  apts,
-  serviceId,
-  maxBookingsPerDay,
-}: IsAllowedForBookingProps) => {
-  const start = startOfDay(date);
-  const end = endOfDay(date);
-
-  const filtered = apts
-    .filter((e) => e.serviceId === serviceId)
-    .filter((apt) => {
-      const aptDate = new Date(apt.date);
-
-      if (aptDate >= start && aptDate <= end) {
-        console.log(format(aptDate, "yyyy-MM-dd"), true);
-        return true;
-      }
-
-      console.log(format(aptDate, "yyyy-MM-dd"), false);
-      return false;
-    });
-
-  return {
-    numberOfBookings: filtered.length,
-    isAllowed: filtered.length < maxBookingsPerDay,
-  };
-};
 
 export const DatePicker = ({ onChange, value, serviceId }: DatePickerProps) => {
   const appointments = useQuery(["appointments"], appointmentService.getAll);
   const serverConstants = useQuery(["server-constants"], getServerConstants);
 
-  const currentYear = useMemo(() => value.getFullYear(), [value]);
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
 
   const [year, setYear] = useState(value.getFullYear());
   const [month, setMonth] = useState(value.getMonth());
@@ -79,7 +43,15 @@ export const DatePicker = ({ onChange, value, serviceId }: DatePickerProps) => {
   const days = getDaysInMonth(date);
 
   useEffect(() => {
-    onChange?.(date);
+    onChange?.(
+      date,
+      isAllowedForBooking({
+        date,
+        serviceId,
+        apts: appointments.data ?? [],
+        maxBookingsPerDay: serverConstants.data?.maxBookings ?? 5,
+      }).isAllowed
+    );
   }, [date]);
 
   const isLoading = appointments.isLoading || serverConstants.isLoading;
@@ -131,8 +103,8 @@ export const DatePicker = ({ onChange, value, serviceId }: DatePickerProps) => {
             .fill(0)
             .map((_, idx) => {
               const allowed = isAllowedForBooking({
-                date: new Date(year, month, idx + 1),
                 serviceId,
+                date: new Date(year, month, idx + 1),
                 apts: appointments.data ?? [],
                 maxBookingsPerDay: serverConstants.data?.maxBookings ?? 5,
               });
@@ -151,7 +123,16 @@ export const DatePicker = ({ onChange, value, serviceId }: DatePickerProps) => {
               );
             })}
         </Picker>
-        <Text className="mt-1 ml-2 text-xs text-gray-400">Day</Text>
+        {!isAllowedForBooking({
+          date,
+          serviceId,
+          apts: appointments.data ?? [],
+          maxBookingsPerDay: serverConstants.data?.maxBookings ?? 5,
+        }).isAllowed ? (
+          <Text className="mt-1 ml-2 text-xs italic text-red-600">Invalid</Text>
+        ) : (
+          <Text className="mt-1 ml-2 text-xs text-gray-400">Day</Text>
+        )}
       </View>
 
       <View className="flex-1">
