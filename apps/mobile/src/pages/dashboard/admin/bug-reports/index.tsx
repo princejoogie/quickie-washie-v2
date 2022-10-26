@@ -34,10 +34,9 @@ export const BugReports = ({}: BottomTabScreenProps<
   );
 };
 
-const AllBugReports = ({}: NativeStackScreenProps<
-  BugReportStackParamList,
-  "AllBugReports"
->) => {
+const AllBugReports = ({
+  navigation,
+}: NativeStackScreenProps<BugReportStackParamList, "AllBugReports">) => {
   const reports = useQuery(["bug-reports"], reportService.getAll);
   const isFocused = useIsFocused();
 
@@ -60,6 +59,9 @@ const AllBugReports = ({}: NativeStackScreenProps<
             className={`relative p-4 ${
               idx > 0 ? "border-t border-gray-700" : ""
             } ${bug.seen ? "" : "bg-gray-800"}`}
+            onPress={() => {
+              navigation.navigate("BugReportDetail", { bugReportId: bug.id });
+            }}
           >
             {!bug.seen && (
               <View className="absolute top-3 right-3 h-2 w-2 rounded-full bg-green-500" />
