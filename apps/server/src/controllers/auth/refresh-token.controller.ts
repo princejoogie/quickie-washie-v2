@@ -28,10 +28,7 @@ const refreshTokenController: RequestHandler<
     });
 
     if (!user) {
-      const error = new AppError(
-        "UnauthorizedException",
-        "User does not exist"
-      );
+      const error = new AppError("NotFoundException", "User does not exist");
       return next(error);
     }
 

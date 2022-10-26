@@ -1,5 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Alert,
+} from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +21,7 @@ import { getImage } from "../utils/helpers";
 import { RootStackParamList } from "./types";
 import { uploadFile } from "../services/firebase";
 import { useAuthContext } from "../contexts/auth-context";
+import Logger from "../lib/logger";
 
 const registerSchema = z
   .object({
@@ -72,8 +80,22 @@ export const Register = ({
     },
   });
 
-  const register = useMutation(authService.register);
-  const sendVerification = useMutation(authService.sendVerificationEmail);
+  const register = useMutation(authService.register, {
+    onError: (err: any) => {
+      Alert.alert(
+        "Register Error",
+        err.message ? err.message : JSON.stringify(err, null, 2)
+      );
+    },
+  });
+  const sendVerification = useMutation(authService.sendVerificationEmail, {
+    onError: (err: any) => {
+      Alert.alert(
+        "Send Verification Error",
+        err.message ? err.message : JSON.stringify(err, null, 2)
+      );
+    },
+  });
 
   const isLoading =
     isSubmitting ||
@@ -260,25 +282,42 @@ export const Register = ({
       <TouchableOpacity
         className="mt-6 self-end rounded-lg border-2 border-green-500 bg-green-600 px-8 py-2 disabled:opacity-50"
         disabled={isLoading}
-        onPress={handleSubmit(
-          async ({ licenseUrl, imageUrl, confirmPassword, phone, ...rest }) => {
-            const [licenseDownloadUrl, imageDownloadUrl] = await Promise.all([
-              uploadFile(licenseUrl, rest.email),
-              uploadFile(imageUrl, rest.email),
-            ]);
+        onPress={() => {
+          try {
+            handleSubmit(
+              async ({
+                licenseUrl,
+                imageUrl,
+                confirmPassword,
+                phone,
+                ...rest
+              }) => {
+                const [licenseDownloadUrl, imageDownloadUrl] =
+                  await Promise.all([
+                    uploadFile(licenseUrl, rest.email),
+                    uploadFile(imageUrl, rest.email),
+                  ]);
 
-            const user = await register.mutateAsync({
-              ...rest,
-              licenseUrl: licenseDownloadUrl,
-              imageUrl: imageDownloadUrl,
-              phone: `+63${phone}`,
-            });
+                const user = await register.mutateAsync({
+                  ...rest,
+                  licenseUrl: licenseDownloadUrl,
+                  imageUrl: imageDownloadUrl,
+                  phone: `+63${phone}`,
+                });
 
-            await sendVerification.mutateAsync({ uid: user.user.id });
+                await sendVerification.mutateAsync({ uid: user.user.id });
 
-            await login(rest.email, rest.password);
+                await login(rest.email, rest.password);
+              }
+            )();
+          } catch (err: any) {
+            Logger.log(err);
+            Alert.alert(
+              "Register Error",
+              err.message ? err.message : JSON.stringify(err, null, 2)
+            );
           }
-        )}
+        }}
       >
         <Text className="text-white">
           {isLoading ? "Loading..." : "Register"}

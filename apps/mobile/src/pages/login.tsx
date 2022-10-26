@@ -1,15 +1,16 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Controller, useForm } from "react-hook-form";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { z } from "zod";
 
 import { Layout, TextField } from "../components";
 
-import { RootStackParamList } from "./types";
-import { handleError } from "../utils/helpers";
-import { useAuthContext } from "../contexts/auth-context";
 import { LoginCar } from "../components/icon/login-car";
+import { useAuthContext } from "../contexts/auth-context";
+import { unsetTokens } from "../services/api";
+import { handleError } from "../utils/helpers";
+import { RootStackParamList } from "./types";
 
 const loginSchema = z.object({
   email: z.string().email().trim(),
@@ -111,6 +112,15 @@ export const Login = ({
           <Text className="text-xs text-blue-600">Create an account</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+        className="mt-4 self-end"
+        onPress={() => {
+          unsetTokens();
+        }}
+      >
+        <Text className="text-red-600">DEBUG: clear tokens</Text>
+      </TouchableOpacity>
     </Layout>
   );
 };

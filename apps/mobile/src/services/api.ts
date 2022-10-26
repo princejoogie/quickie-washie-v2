@@ -5,9 +5,10 @@ import type { RefreshTokenResponse, RefreshTokenBody } from "@qw/dto";
 import { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY } from "../constants";
 import { handleError } from "../utils/helpers";
 import { Alert } from "react-native";
+import Logger from "../lib/logger";
 
 export const API_BASE_URL = `${process.env.API_BASE_URL}/api`;
-console.log({ API_BASE_URL });
+Logger.log({ API_BASE_URL });
 
 export const queryCache = new QueryCache();
 export const queryClient = new QueryClient({
@@ -34,11 +35,27 @@ api.interceptors.request.use(async (config) => {
       Authorization: `Bearer ${accessToken}`,
     };
   }
+  Logger.log(
+    "[OUTGOING >>]",
+    config.method?.toUpperCase(),
+    config.url,
+    config.data ? "\nDATA:" : "",
+    config.data ? JSON.stringify(config.data, null, 2) : "",
+    config.headers ? "\nHEADERS:" : "",
+    config.headers ? JSON.stringify(config.headers, null, 2) : ""
+  );
+
   return config;
 });
 
 api.interceptors.response.use(
   (response) => {
+    Logger.log(
+      "[<< INCOMING]",
+      response.config.url,
+      response.data ? "\nDATA:" : "",
+      response.data ? JSON.stringify(response.data, null, 2) : ""
+    );
     return response;
   },
   async (error) => {
@@ -54,6 +71,8 @@ api.interceptors.response.use(
         api.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
         return await api(originalRequest);
       }
+    } else {
+      unsetTokens();
     }
 
     return await Promise.reject(error);
