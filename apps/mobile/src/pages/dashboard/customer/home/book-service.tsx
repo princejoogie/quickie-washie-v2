@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { format } from "date-fns";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Text, TouchableOpacity, Platform } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { Picker } from "@react-native-picker/picker";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import DateTimePicker, {
-  DateTimePickerAndroid,
-  AndroidNativeProps,
-} from "@react-native-community/datetimepicker";
 
 import {
   DatePicker,
@@ -95,40 +90,40 @@ export const BookService = ({
     createAppointment.isLoading ||
     isValidating;
 
-  const showMode = (currentMode: AndroidNativeProps["mode"]) => {
-    const value = watch("date");
-    DateTimePickerAndroid.open({
-      minimumDate: new Date(),
-      value: watch("date"),
-      onChange: (_, date) => {
-        if (date) {
-          if (currentMode === "date") {
-            const copy = new Date(date);
-            copy.setHours(value.getHours());
-            copy.setMinutes(value.getMinutes());
-            copy.setSeconds(0);
-            setValue("date", copy);
-          } else {
-            const copy = new Date(date);
-            copy.setFullYear(value.getFullYear());
-            copy.setMonth(value.getMonth());
-            copy.setDate(value.getDate());
-            copy.setSeconds(0);
-            setValue("date", copy);
-          }
-        }
-      },
-      mode: currentMode,
-    });
-  };
+  /* const showMode = (currentMode: AndroidNativeProps["mode"]) => { */
+  /*   const value = watch("date"); */
+  /*   DateTimePickerAndroid.open({ */
+  /*     minimumDate: new Date(), */
+  /*     value: watch("date"), */
+  /*     onChange: (_, date) => { */
+  /*       if (date) { */
+  /*         if (currentMode === "date") { */
+  /*           const copy = new Date(date); */
+  /*           copy.setHours(value.getHours()); */
+  /*           copy.setMinutes(value.getMinutes()); */
+  /*           copy.setSeconds(0); */
+  /*           setValue("date", copy); */
+  /*         } else { */
+  /*           const copy = new Date(date); */
+  /*           copy.setFullYear(value.getFullYear()); */
+  /*           copy.setMonth(value.getMonth()); */
+  /*           copy.setDate(value.getDate()); */
+  /*           copy.setSeconds(0); */
+  /*           setValue("date", copy); */
+  /*         } */
+  /*       } */
+  /*     }, */
+  /*     mode: currentMode, */
+  /*   }); */
+  /* }; */
 
   /* const showDatePicker = () => { */
   /*   showMode("date"); */
   /* }; */
 
-  const showTimePicker = () => {
-    showMode("time");
-  };
+  /* const showTimePicker = () => { */
+  /*   showMode("time"); */
+  /* }; */
 
   const getAdditionalPrice = () => {
     if (vehicles.data && serviceDetails.data) {
@@ -270,9 +265,9 @@ export const BookService = ({
         )}
       />
 
-      <Text className="text-white">
-        {format(watch("date"), "yyyy-MM-dd HH:mm:SS")}
-      </Text>
+      {/* <Text className="text-white"> */}
+      {/*   {format(watch("date"), "yyyy-MM-dd HH:mm:SS")} */}
+      {/* </Text> */}
 
       {/* <Controller */}
       {/*   name="date" */}

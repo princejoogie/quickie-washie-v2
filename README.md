@@ -1,29 +1,8 @@
-# quickie-washie-v2
+# Quickie Washie
 
-TODO:
-- [x] Update Profile
-- [x] See user profile in appointment detail (admin)
-- [x] Update Appointment status
-- [x] Update Appointment date
-- [x] Sort Appointments by status (customer and admin)
-- [x] Analytics
-- [x] Send Notifications
-- [x] Splash image and app icon
-- [x] Send Reviews
-- [x] Report Bugs
-- [x] Splash image and app icon
-- [x] Price of appointment (including additional charges)
-- [x] Server time offset on Notifications
+A Cross-Platform Mobile Application for an all-in-one booking and management for Car Services.
 
-REVISIONS: additional charges
-
-- [x] Max 5 booking per service per day
-- [x] Operating hrs: 9am-11am 3pm-8pm
-- [x] Add the name of the client in the application.
-- [x] What kind of email verification? which has an expiration time, consider.
-- [ ] Field schemas
-- [x] PENDING: notifications must be pushed, even if the app is closed (?)
-- [x] PENDING: admin and user side should be separated. (NO)
+![demo](./demo.png)
 
 ## Prerequisites
 
