@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "888863628081",
+    "project_id": "quickie-washie",
+    "storage_bucket": "quickie-washie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888863628081:android:72033619676ed0414eae10",
+        "android_client_info": {
+          "package_name": "com.quickiewashie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888863628081-89ofocqdqqp571jlr489ghflhbjd7l0l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5FlGuH5h_iDZnaCiogP2qfkpXK49_5IU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888863628081-89ofocqdqqp571jlr489ghflhbjd7l0l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888863628081:android:3d2a0edf731880894eae10",
+        "android_client_info": {
+          "package_name": "com.qwashie.quickiewashie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888863628081-89ofocqdqqp571jlr489ghflhbjd7l0l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5FlGuH5h_iDZnaCiogP2qfkpXK49_5IU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888863628081-89ofocqdqqp571jlr489ghflhbjd7l0l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

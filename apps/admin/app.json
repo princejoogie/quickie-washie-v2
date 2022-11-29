@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "scheme": "qwashie",
+    "owner": "qwashie",
+    "name": "C5-IKOT Kartel Admin",
+    "slug": "quickie-washie-admin",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#111827"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
+      "permissions": ["RECIEVE_BOOT_COMPLETED"],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#111827"
+      },
+      "package": "com.qwashie.quickiewashieadmin"
+    },
+    "web": {
+      "favicon": "./assets/favicon.ico"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7a6cb8b3-41fe-4725-b3da-02f62a932b4b"
+      }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#111827",
+          "sounds": [],
+          "androidMode": "default",
+          "androidCollapsedTitle": "Quickie Washie Admin",
+          "iosDisplayInForeground": true
+        }
+      ]
+    ]
+  }
+}

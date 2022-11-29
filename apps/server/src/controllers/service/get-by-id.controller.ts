@@ -12,7 +12,8 @@ const getServiceByIdController: RequestHandler<
     const payload = req.tokenPayload;
 
     if (!payload) {
-      const error = new AppError("UnauthorizedException", "No token provided"); return next(error);
+      const error = new AppError("UnauthorizedException", "No token provided");
+      return next(error);
     }
 
     const { serviceId } = req.params;
