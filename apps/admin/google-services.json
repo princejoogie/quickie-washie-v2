@@ -62,6 +62,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888863628081:android:6bb921358dc1c1bc4eae10",
+        "android_client_info": {
+          "package_name": "com.qwashie.quickiewashieadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888863628081-89ofocqdqqp571jlr489ghflhbjd7l0l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5FlGuH5h_iDZnaCiogP2qfkpXK49_5IU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888863628081-89ofocqdqqp571jlr489ghflhbjd7l0l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
