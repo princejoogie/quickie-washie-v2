@@ -20,6 +20,7 @@ export const CreateVerificationTokenSchema: ValidatorSchema = {
 export const loginBodySchema = z.object({
   email: z.string().email().trim(),
   password: z.string().trim().min(6),
+  isAdmin: z.boolean().optional().default(false),
 });
 
 export type LoginBody = z.infer<typeof loginBodySchema>;

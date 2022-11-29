@@ -108,7 +108,11 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const tokens = await authService.login({ email, password });
+      const tokens = await authService.login({
+        email,
+        password,
+        isAdmin: false,
+      });
       await setTokens(tokens.accessToken, tokens.refreshToken);
       const pushToken = await getPushNotificationToken();
 

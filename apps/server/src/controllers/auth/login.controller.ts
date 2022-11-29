@@ -12,7 +12,7 @@ const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
   next
 ) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, isAdmin } = req.body;
 
     const user = await prisma.user.findUnique({
       where: { email },
@@ -29,6 +29,22 @@ const loginController: RequestHandler<any, LoginResponse, LoginBody> = async (
       const error = new AppError(
         "UnauthorizedException",
         "Invalid credentials"
+      );
+      return next(error);
+    }
+
+    if (isAdmin && user.privilege !== "ADMIN") {
+      const error = new AppError(
+        "UnauthorizedException",
+        "User is not an admin"
+      );
+      return next(error);
+    }
+
+    if (!isAdmin && user.privilege === "ADMIN") {
+      const error = new AppError(
+        "UnauthorizedException",
+        "Use the admin app if you are an admin"
       );
       return next(error);
     }
