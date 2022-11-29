@@ -75,6 +75,7 @@ export const registerBodySchema = z.object({
   phone: z.string().min(13).max(13).trim(),
   imageUrl: z.string().url().trim(),
   name: z.string().trim(),
+  isAdmin: z.boolean().optional().default(false),
 });
 
 export type RegisterBody = z.infer<typeof registerBodySchema>;

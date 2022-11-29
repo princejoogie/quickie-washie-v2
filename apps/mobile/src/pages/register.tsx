@@ -303,6 +303,7 @@ export const Register = ({
                   licenseUrl: licenseDownloadUrl,
                   imageUrl: imageDownloadUrl,
                   phone: `+63${phone}`,
+                  isAdmin: false,
                 });
 
                 await sendVerification.mutateAsync({ uid: user.user.id });

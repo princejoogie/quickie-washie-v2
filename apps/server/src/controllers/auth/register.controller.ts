@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 import type { RegisterBody, RegisterResponse } from "@qw/dto";
+import { Privilege } from "@qw/db";
 import bcrypt from "bcryptjs";
 
 import prisma from "../../lib/prisma";
@@ -12,7 +13,8 @@ const registerController: RequestHandler<
   RegisterBody
 > = async (req, res, next) => {
   try {
-    const { email, password, licenseUrl, name, imageUrl, phone } = req.body;
+    const { email, password, licenseUrl, name, imageUrl, phone, isAdmin } =
+      req.body;
 
     const user = await prisma.user.findUnique({
       where: { email },
@@ -33,6 +35,7 @@ const registerController: RequestHandler<
         name,
         password: hashedPassword,
         photoUrl: imageUrl,
+        privilege: isAdmin ? Privilege.ADMIN : Privilege.CUSTOMER,
       },
     });
 

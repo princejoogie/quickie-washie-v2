@@ -44,7 +44,7 @@ export const Login = ({
     <Layout className="px-6">
       <View className="mt-4">
         <Text className="w-full text-2xl font-bold text-white">
-          Login to Quickie Washie
+          Login to Quickie Washie Admin
         </Text>
         <Text className="mt-1 text-gray-400">Hello, welcome back!</Text>
       </View>
