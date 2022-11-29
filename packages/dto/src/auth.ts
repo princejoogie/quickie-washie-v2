@@ -20,6 +20,7 @@ export const CreateVerificationTokenSchema: ValidatorSchema = {
 export const loginBodySchema = z.object({
   email: z.string().email().trim(),
   password: z.string().trim().min(6),
+  isAdmin: z.boolean().optional().default(false),
 });
 
 export type LoginBody = z.infer<typeof loginBodySchema>;
@@ -74,6 +75,7 @@ export const registerBodySchema = z.object({
   phone: z.string().min(13).max(13).trim(),
   imageUrl: z.string().url().trim(),
   name: z.string().trim(),
+  isAdmin: z.boolean().optional().default(false),
 });
 
 export type RegisterBody = z.infer<typeof registerBodySchema>;
